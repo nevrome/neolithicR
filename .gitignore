@@ -3,6 +3,7 @@
 .RData
 packrat/lib*/
 packrat/src/
+data
 
 # Compiled source #
 ###################
