@@ -4,6 +4,7 @@
 packrat/lib*/
 data
 results
+mapping/*.html
 
 # Compiled source #
 ###################
