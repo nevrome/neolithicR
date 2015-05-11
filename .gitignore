@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 packrat/lib*/
-data
 results
 mapping/*.html
 
