@@ -7,7 +7,7 @@ library(dplyr)
 shinyServer(function(input, output, session) {
 
   #load dataset
-  matrix <- read.csv("~/Rstats/neolithicR/data/radiocarbon/Europe.csv", 
+  matrix <- read.csv("Europe.csv", 
                      sep="\t", 
                      header=TRUE, 
                      row.names=1, 

@@ -6,7 +6,7 @@ library(ShinyDash)
 shinyUI(
   fluidPage(
     leafletOutput(
-      "radiocarbon", "100%", 900
+      "radiocarbon", width = "100%", height = "700px"
     )
   )
 )
