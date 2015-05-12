@@ -1,7 +1,8 @@
-## WebGIS-App (shiny + leaflet)
+## WebGIS-App
 
-Simple Visualisation of the oldest dates of each single site: [radiocarbon1](https://nevrome.shinyapps.io/radiocarbon1/).
-The circles' size and colour depends on the calibrated ages.
+[radiocarbon1](https://nevrome.shinyapps.io/radiocarbon1/): Visualisation of the oldest dates of each single site. The circles' size and colour depends on the calibrated ages.
+
+[radiocarbon2](https://nevrome.shinyapps.io/radiocarbon2/): WebGIS environment that allows to define a certain timeframe for date selection. Only the oldest dates of each site for this timeframe will be plotted.
 
 ### Data
 
