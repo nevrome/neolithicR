@@ -1,15 +1,19 @@
-#Starting app and push to shinyapps.io
+#Reminder: starting app and push to shinyapps.io
 #library(shiny)
 #runApp("mapping/shiny_app/radiocarbon1/", launch.browser=TRUE)
+#
 #shinyapps::deployApp('mapping/shiny_app/radiocarbon2/')
 
-#load libraries
+
+#### loading libraries ####
+
 library(shiny)
 library(leaflet)
 library(magrittr)
 library(dplyr)
 
-################  
+
+#### data preparation ####
 
 #load dataset
 matrix <- read.csv("Europe.csv", 
@@ -40,10 +44,10 @@ oldest.dates1 <- lapply(
     x[which.max(x$CALAGE), c(1:6)]
   }
 )
-
 oldest.dates2 <- do.call(rbind, oldest.dates1)
 
-################  
+
+#### server output ####  
 
 shinyServer(function(input, output, session) {
 
@@ -73,7 +77,7 @@ shinyServer(function(input, output, session) {
       oldest.dates3$REFERENCE 
     )
     
-    #preparation of mapping for shiny
+    #preparation of mapping for shiny frontend
     map = leaflet(oldest.dates3) %>% 
       addTiles(
         urlTemplate = tiles,
@@ -86,9 +90,12 @@ shinyServer(function(input, output, session) {
         popup = site.popup
       )
     
-    
   })
   
-  
+  #render datatable, that shows the currently mapped dates
+  output$radiodat = renderDataTable(
+    options = list(pageLength = 10), 
+    {filter(oldest.dates2, CALAGE>=input$`range`[1], CALAGE<=input$`range`[2])}
+  )
 
 })
