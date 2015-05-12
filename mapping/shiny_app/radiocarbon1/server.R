@@ -1,3 +1,8 @@
+#Starting app and push to shinyapps.io
+#library(shiny)
+#runApp("mapping/shiny_app/radiocarbon1/", launch.browser=TRUE)
+#shinyapps::deployApp('mapping/shiny_app/radiocarbon1/')
+
 #load libraries
 library(shiny)
 library(leaflet)
@@ -39,7 +44,7 @@ shinyServer(function(input, output, session) {
   oldest.dates2 <- do.call(rbind, oldest.dates1)
   
   #sort dates by age
-  oldest.dates2 <- oldest.dates2[order(oldest.dates2$CALAGE),]
+  oldest.dates2 <- oldest.dates2[order(oldest.dates2$CALAGE, decreasing = TRUE),]
   
   #text popup definition
   site.popup <- paste0(
@@ -67,7 +72,7 @@ shinyServer(function(input, output, session) {
       lat = ~ LATITUDE, 
       lng = ~ LONGITUDE, 
       color = rainbow(length(oldest.dates2[,1]), alpha = NULL, start = 0, end = 2/6), 
-      radius = ~ CALAGE,
+      radius = (max(oldest.dates2$CALAGE)+300)-oldest.dates2$CALAGE,
       popup = site.popup
       )
   
