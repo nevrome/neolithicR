@@ -34,14 +34,26 @@ shinyUI(
         
         #input switch
         radioButtons(
+          "type", 
+          "Type of visualisation:",
+          list(
+            "Type1: Show every date" = "type1",
+            "Type2: Show oldest and youngest date" = "type2"
+          ), 
+          selected = "type2"
+        ),
+        
+        #input switch
+        radioButtons(
           "oldest", 
-          "How to deal with the oldest dates?:",
+          "How to deal with the oldest dates in Type2?:",
           list(
             "Oldest Dates" = "dates1",
             "Second Oldest Dates" = "dates2",
             "Third Oldest Dates" = "dates3"
           ) 
         )
+        
       ),
     
       #output datatable
