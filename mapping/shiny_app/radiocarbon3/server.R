@@ -62,6 +62,22 @@ youngest.dates2 <- data.frame(youngest.dates2, OFFSET=0.05, COLOR="#3058e5")
 #create a combined list with the oldest and the youngest dates of the site
 dates1 <- rbind(oldest.dates1, youngest.dates2)
 
+#add columns for related partner age (youngest date for oldest dates and vice versa)
+dates1 <- data.frame(dates1, PARTNERAGE = dates1$CALAGE)
+
+#exchange partner ages
+dates1 <- lapply(
+  split(dates1, dates1$SITE),
+  function(x){
+    if(length(x[,1])==2){
+      x$PARTNERAGE[1] <- x$CALAGE[2]
+      x$PARTNERAGE[2] <- x$CALAGE[1]
+    }
+    return(x)
+  }
+)
+dates1 <- do.call(rbind, dates1)
+
 #remove the oldest dates from the dataset
 matrix.red3 <- matrix.red2[!(matrix.red2$LABNR %in% oldest.dates1$LABNR),]
 
@@ -76,7 +92,24 @@ oldest.dates2 <- do.call(rbind, oldest.dates2)
 #Add offset column with values for the oldest graves
 oldest.dates2 <- data.frame(oldest.dates2, OFFSET=-0.05, COLOR="#FF3300")
 
+#create a combined list with the oldest and the youngest dates of the site
 dates2 <- rbind(oldest.dates2, youngest.dates2)
+
+#add columns for related partner age (youngest date for oldest dates and vice versa)
+dates2 <- data.frame(dates2, PARTNERAGE = dates2$CALAGE)
+
+#exchange partner ages
+dates2 <- lapply(
+  split(dates2, dates2$SITE),
+  function(x){
+    if(length(x[,1])==2){
+      x$PARTNERAGE[1] <- x$CALAGE[2]
+      x$PARTNERAGE[2] <- x$CALAGE[1]
+    }
+    return(x)
+  }
+)
+dates2 <- do.call(rbind, dates2)
 
 #remove the oldest dates from the dataset again
 matrix.red4 <- matrix.red3[!(matrix.red3$LABNR %in% oldest.dates2$LABNR),]
@@ -92,8 +125,24 @@ oldest.dates3 <- do.call(rbind, oldest.dates3)
 #Add offset column with values for the oldest graves
 oldest.dates3 <- data.frame(oldest.dates3, OFFSET=-0.05, COLOR="#FF33CC")
 
+#create a combined list with the oldest and the youngest dates of the site
 dates3 <- rbind(oldest.dates3, youngest.dates2)
 
+#add columns for related partner age (youngest date for oldest dates and vice versa)
+dates3 <- data.frame(dates3, PARTNERAGE = dates3$CALAGE)
+
+#exchange partner ages
+dates3 <- lapply(
+  split(dates3, dates3$SITE),
+  function(x){
+    if(length(x[,1])==2){
+      x$PARTNERAGE[1] <- x$CALAGE[2]
+      x$PARTNERAGE[2] <- x$CALAGE[1]
+    }
+    return(x)
+  }
+)
+dates3 <- do.call(rbind, dates3)
 
 #### server output ####  
 
@@ -116,11 +165,12 @@ shinyServer(function(input, output, session) {
     }    
     
     #selection to defined range (ui.R)
-    dates <- filter(dates, CALAGE>=input$`range`[1], CALAGE<=input$`range`[2])
+    dates <- filter(
+      dates, 
+      CALAGE>=input$`range`[1] | PARTNERAGE>=input$`range`[1], 
+      CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
+    )
    
-    #sort dates by age
-    #dates <- dates[order(dates$CALAGE, decreasing = TRUE),]
-    
     #text popup definition
     site.popup <- paste0(
       "<strong>Site: </strong>", 
@@ -151,7 +201,23 @@ shinyServer(function(input, output, session) {
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable(
     options = list(pageLength = 10), 
-    {filter(dates, CALAGE>=input$`range`[1], CALAGE<=input$`range`[2])}
+    {
+      #switch to decide how to deal with oldest dates
+      if (input$oldest=="dates1") {
+        dates <- dates1
+      } else if (input$oldest=="dates2") {
+        dates <- dates2
+      } else if (input$oldest=="dates3") {
+        dates <- dates3
+      }    
+      
+      #selection to defined range (ui.R)
+      dates <- filter(
+        dates, 
+        CALAGE>=input$`range`[1] | PARTNERAGE>=input$`range`[1], 
+        CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
+      )
+    }
   )
 
 })
