@@ -26,6 +26,15 @@ matrix.red1$LONGITUDE <- as.numeric(matrix.red1$LONGITUDE)
 matrix.red2 <- filter(matrix.red1, matrix.red1$CALAGE!="0") 
 matrix.red2 <- filter(matrix.red2, matrix.red2$LONGITUDE!="0" & matrix.red2$LATITUDE!="0")
 
+#sort dates by age
+matrix.red2 <- matrix.red2[order(matrix.red2$CALAGE, decreasing=TRUE),]
+
+#add column for main color (color by age)
+matrix.red2 <- data.frame(
+  matrix.red2, 
+  MAINCOLOR = rainbow(length(matrix.red2[,1]), alpha = NULL, start = 0, end = 2/6)
+  )
+
 
 ##### youngest dates #####
 

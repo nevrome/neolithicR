@@ -62,9 +62,6 @@ shinyServer(function(input, output, session) {
         CALAGE<=input$`range`[2]
         )
       
-      #sort dates by age
-      dates <- dates[order(dates$CALAGE),]
-      
       #text popup definition
       site.popup <- paste0(
         "<strong>Site: </strong>", 
@@ -86,8 +83,8 @@ shinyServer(function(input, output, session) {
         addCircles(
           lat = dates$LATITUDE, 
           lng = dates$LONGITUDE, 
-          color = "green",
-          radius = dates$CALAGE*3,
+          color = dates$MAINCOLOR,
+          radius = dates$CALAGE,
           popup = site.popup
         )      
       
