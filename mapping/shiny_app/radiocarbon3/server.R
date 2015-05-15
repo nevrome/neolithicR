@@ -46,8 +46,8 @@ dates3 <- read.csv("dates3.csv",
 shinyServer(function(input, output, session) {
 
   #define sources of background map
-  tiles <- "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-  att <- 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+  tiles <- "http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}"
+  att <- 'Tiles &copy; Esri &mdash; Source: US National Park Service'
   
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
