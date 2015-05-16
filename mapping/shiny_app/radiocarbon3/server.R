@@ -2,7 +2,7 @@
 #library(shiny)
 #runApp("mapping/shiny_app/radiocarbon3/", launch.browser=TRUE)
 #
-#shinyapps::deployApp('mapping/shiny_app/radiocarbon2/')
+#shinyapps::deployApp('mapping/shiny_app/radiocarbon3/')
 
 
 #### loading libraries ####
