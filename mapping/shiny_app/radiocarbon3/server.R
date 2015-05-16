@@ -16,25 +16,25 @@ library(dplyr)
 #### data preparation ####
 
 #load dataset
-Europe <- read.csv("Europe.csv", 
+Europe <- read.csv("data/Europe.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-dates1 <- read.csv("dates1.csv", 
+dates1 <- read.csv("data/dates1.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-dates2 <- read.csv("dates2.csv", 
+dates2 <- read.csv("data/dates2.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-dates3 <- read.csv("dates3.csv", 
+dates3 <- read.csv("data/dates3.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 

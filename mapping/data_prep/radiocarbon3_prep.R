@@ -157,7 +157,7 @@ dates3 <- do.call(rbind, dates3)
 
 ##### export of date selections #####
 
-write.table(dates1, "mapping/shiny_app/radiocarbon3/dates1.csv", sep="\t", col.names = NA)
-write.table(dates2, "mapping/shiny_app/radiocarbon3/dates2.csv", sep="\t", col.names = NA)
-write.table(dates3, "mapping/shiny_app/radiocarbon3/dates3.csv", sep="\t", col.names = NA)
-write.table(matrix.red2, "mapping/shiny_app/radiocarbon3/Europe.csv", sep="\t", col.names = NA)
+write.table(dates1, "mapping/shiny_app/radiocarbon3/data/dates1.csv", sep="\t", col.names = NA)
+write.table(dates2, "mapping/shiny_app/radiocarbon3/data/dates2.csv", sep="\t", col.names = NA)
+write.table(dates3, "mapping/shiny_app/radiocarbon3/data/dates3.csv", sep="\t", col.names = NA)
+write.table(matrix.red2, "mapping/shiny_app/radiocarbon3/data/Europe.csv", sep="\t", col.names = NA)
