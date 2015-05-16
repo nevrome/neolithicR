@@ -16,25 +16,37 @@ library(dplyr)
 #### data preparation ####
 
 #load dataset
-Europe <- read.csv("data/Europe.csv", 
+Europe.red1 <- read.csv("data/Europe.red1.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-dates1 <- read.csv("data/dates1.csv", 
+Europe.red2 <- read.csv("data/Europe.red2.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-dates2 <- read.csv("data/dates2.csv", 
+Europe.red3 <- read.csv("data/Europe.red3.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-dates3 <- read.csv("data/dates3.csv", 
+youngoldsel1 <- read.csv("data/youngoldsel1.csv", 
+                   sep="\t", 
+                   header=TRUE, 
+                   row.names=1, 
+                   stringsAsFactors = FALSE)
+
+youngoldsel2 <- read.csv("data/youngoldsel2.csv", 
+                   sep="\t", 
+                   header=TRUE, 
+                   row.names=1, 
+                   stringsAsFactors = FALSE)
+
+youngoldsel3 <- read.csv("data/youngoldsel3.csv", 
                    sep="\t", 
                    header=TRUE, 
                    row.names=1, 
@@ -54,7 +66,7 @@ shinyServer(function(input, output, session) {
     
     if(input$type=="type1"){
       
-      dates <- Europe
+      dates <- Europe.red1
       
       #selection to defined range (ui.R)
       dates <- filter(
@@ -91,12 +103,12 @@ shinyServer(function(input, output, session) {
     } else if(input$type=="type2"){
     
       #switch to decide how to deal with oldest dates
-      if (input$oldest=="dates1") {
-        dates <- dates1
-      } else if (input$oldest=="dates2") {
-        dates <- dates2
-      } else if (input$oldest=="dates3") {
-        dates <- dates3
+      if (input$oldest=="youngoldsel1") {
+        dates <- youngoldsel1
+      } else if (input$oldest=="youngoldsel2") {
+        dates <- youngoldsel2
+      } else if (input$oldest=="youngoldsel3") {
+        dates <- youngoldsel3
       }    
       
       #selection to defined range (ui.R)
@@ -143,7 +155,7 @@ shinyServer(function(input, output, session) {
     
       if(input$type=="type1"){
         
-        dates <- Europe
+        dates <- Europe.red1
         
         #selection to defined range (ui.R)
         dates <- filter(
@@ -154,12 +166,12 @@ shinyServer(function(input, output, session) {
       } else if(input$type=="type2"){
       
         #switch to decide how to deal with oldest dates
-        if (input$oldest=="dates1") {
-          dates <- dates1
-        } else if (input$oldest=="dates2") {
-          dates <- dates2
-        } else if (input$oldest=="dates3") {
-          dates <- dates3
+        if (input$oldest=="youngoldsel1") {
+          dates <- youngoldsel1
+        } else if (input$oldest=="youngoldsel2") {
+          dates <- youngoldsel2
+        } else if (input$oldest=="youngoldsel3") {
+          dates <- youngoldsel3
         }    
         
         #selection to defined range (ui.R)

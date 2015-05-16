@@ -48,9 +48,9 @@ shinyUI(
           "oldest", 
           "How to deal with the oldest dates in Type2?:",
           list(
-            "Oldest Dates" = "dates1",
-            "Second Oldest Dates" = "dates2",
-            "Third Oldest Dates" = "dates3"
+            "Oldest Dates" = "youngoldsel1",
+            "Second Oldest Dates" = "youngoldsel2",
+            "Third Oldest Dates" = "youngoldsel3"
           ) 
         )
         
