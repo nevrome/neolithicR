@@ -85,10 +85,38 @@ youngoldsel1 <- lapply(
 youngoldsel1 <- do.call(rbind, youngoldsel1)
 
 
-##### oldest dates level 2 + combination with youngest dates #####
+##### delete the oldest dates of each site - excluding the sites with just one date #####
 
-#remove the oldest dates from the dataset
-Europe.red2 <- Europe.red1[!(Europe.red1$LABNR %in% oldest.youngoldsel1$LABNR),]
+#determine the oldest dates of the dataset
+old.vec <- Europe.red1$LABNR %in% oldest.youngoldsel1$LABNR
+
+#determine the amount of dates per site
+dates.amount <- data.frame(table(Europe.red1$SITE))
+colnames(dates.amount) <- c("SITE", "FREQ")
+
+#select the sites with just one date -> they have to be protected against deletion
+dates.one <- filter(dates.amount, dates.amount$FREQ == 1)
+
+#create a vector with the information, if a date in Europe.red1 belongs to a site worthy of protection
+in.danger <- Europe.red1$SITE %in% dates.one$SITE
+
+#loop to check every date in Europe.red1
+#if a date is within the oldest dates AND within the dates worth protecting, its index gets documented
+protect.vec <- c()
+for(i in 1:length(Europe.red1[,1])){
+  if(old.vec[i]){
+    if(in.danger[i]){
+      protect.vec <- c(protect.vec, i)
+    }
+  }
+}
+
+#remove the oldest dates from the dataset, but add again the dates worth protecting
+Europe.red2 <- data.frame(Europe.red1[!old.vec,])
+Europe.red2 <- rbind(Europe.red2, Europe.red1[protect.vec,])
+
+
+##### oldest dates level 2 + combination with youngest dates #####
 
 #reduce the date selection to the second oldest date of each site
 oldest.youngoldsel2 <- lapply(
@@ -121,10 +149,38 @@ youngoldsel2 <- lapply(
 youngoldsel2 <- do.call(rbind, youngoldsel2)
 
 
-##### oldest dates level 3 + combination with youngest dates #####
+##### delete the second oldest dates of each site - again excluding the sites with just one date #####
 
-#remove the oldest dates from the dataset again
-Europe.red3 <- Europe.red2[!(Europe.red2$LABNR %in% oldest.youngoldsel2$LABNR),]
+#determine the second oldest dates of the dataset
+old.vec <- Europe.red2$LABNR %in% oldest.youngoldsel2$LABNR
+
+#determine the amount of dates per site left
+dates.amount <- data.frame(table(Europe.red2$SITE))
+colnames(dates.amount) <- c("SITE", "FREQ")
+
+#select the sites with just one date -> they have to be protected against deletion
+dates.one <- filter(dates.amount, dates.amount$FREQ == 1)
+
+#create a vector with the information, if a date in Europe.red1 belongs to a site worthy of protection
+in.danger <- Europe.red2$SITE %in% dates.one$SITE
+
+#loop to check every date in Europe.red2
+#if a date is within the second oldest dates AND within the dates worth protecting, its index gets documented
+protect.vec <- c()
+for(i in 1:length(Europe.red2[,1])){
+  if(old.vec[i]){
+    if(in.danger[i]){
+      protect.vec <- c(protect.vec, i)
+    }
+  }
+}
+
+#remove the oldest dates from the dataset, but add again the dates worth protecting
+Europe.red3 <- data.frame(Europe.red2[!old.vec,])
+Europe.red3 <- rbind(Europe.red3, Europe.red2[protect.vec,])
+
+
+##### oldest dates level 3 + combination with youngest dates #####
 
 #reduce the date selection to the third oldest date of each site
 oldest.youngoldsel3 <- lapply(
