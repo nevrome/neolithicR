@@ -66,7 +66,14 @@ shinyServer(function(input, output, session) {
     
     if(input$type=="type1"){
       
-      dates <- Europe.red1
+      #switch to decide how to deal with oldest dates
+      if (input$oldest=="youngoldsel1") {
+        dates <- Europe.red1
+      } else if (input$oldest=="youngoldsel2") {
+        dates <- Europe.red2
+      } else if (input$oldest=="youngoldsel3") {
+        dates <- Europe.red3
+      } 
       
       #selection to defined range (ui.R)
       dates <- filter(
