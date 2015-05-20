@@ -56,13 +56,13 @@ youngoldsel3 <- read.csv("data/youngoldsel3.csv",
 #### server output ####  
 
 shinyServer(function(input, output, session) {
-
-  #define sources of background map
-  tiles <- "http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}"
-  att <- 'Tiles &copy; Esri &mdash; Source: US National Park Service'
-  
+ 
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
+    
+    #define sources of background map (static, then dynamic)
+    tiles <- input$tiles
+    att <- input$tiles
     
     if(input$type=="type1"){
       

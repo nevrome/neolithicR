@@ -21,7 +21,7 @@ shinyUI(
     tabsetPanel(
       
       #input slider
-      tabPanel('Settings',       
+      tabPanel('Plot settings',       
         sliderInput(
           "range", 
           "calibrated age BP:", 
@@ -60,6 +60,25 @@ shinyUI(
       tabPanel(
         'Datatable',
         dataTableOutput("radiodat")
+      ),
+      
+      #output datatable
+      tabPanel(
+        'Basemap settings',
+        
+        textInput(
+          "tiles", 
+          "Specify Basemap tile sources", 
+          value = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}"
+        ),
+        
+        a(
+          href="http://leaflet-extras.github.io/leaflet-providers/preview/", "See http://leaflet-extras.github.io/leaflet-providers/preview/ for other setups."
+          ),
+        helpText(
+          "You can change the appearance of this map by replacing the tile source link above."
+        )
+        
       )
       
     )
