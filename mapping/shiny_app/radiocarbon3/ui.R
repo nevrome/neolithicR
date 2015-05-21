@@ -46,11 +46,11 @@ shinyUI(
         #input switch
         radioButtons(
           "oldest", 
-          "How to deal with the oldest dates in Type2?:",
+          "How to deal with the oldest dates?:",
           list(
-            "Oldest Dates" = "youngoldsel1",
-            "Second Oldest Dates" = "youngoldsel2",
-            "Third Oldest Dates" = "youngoldsel3"
+            "Show all dates" = "youngoldsel1",
+            "Remove oldest dates of each site and show second oldest dates" = "youngoldsel2",
+            "Remove oldest and second oldest dates of each site and show third oldest dates" = "youngoldsel3"
           ) 
         )
         
@@ -58,8 +58,13 @@ shinyUI(
     
       #output datatable
       tabPanel(
-        'Datatable',
+        'Datatable (selection)',
         dataTableOutput("radiodat")
+      ),
+      
+      tabPanel(
+        'Datatable (complete)',
+        dataTableOutput("radiodat_complete")
       ),
       
       #output datatable

@@ -16,6 +16,13 @@ library(dplyr)
 #### data preparation ####
 
 #load dataset
+#load dataset
+Europe_complete <- read.csv("data/Europe_complete.csv", 
+                   sep="\t", 
+                   header=TRUE, 
+                   row.names=1, 
+                   stringsAsFactors = FALSE)
+
 Europe.red1 <- read.csv("data/Europe.red1.csv", 
                    sep="\t", 
                    header=TRUE, 
@@ -162,13 +169,23 @@ shinyServer(function(input, output, session) {
     
       if(input$type=="type1"){
         
-        dates <- Europe.red1
+        #switch to decide how to deal with oldest dates
+        if (input$oldest=="youngoldsel1") {
+          dates <- Europe.red1
+        } else if (input$oldest=="youngoldsel2") {
+          dates <- Europe.red2
+        } else if (input$oldest=="youngoldsel3") {
+          dates <- Europe.red3
+        } 
         
         #selection to defined range (ui.R)
         dates <- filter(
           dates, CALAGE>=input$`range`[1], 
           CALAGE<=input$`range`[2]
         )
+        
+        #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
+        dates <- dates[,c(1:6)]
       
       } else if(input$type=="type2"){
       
@@ -188,8 +205,21 @@ shinyServer(function(input, output, session) {
           CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
         )
         
+        #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
+        dates <- dates[,c(1:6)]
+        
       }
       
+    }
+  )
+  
+  #render datatable, that shows the currently mapped dates
+  output$radiodat_complete = renderDataTable(
+    options = list(pageLength = 5), 
+    {
+  
+      Europe_complete
+               
     }
   )
 
