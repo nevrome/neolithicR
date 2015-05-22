@@ -1,10 +1,12 @@
 ## WebGIS-App
 
-[radiocarbon1](https://nevrome.shinyapps.io/radiocarbon1/): Visualisation of the oldest dates of each single site. The circles' size and colour depends on the calibrated ages.
+#### Current version
+[radiocarbon3](https://nevrome.shinyapps.io/radiocarbon3/): More complex WebGIS with a growing set of features.
 
+#### Archive
 [radiocarbon2](https://nevrome.shinyapps.io/radiocarbon2/): WebGIS environment that allows to define a certain timeframe for date selection. Only the oldest dates of each site for this timeframe will be plotted.
 
-[radiocarbon3](https://nevrome.shinyapps.io/radiocarbon3/): More complex WebGIS. Allows to choose between to different visualisation settings. For visualisation type2 it's possible to exclude the oldest dates and the second oldest dates of every site.
+[radiocarbon1](https://nevrome.shinyapps.io/radiocarbon1/): Visualisation of the oldest dates of each single site. The circles' size and colour depends on the calibrated ages.
 
 ### Data
 
