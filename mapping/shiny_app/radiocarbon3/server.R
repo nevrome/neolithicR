@@ -164,7 +164,7 @@ shinyServer(function(input, output, session) {
   
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable(
-    options = list(pageLength = 10), 
+    options = list(pageLength = 5), 
     {
     
       if(input$type=="type1"){
@@ -213,13 +213,78 @@ shinyServer(function(input, output, session) {
     }
   )
   
-  #render datatable, that shows the currently mapped dates
+  #render datatable, that shows all dates
   output$radiodat_complete = renderDataTable(
     options = list(pageLength = 5), 
     {
   
       Europe_complete
                
+    }
+  )
+  
+  #render data-download
+  output$downloadseldates = downloadHandler(
+    filename = function() { 
+      paste(
+        "dateselection", 
+        '.csv'
+        ) 
+      },
+    content = function(file) 
+      {
+      
+      if(input$type=="type1"){
+        
+        #switch to decide how to deal with oldest dates
+        if (input$oldest=="youngoldsel1") {
+          dates <- Europe.red1
+        } else if (input$oldest=="youngoldsel2") {
+          dates <- Europe.red2
+        } else if (input$oldest=="youngoldsel3") {
+          dates <- Europe.red3
+        } 
+        
+        #selection to defined range (ui.R)
+        dates <- filter(
+          dates, CALAGE>=input$`range`[1], 
+          CALAGE<=input$`range`[2]
+        )
+        
+        #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
+        dates <- dates[,c(1,2,5,6)]
+        
+      } else if(input$type=="type2"){
+        
+        #switch to decide how to deal with oldest dates
+        if (input$oldest=="youngoldsel1") {
+          dates <- youngoldsel1
+        } else if (input$oldest=="youngoldsel2") {
+          dates <- youngoldsel2
+        } else if (input$oldest=="youngoldsel3") {
+          dates <- youngoldsel3
+        }    
+        
+        #selection to defined range (ui.R)
+        dates <- filter(
+          dates, 
+          CALAGE>=input$`range`[1] | PARTNERAGE>=input$`range`[1], 
+          CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
+        )
+        
+        #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
+        dates <- dates[,c(1,2,5,6)]
+        
+      }
+      
+      write.table(
+        dates, 
+        file,
+        dec = ".",
+        sep='\t',
+        col.names = TRUE,
+        row.names=FALSE
+        )
     }
   )
 
