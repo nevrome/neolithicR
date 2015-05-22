@@ -63,13 +63,10 @@ youngoldsel3 <- read.csv("data/youngoldsel3.csv",
 #### server output ####  
 
 shinyServer(function(input, output, session) {
- 
-  #rendering the map file for output
-  output$radiocarbon = renderLeaflet({
-    
-    #define sources of background map (static, then dynamic)
-    tiles <- input$tiles
-    att <- input$tiles
+  
+  
+  #reactive dataset selection based on user choice 
+  datasetInput <- reactive({
     
     if(input$type=="type1"){
       
@@ -86,36 +83,10 @@ shinyServer(function(input, output, session) {
       dates <- filter(
         dates, CALAGE>=input$`range`[1], 
         CALAGE<=input$`range`[2]
-        )
-      
-      #text popup definition
-      site.popup <- paste0(
-        "<strong>Site: </strong>", 
-        dates$SITE, 
-        "<br><strong>Lab number: </strong>",
-        dates$LABNR, 
-        "<br><strong>Age: </strong>",
-        dates$CALAGE, 
-        "calBP",
-        "<br><strong>Reference: </strong>",
-        dates$REFERENCE 
       )
       
-      #preparation of mapping for shiny frontend
-      map = leaflet(dates) %>% 
-        addTiles(
-          urlTemplate = tiles,
-          attribution = att) %>%  
-        addCircles(
-          lat = dates$LATITUDE, 
-          lng = dates$LONGITUDE, 
-          color = dates$MAINCOLOR,
-          radius = dates$CALAGE,
-          popup = site.popup
-        )      
-      
     } else if(input$type=="type2"){
-    
+      
       #switch to decide how to deal with oldest dates
       if (input$oldest=="youngoldsel1") {
         dates <- youngoldsel1
@@ -131,30 +102,71 @@ shinyServer(function(input, output, session) {
         CALAGE>=input$`range`[1] | PARTNERAGE>=input$`range`[1], 
         CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
       )
-     
+      
+    }
+  })
+
+ 
+  #rendering the map file for output
+  output$radiocarbon = renderLeaflet({
+    
+    #define sources of background map (static, then dynamic)
+    tiles <- input$tiles
+    att <- input$tiles
+    
+    if(input$type=="type1"){
+      
       #text popup definition
       site.popup <- paste0(
         "<strong>Site: </strong>", 
-        dates$SITE, 
+        datasetInput()$SITE, 
         "<br><strong>Lab number: </strong>",
-        dates$LABNR, 
+        datasetInput()$LABNR, 
         "<br><strong>Age: </strong>",
-        dates$CALAGE, 
+        datasetInput()$CALAGE, 
         "calBP",
         "<br><strong>Reference: </strong>",
-        dates$REFERENCE 
+        datasetInput()$REFERENCE 
       )
       
       #preparation of mapping for shiny frontend
-      map = leaflet(dates) %>% 
+      map = leaflet(datasetInput()) %>% 
         addTiles(
           urlTemplate = tiles,
           attribution = att) %>%  
         addCircles(
-          lat = dates$LATITUDE, 
-          lng = dates$LONGITUDE + dates$OFFSET, 
-          color = dates$COLOR,
-          radius = dates$CALAGE,
+          lat = datasetInput()$LATITUDE, 
+          lng = datasetInput()$LONGITUDE, 
+          color = datasetInput()$MAINCOLOR,
+          radius = datasetInput()$CALAGE,
+          popup = site.popup
+        )      
+      
+    } else if(input$type=="type2"){
+    
+      #text popup definition
+      site.popup <- paste0(
+        "<strong>Site: </strong>", 
+        datasetInput()$SITE, 
+        "<br><strong>Lab number: </strong>",
+        datasetInput()$LABNR, 
+        "<br><strong>Age: </strong>",
+        datasetInput()$CALAGE, 
+        "calBP",
+        "<br><strong>Reference: </strong>",
+        datasetInput()$REFERENCE 
+      )
+      
+      #preparation of mapping for shiny frontend
+      map = leaflet(datasetInput()) %>% 
+        addTiles(
+          urlTemplate = tiles,
+          attribution = att) %>%  
+        addCircles(
+          lat = datasetInput()$LATITUDE, 
+          lng = datasetInput()$LONGITUDE + datasetInput()$OFFSET, 
+          color = datasetInput()$COLOR,
+          radius = datasetInput()$CALAGE,
           popup = site.popup
         )
       
@@ -162,56 +174,18 @@ shinyServer(function(input, output, session) {
     
   })
   
+  
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable(
     options = list(pageLength = 5), 
     {
     
-      if(input$type=="type1"){
-        
-        #switch to decide how to deal with oldest dates
-        if (input$oldest=="youngoldsel1") {
-          dates <- Europe.red1
-        } else if (input$oldest=="youngoldsel2") {
-          dates <- Europe.red2
-        } else if (input$oldest=="youngoldsel3") {
-          dates <- Europe.red3
-        } 
-        
-        #selection to defined range (ui.R)
-        dates <- filter(
-          dates, CALAGE>=input$`range`[1], 
-          CALAGE<=input$`range`[2]
-        )
-        
-        #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
-        dates <- dates[,c(1:6)]
-      
-      } else if(input$type=="type2"){
-      
-        #switch to decide how to deal with oldest dates
-        if (input$oldest=="youngoldsel1") {
-          dates <- youngoldsel1
-        } else if (input$oldest=="youngoldsel2") {
-          dates <- youngoldsel2
-        } else if (input$oldest=="youngoldsel3") {
-          dates <- youngoldsel3
-        }    
-        
-        #selection to defined range (ui.R)
-        dates <- filter(
-          dates, 
-          CALAGE>=input$`range`[1] | PARTNERAGE>=input$`range`[1], 
-          CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
-        )
-        
-        #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
-        dates <- dates[,c(1:6)]
-        
-      }
+      #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
+      dates <- datasetInput()[,c(1:6)]
       
     }
   )
+  
   
   #render datatable, that shows all dates
   output$radiodat_complete = renderDataTable(
@@ -223,59 +197,21 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  
   #render data-download
   output$downloadseldates = downloadHandler(
     filename = function() { 
+      
       paste(
         "dateselection", 
         '.csv'
         ) 
-      },
-    content = function(file) 
-      {
       
-      if(input$type=="type1"){
-        
-        #switch to decide how to deal with oldest dates
-        if (input$oldest=="youngoldsel1") {
-          dates <- Europe.red1
-        } else if (input$oldest=="youngoldsel2") {
-          dates <- Europe.red2
-        } else if (input$oldest=="youngoldsel3") {
-          dates <- Europe.red3
-        } 
-        
-        #selection to defined range (ui.R)
-        dates <- filter(
-          dates, CALAGE>=input$`range`[1], 
-          CALAGE<=input$`range`[2]
-        )
-        
-        #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
-        dates <- dates[,c(1,2,5,6)]
-        
-      } else if(input$type=="type2"){
-        
-        #switch to decide how to deal with oldest dates
-        if (input$oldest=="youngoldsel1") {
-          dates <- youngoldsel1
-        } else if (input$oldest=="youngoldsel2") {
-          dates <- youngoldsel2
-        } else if (input$oldest=="youngoldsel3") {
-          dates <- youngoldsel3
-        }    
-        
-        #selection to defined range (ui.R)
-        dates <- filter(
-          dates, 
-          CALAGE>=input$`range`[1] | PARTNERAGE>=input$`range`[1], 
-          CALAGE<=input$`range`[2] | PARTNERAGE<=input$`range`[2]
-        )
-        
-        #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
-        dates <- dates[,c(1,2,5,6)]
-        
-      }
+      },
+    content = function(file) {
+      
+      #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
+      dates <- datasetInput()[,c(1,2,5,6)]
       
       write.table(
         dates, 
@@ -284,7 +220,8 @@ shinyServer(function(input, output, session) {
         sep='\t',
         col.names = TRUE,
         row.names=FALSE
-        )
+      )
+      
     }
   )
 
