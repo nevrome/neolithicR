@@ -104,6 +104,13 @@ shinyServer(function(input, output, session) {
       )
       
     }
+    
+    #selection to defined period (ui.R)
+    dates <- filter(
+      dates, 
+      SIMPERIOD %in% input$periodselect
+    )
+    
   })
 
  

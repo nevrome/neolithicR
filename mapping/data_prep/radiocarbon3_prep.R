@@ -2,8 +2,6 @@
 library(dplyr)
 
 
-#### general preparations ####
-
 #load dataset
 Europe <- read.csv("data/radiocarbon/Europe.csv", 
                    sep="\t", 
@@ -11,8 +9,93 @@ Europe <- read.csv("data/radiocarbon/Europe.csv",
                    row.names=1, 
                    stringsAsFactors = FALSE)
 
-#reduce main data.frame to necessary information for mapping (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
-Europe.red0 <- Europe[,c(1,8,13,14,16,18)]
+
+#### manual simplification of dataset ####
+Europe <- data.frame(Europe, SIMPERIOD = Europe$PERIOD, stringsAsFactors=FALSE)
+
+palaeolithic <- c(
+  "Late Palaeolithic",
+  "Late Palaeolithic (Ahrensburgian?)",
+  "Palaeolithic"
+  )
+
+epipalaeolithic <- c(
+  "Epilalaeolithic",
+  "Epipalaeolithic",
+  "Epipalaeolithic "
+  )
+
+neolithic <- c(
+  "Early Neolithic?*",
+  "Glockenbecher",
+  "Middle Neolithic",
+  "neolithic",
+  "Neolithic",
+  "Neolithic ",
+  "Neolithic  ",
+  "néolithique",
+  "néolithique récent ancien",
+  "néolithique récent du Sahara occidental intérieur",
+  "néolithique récent / néolithique récent du Sahara occidental",
+  "néolithique tardif",
+  "Neolitic",
+  "neo moyen I",
+  "PPN",
+  "PPNB"
+)
+
+chalcolithic <- c(
+  "Bodrogkeresztúr",
+  "Chalcolithic",
+  "Early Chalc",
+  "Late Chalc",
+  "Late Chalcolithic"
+  )
+
+bronzeage <- c(
+  "Bronzeage",
+  "Bronze Age",
+  "Bronze  Age",
+  "Early Bronze Age"
+  )
+
+ironage <- c(
+  "Hallstatt Era",
+  "Iron Age",
+  "Iron Age "
+  )
+
+egypt <- c(
+  "Altes Reich",
+  unique(grep("Dynasty", Europe$PERIOD, value=TRUE)),
+  "Fayoum",
+  unique(grep("Naqada", Europe$PERIOD, value=TRUE))
+  )
+
+alldefined <- c(
+  "palaeolithic",
+  "epipalaeolithic",
+  "neolithic",
+  "chalcolithic",
+  "bronzeage",
+  "ironage",
+  "egypt"
+  )
+
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% palaeolithic] <- "palaeolithic"
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% epipalaeolithic] <- "epipalaeolithic"
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% neolithic] <- "neolithic"
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% chalcolithic] <- "chalcolithic"
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% bronzeage] <- "bronzeage"
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% ironage] <- "ironage"
+Europe$SIMPERIOD[Europe$SIMPERIOD %in% egypt] <- "egypt"
+Europe$SIMPERIOD[!(Europe$SIMPERIOD %in% alldefined)] <- "other"
+
+#### general preparations ####
+
+#reduce main data.frame to necessary information for mapping and date selection: 
+#(LABNR, MATERIAL, SPECIES, SITE, PERIOD, CULTURE, LATITUDE, LONGITUDE, METHOD, CALAGE, CALSTD, REFERENCE, SIMPERIOD)
+Europe.red0 <- Europe[,c(1,5,6,8,9,10,13,14,15,16,17,18,20)]
 
 #replace "," by "." in the position columns
 Europe.red0$LATITUDE <- chartr(old=",",new=".",x=Europe.red0$LATITUDE)
@@ -44,7 +127,7 @@ Europe.red1 <- data.frame(
 youngest.youngoldsel1 <- lapply(
   split(Europe.red1, Europe.red1$SITE), 
   function(x) {
-    x[which.min(x$CALAGE), c(1:6)]
+    x[which.min(x$CALAGE), c(1:13)]
   }
 )
 youngest.youngoldsel2 <- do.call(rbind, youngest.youngoldsel1)
@@ -58,7 +141,7 @@ youngest.youngoldsel2 <- data.frame(youngest.youngoldsel2, OFFSET=0.05, COLOR="#
 oldest.youngoldsel1 <- lapply(
   split(Europe.red1, Europe.red1$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:6)]
+    x[which.max(x$CALAGE), c(1:13)]
   }
 )
 oldest.youngoldsel1 <- do.call(rbind, oldest.youngoldsel1)
@@ -122,7 +205,7 @@ Europe.red2 <- rbind(Europe.red2, Europe.red1[protect.vec,])
 oldest.youngoldsel2 <- lapply(
   split(Europe.red2, Europe.red2$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:6)]
+    x[which.max(x$CALAGE), c(1:13)]
   }
 )
 oldest.youngoldsel2 <- do.call(rbind, oldest.youngoldsel2)
@@ -186,7 +269,7 @@ Europe.red3 <- rbind(Europe.red3, Europe.red2[protect.vec,])
 oldest.youngoldsel3 <- lapply(
   split(Europe.red3, Europe.red3$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:6)]
+    x[which.max(x$CALAGE), c(1:13)]
   }
 )
 oldest.youngoldsel3 <- do.call(rbind, oldest.youngoldsel3)

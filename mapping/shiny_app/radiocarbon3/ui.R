@@ -22,36 +22,72 @@ shinyUI(
       
       #input slider
       tabPanel('Plot settings',       
-        sliderInput(
-          "range", 
-          "calibrated age BP:", 
-          width = "100%", 
-          min = 0,
-          max = 18000,
-          step= 100,
-          value =c(9000,10000)
+        
+        fluidRow(       
+               
+          sliderInput(
+            "range", 
+            "calibrated age BP:", 
+            width = "100%", 
+            min = 0,
+            max = 18000,
+            step= 100,
+            value =c(5000,10000)
+          )
+        
         ),
         
-        #input switch
-        radioButtons(
-          "type", 
-          "Type of visualisation:",
-          list(
-            "Type1: Show every date" = "type1",
-            "Type2: Show oldest and youngest date" = "type2"
-          ), 
-          selected = "type2"
-        ),
+        fluidRow(
         
-        #input switch
-        radioButtons(
-          "oldest", 
-          "How to deal with the oldest dates?:",
-          list(
-            "Show all dates" = "youngoldsel1",
-            "Remove oldest dates of each site and show second oldest dates" = "youngoldsel2",
-            "Remove oldest and second oldest dates of each site and show third oldest dates" = "youngoldsel3"
-          ) 
+          column(3,
+                 
+            #input switch
+            radioButtons(
+              "type", 
+              "Type of visualisation:",
+              list(
+                "Type1: Show every date" = "type1",
+                "Type2: Show oldest and youngest date" = "type2"
+              ), 
+              selected = "type1"
+            ),
+            
+            #input switch
+            radioButtons(
+              "oldest", 
+              "How to deal with the oldest dates?:",
+              list(
+                "Show all dates" = "youngoldsel1",
+                "Remove oldest dates of each site and show second oldest dates" = "youngoldsel2",
+                "Remove oldest and second oldest dates of each site and show third oldest dates" = "youngoldsel3"
+              ) 
+            )
+            
+          ),
+          
+          column(2,
+            
+            #input checkboxes     
+            checkboxGroupInput(
+              "periodselect", 
+              "Select Period [experimental] (attribution inconsistent) ",
+              list(
+                "Palaeolithic" = "palaeolithic",
+                "Epipalaeolithic" = "epipalaeolithic",
+                "Neolithic" = "neolithic", 
+                "Chalcolithic" = "chalcolithic",
+                "Bronze age" = "bronzeage",
+                "Iron age" = "ironage",
+                "Egypt" = "egypt",
+                "other" = "other"
+                ),
+              selected = c(
+                "neolithic"
+                )
+              )
+            
+          )
+          
         )
         
       ),
