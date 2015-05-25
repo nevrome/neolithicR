@@ -32,7 +32,7 @@ shinyUI(
             min = 0,
             max = 18000,
             step= 100,
-            value =c(5000,10000)
+            value =c(8000,10000)
           )
         
         ),
@@ -82,10 +82,22 @@ shinyUI(
                 "other" = "other"
                 ),
               selected = c(
-                "neolithic"
+                "neolithic",
+                "chalcolithic",
+                "epipalaeolithic"
                 )
               )
             
+          ),
+          
+          column(7,
+                 
+           #barplot output     
+           plotOutput(
+             "barplotperiod", 
+             height = "300px", 
+             width = "100%")
+                 
           )
           
         )

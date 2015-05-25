@@ -11,6 +11,7 @@ library(shiny)
 library(leaflet)
 library(magrittr)
 library(dplyr)
+library(ggplot2)
 
 
 #### data preparation ####
@@ -111,6 +112,19 @@ shinyServer(function(input, output, session) {
       SIMPERIOD %in% input$periodselect
     )
     
+  })
+  
+  #rendering barplot of periods for output
+  output$barplotperiod <- renderPlot({
+    
+    qplot(
+      SIMPERIOD, 
+      data=datasetInput(),
+      geom = "histogram", 
+      xlab = "", 
+      ylab= "",
+      main = "Period distribution of currently shown dates")
+  
   })
 
  
