@@ -82,7 +82,8 @@ shinyServer(function(input, output, session) {
       
       #selection to defined range (ui.R)
       dates <- filter(
-        dates, CALAGE>=input$`range`[1], 
+        dates, 
+        CALAGE>=input$`range`[1], 
         CALAGE<=input$`range`[2]
       )
       
@@ -112,6 +113,12 @@ shinyServer(function(input, output, session) {
       SIMPERIOD %in% input$periodselect
     )
     
+    #selection to defined material (ui.R)
+    dates <- filter(
+      dates, 
+      SIMMATERIAL %in% input$materialselect
+    )
+    
   })
   
   #rendering barplot of periods for output
@@ -125,6 +132,19 @@ shinyServer(function(input, output, session) {
       ylab= "",
       main = "Period distribution of currently shown dates")
   
+  })
+  
+  #rendering barplot of materials for output
+  output$barplotmaterial <- renderPlot({
+    
+    qplot(
+      SIMMATERIAL, 
+      data=datasetInput(),
+      geom = "histogram", 
+      xlab = "", 
+      ylab= "",
+      main = "Material distribution of currently shown dates")
+    
   })
 
  

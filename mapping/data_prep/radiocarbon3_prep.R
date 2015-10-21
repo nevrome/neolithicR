@@ -10,7 +10,7 @@ Europe <- read.csv("data/radiocarbon/Europe.csv",
                    stringsAsFactors = FALSE)
 
 
-#### manual simplification of dataset ####
+#### manual simplification of dataset - PERIOD ####
 Europe <- data.frame(Europe, SIMPERIOD = Europe$PERIOD, stringsAsFactors=FALSE)
 
 palaeolithic <- c(
@@ -91,11 +91,58 @@ Europe$SIMPERIOD[Europe$SIMPERIOD %in% ironage] <- "ironage"
 Europe$SIMPERIOD[Europe$SIMPERIOD %in% egypt] <- "egypt"
 Europe$SIMPERIOD[!(Europe$SIMPERIOD %in% alldefined)] <- "other"
 
+
+#### manual simplification of dataset - MATERIAL ####
+Europe <- data.frame(Europe, SIMMATERIAL = Europe$MATERIAL, stringsAsFactors=FALSE)
+
+charcoal <- c(
+  "charcoal",
+  "charcol",
+  "charred wood",
+  "charcoal ",
+  "charoal",
+  "charcoal      ",
+  "charcoal         ",
+  "charcoak",
+  "charcoalE",
+  "charcoal/roots"
+)
+
+bone <- c(
+  "bone",
+  "bone ",
+  "cremated bones",
+  "bone, rib",
+  "bone/apatit",
+  "bones",
+  "bone/collagen" 
+)
+
+unknown <- c(
+  "k. A.",
+  "",
+  "nd",
+  " nd"
+)
+
+alldefined <- c(
+  "charcoal",
+  "bone",
+  "unknown"
+)
+
+Europe$SIMMATERIAL[Europe$SIMMATERIAL %in% charcoal] <- "charcoal"
+Europe$SIMMATERIAL[Europe$SIMMATERIAL %in% bone] <- "bone"
+Europe$SIMMATERIAL[Europe$SIMMATERIAL %in% unknown] <- "unknown"
+Europe$SIMMATERIAL[!(Europe$SIMMATERIAL %in% alldefined)] <- "other"
+
+
 #### general preparations ####
 
 #reduce main data.frame to necessary information for mapping and date selection: 
-#(LABNR, MATERIAL, SPECIES, SITE, PERIOD, CULTURE, LATITUDE, LONGITUDE, METHOD, CALAGE, CALSTD, REFERENCE, SIMPERIOD)
-Europe.red0 <- Europe[,c(1,5,6,8,9,10,13,14,15,16,17,18,20)]
+#(LABNR, MATERIAL, SPECIES, SITE, PERIOD, CULTURE, LATITUDE, LONGITUDE, METHOD, 
+#CALAGE, CALSTD, REFERENCE, SIMPERIOD, SIMMATERIAL)
+Europe.red0 <- Europe[,c(1,5,6,8,9,10,13,14,15,16,17,18,20,21)]
 
 #replace "," by "." in the position columns
 Europe.red0$LATITUDE <- chartr(old=",",new=".",x=Europe.red0$LATITUDE)
@@ -127,7 +174,7 @@ Europe.red1 <- data.frame(
 youngest.youngoldsel1 <- lapply(
   split(Europe.red1, Europe.red1$SITE), 
   function(x) {
-    x[which.min(x$CALAGE), c(1:13)]
+    x[which.min(x$CALAGE), c(1:14)]
   }
 )
 youngest.youngoldsel2 <- do.call(rbind, youngest.youngoldsel1)
@@ -141,7 +188,7 @@ youngest.youngoldsel2 <- data.frame(youngest.youngoldsel2, OFFSET=0.05, COLOR="#
 oldest.youngoldsel1 <- lapply(
   split(Europe.red1, Europe.red1$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:13)]
+    x[which.max(x$CALAGE), c(1:14)]
   }
 )
 oldest.youngoldsel1 <- do.call(rbind, oldest.youngoldsel1)
@@ -205,7 +252,7 @@ Europe.red2 <- rbind(Europe.red2, Europe.red1[protect.vec,])
 oldest.youngoldsel2 <- lapply(
   split(Europe.red2, Europe.red2$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:13)]
+    x[which.max(x$CALAGE), c(1:14)]
   }
 )
 oldest.youngoldsel2 <- do.call(rbind, oldest.youngoldsel2)
@@ -269,7 +316,7 @@ Europe.red3 <- rbind(Europe.red3, Europe.red2[protect.vec,])
 oldest.youngoldsel3 <- lapply(
   split(Europe.red3, Europe.red3$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:13)]
+    x[which.max(x$CALAGE), c(1:14)]
   }
 )
 oldest.youngoldsel3 <- do.call(rbind, oldest.youngoldsel3)

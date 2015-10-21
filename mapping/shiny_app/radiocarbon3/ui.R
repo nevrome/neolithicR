@@ -20,7 +20,6 @@ shinyUI(
     #define presentation area
     tabsetPanel(
       
-      #input slider
       tabPanel('Plot settings',       
         
         fluidRow(       
@@ -63,45 +62,120 @@ shinyUI(
               ) 
             )
             
-          ),
-          
-          column(2,
-            
-            #input checkboxes     
-            checkboxGroupInput(
-              "periodselect", 
-              "Select Period [experimental] (attribution inconsistent) ",
-              list(
-                "Palaeolithic" = "palaeolithic",
-                "Epipalaeolithic" = "epipalaeolithic",
-                "Neolithic" = "neolithic", 
-                "Chalcolithic" = "chalcolithic",
-                "Bronze age" = "bronzeage",
-                "Iron age" = "ironage",
-                "Egypt" = "egypt",
-                "other" = "other"
-                ),
-              selected = c(
-                "neolithic",
-                "chalcolithic",
-                "epipalaeolithic"
-                )
-              )
-            
-          ),
-          
-          column(7,
-                 
-           #barplot output     
-           plotOutput(
-             "barplotperiod", 
-             height = "300px", 
-             width = "100%")
-                 
           )
           
         )
         
+      ),
+      
+      tabPanel('Period',       
+               
+               fluidRow(       
+                 
+                 sliderInput(
+                   "range", 
+                   "calibrated age BP:", 
+                   width = "100%", 
+                   min = 0,
+                   max = 18000,
+                   step= 100,
+                   value =c(8000,10000)
+                 )
+                 
+               ),
+               
+               fluidRow(
+                 
+                 column(2,
+                        
+                        #input checkboxes     
+                        checkboxGroupInput(
+                          "periodselect", 
+                          "Select Period [experimental] (attribution inconsistent) ",
+                          list(
+                            "Palaeolithic" = "palaeolithic",
+                            "Epipalaeolithic" = "epipalaeolithic",
+                            "Neolithic" = "neolithic", 
+                            "Chalcolithic" = "chalcolithic",
+                            "Bronze age" = "bronzeage",
+                            "Iron age" = "ironage",
+                            "Egypt" = "egypt",
+                            "other" = "other"
+                          ),
+                          selected = c(
+                            "neolithic",
+                            "chalcolithic",
+                            "epipalaeolithic"
+                          )
+                        )
+                        
+                 ),
+                 
+                 column(7,
+                        
+                        #barplot output     
+                        plotOutput(
+                          "barplotperiod", 
+                          height = "300px", 
+                          width = "500px")
+                        
+                 )
+                 
+               )
+               
+      ),
+      
+      tabPanel('Material',       
+               
+               fluidRow(       
+                 
+                 sliderInput(
+                   "range", 
+                   "calibrated age BP:", 
+                   width = "100%", 
+                   min = 0,
+                   max = 18000,
+                   step= 100,
+                   value =c(8000,10000)
+                 )
+                 
+               ),
+               
+               fluidRow(
+                 
+                 column(2,
+                        
+                        #input checkboxes     
+                        checkboxGroupInput(
+                          "materialselect", 
+                          "Select Material",
+                          list(
+                            "Charcoal" = "charcoal",
+                            "Bone" = "bone",
+                            "Other" = "other",
+                            "Unknown" = "nd"
+                          ),
+                          selected = c(
+                            "charcoal",
+                            "bone",
+                            "other"
+                          )
+                        )
+                        
+                 ),
+                 
+                 column(7,
+                        
+                        #barplot output     
+                        plotOutput(
+                          "barplotmaterial", 
+                          height = "300px", 
+                          width = "500px")
+                        
+                 )
+                 
+               )
+               
       ),
     
       #output datatable

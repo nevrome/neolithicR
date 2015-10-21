@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.1.8
-RVersion: 3.2.0
+RVersion: 3.2.2
 Repos: CRAN=http://cran.rstudio.com
 
 Package: BH
@@ -114,10 +114,21 @@ Source: CRAN
 Version: 1.2
 Hash: d518b2a342a62e0add8c07403859ff13
 
+Package: ggplot2
+Source: CRAN
+Version: 0.9.3.1
+Hash: 17449131d431a862a96595169784c34c
+Requires: digest, plyr, scales, gtable, proto, reshape2
+
 Package: git2r
 Source: CRAN
 Version: 0.10.1
 Hash: 6454ce963e12973e157c55838740b1f1
+
+Package: gtable
+Source: CRAN
+Version: 0.1.2
+Hash: 0cf4a2b54c02b35dec7e74a8ebed12a0
 
 Package: highr
 Source: CRAN
@@ -223,6 +234,17 @@ Version: 1.8.2
 Hash: 70681a5a00608b6137b753e1b5994e4a
 Requires: Rcpp
 
+Package: proto
+Source: CRAN
+Version: 0.3-10
+Hash: 668a9e87cedbdc5f56c396edf1bd2648
+
+Package: reshape2
+Source: CRAN
+Version: 1.2.2
+Hash: f37cc6ddb91d86c14253aabeaa91d252
+Requires: plyr, stringr
+
 Package: rmarkdown
 Source: CRAN
 Version: 0.6.1
@@ -250,7 +272,7 @@ Package: scales
 Source: CRAN
 Version: 0.2.4
 Hash: b8b1af97bd07818605223060386b00dd
-Requires: RColorBrewer, dichromat, labeling, munsell, plyr
+Requires: RColorBrewer, dichromat, labeling, plyr, munsell
 
 Package: shiny
 Source: CRAN
