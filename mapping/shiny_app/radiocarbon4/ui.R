@@ -15,8 +15,10 @@ shinyUI(
       "radiocarbon", 
       width = "100%", 
       height = "800px"
-    )
+    ),
   
+    
+    verbatimTextOutput("urlText")
   )
   
 )

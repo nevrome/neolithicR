@@ -351,4 +351,4 @@ write.table(youngoldsel3, "mapping/shiny_app/radiocarbon3/data/youngoldsel3.csv"
 write.table(Europe.red1, "mapping/shiny_app/radiocarbon3/data/Europe.red1.csv", sep="\t", col.names = NA)
 write.table(Europe.red2, "mapping/shiny_app/radiocarbon3/data/Europe.red2.csv", sep="\t", col.names = NA)
 write.table(Europe.red3, "mapping/shiny_app/radiocarbon3/data/Europe.red3.csv", sep="\t", col.names = NA)
-write.table(Europe.red0, "mapping/shiny_app/radiocarbon4/data/Europe.red0.csv", sep="\t", col.names = NA)
+write.table(Europe.red1, "mapping/shiny_app/radiocarbon4/data/Europe.red1.csv", sep="\t", col.names = NA)
