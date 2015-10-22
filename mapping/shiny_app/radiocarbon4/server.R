@@ -94,6 +94,46 @@ shinyServer(function(input, output, session) {
         )
       }
       
+      #culture filter
+      culturequery <- c(unlist(query[names(query) == "culture"], use.names = FALSE))
+      
+      if (!is.null(culturequery)) {
+        dates <- filter(
+          dates, 
+          CULTURE %in% culturequery
+        )
+      }
+      
+      #locus filter
+#       locusquery <- c(unlist(query[names(query) == "locus"], use.names = FALSE))
+#       
+#       if (!is.null(locusquery)) {
+#         dates <- filter(
+#           dates, 
+#           LOCUS %in% locusquery
+#         )
+#       }
+      
+      #method filter
+      methodquery <- c(unlist(query[names(query) == "method"], use.names = FALSE))
+      
+      if (!is.null(methodquery)) {
+        dates <- filter(
+          dates, 
+          METHOD %in% methodquery
+        )
+      }
+      
+      #reference filter
+      referencequery <- c(unlist(query[names(query) == "reference"], use.names = FALSE))
+      
+      if (!is.null(referencequery)) {
+        dates <- filter(
+          dates, 
+          REFERENCE %in% referencequery
+        )
+      }
+      
       dates
     }
   })
