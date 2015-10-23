@@ -17,8 +17,21 @@ shinyUI(
       height = "800px"
     ),
   
+    #output of filter criteria
+    verbatimTextOutput(
+      "filterText"
+    ),
     
-    verbatimTextOutput("urlText")
-  )
+    #output of number of results
+    verbatimTextOutput(
+      "numberText"
+    ),
   
+    #output of download button
+    downloadButton(
+      'downloadseldatescsv', 
+      'Download current selection as tab separated .csv file'
+    )
+    
+  )
 )

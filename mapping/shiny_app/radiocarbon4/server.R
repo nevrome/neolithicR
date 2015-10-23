@@ -139,10 +139,22 @@ shinyServer(function(input, output, session) {
   })
   
   
-  output$urlText <- renderText({
-    paste(sep = "",
-          "search: ",   session$clientData$url_search,   "\n",
-          "number of results: ", nrow(datasetInput()), "\n"
+  #rendering text output (filter criteria)
+  output$filterText <- renderText({
+    query <- parseQueryString(session$clientData$url_search)
+    qvector <- c(unlist(query, use.names = FALSE))
+    paste(
+      sep = "",
+      qvector,   " "
+    )
+  })
+  
+  
+  #rendering text output (number of results)
+  output$numberText <- renderText({
+    paste(
+      sep = "",
+      "number of results: ", nrow(datasetInput()), "\n"
     )
   })
   
@@ -151,8 +163,8 @@ shinyServer(function(input, output, session) {
   output$radiocarbon = renderLeaflet({
     
     #define sources of background map (static, then dynamic)
-    tiles <- "http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}"
-    att <- "ArcGIS World Physical Map"
+    tiles <- "http://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png"
+    att <- "Tiles courtesy of <a href='http://openstreetmap.se/' target='_blank'>OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
     
     #text popup definition
       site.popup <- paste0(
@@ -182,4 +194,30 @@ shinyServer(function(input, output, session) {
       
   }) 
   
+  
+  #render data-download (text)
+  output$downloadseldatescsv = downloadHandler(
+    filename = function() { 
+      
+      paste(
+        "dateselection", 
+        '.csv'
+      ) 
+      
+    },
+    content = function(file) {
+      
+      dates <- datasetInput()
+      
+      write.table(
+        dates, 
+        file,
+        dec = ".",
+        sep='\t',
+        col.names = TRUE,
+        row.names=FALSE
+      )
+      
+    })
+
 })
