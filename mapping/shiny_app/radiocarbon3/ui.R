@@ -3,14 +3,6 @@
 library(leaflet)
 library(ShinyDash)
 
-Europe_complete <- read.csv("data/Europe_complete.csv", 
-                            sep="\t", 
-                            header=TRUE, 
-                            row.names=1, 
-                            stringsAsFactors = FALSE)
-
-countries <- unique(Europe_complete$SIMCOUNTRY)
-
 #### definition of frontend output/input ####
 
 shinyUI(
@@ -203,17 +195,7 @@ shinyUI(
                
                fluidRow(
                  
-                 #input checkboxes     
-                 checkboxGroupInput(
-                   "countryselect", 
-                   "Select Country",
-                   as.list(
-                     setNames(test, test)
-                   ),
-                   selected = c(
-                     "Germany"
-                   )
-                 )
+                   uiOutput("countrycheck")
                  
                )
                

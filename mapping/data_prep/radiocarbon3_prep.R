@@ -207,7 +207,7 @@ Europe.red1 <- data.frame(
 youngest.youngoldsel1 <- lapply(
   split(Europe.red1, Europe.red1$SITE), 
   function(x) {
-    x[which.min(x$CALAGE), c(1:14)]
+    x[which.min(x$CALAGE), c(1:15)]
   }
 )
 youngest.youngoldsel2 <- do.call(rbind, youngest.youngoldsel1)
@@ -221,7 +221,7 @@ youngest.youngoldsel2 <- data.frame(youngest.youngoldsel2, OFFSET=0.05, COLOR="#
 oldest.youngoldsel1 <- lapply(
   split(Europe.red1, Europe.red1$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:14)]
+    x[which.max(x$CALAGE), c(1:15)]
   }
 )
 oldest.youngoldsel1 <- do.call(rbind, oldest.youngoldsel1)
@@ -285,7 +285,7 @@ Europe.red2 <- rbind(Europe.red2, Europe.red1[protect.vec,])
 oldest.youngoldsel2 <- lapply(
   split(Europe.red2, Europe.red2$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:14)]
+    x[which.max(x$CALAGE), c(1:15)]
   }
 )
 oldest.youngoldsel2 <- do.call(rbind, oldest.youngoldsel2)
@@ -349,7 +349,7 @@ Europe.red3 <- rbind(Europe.red3, Europe.red2[protect.vec,])
 oldest.youngoldsel3 <- lapply(
   split(Europe.red3, Europe.red3$SITE), 
   function(x) {
-    x[which.max(x$CALAGE), c(1:14)]
+    x[which.max(x$CALAGE), c(1:15)]
   }
 )
 oldest.youngoldsel3 <- do.call(rbind, oldest.youngoldsel3)

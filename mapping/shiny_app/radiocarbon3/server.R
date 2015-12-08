@@ -12,6 +12,7 @@ library(leaflet)
 library(magrittr)
 library(dplyr)
 library(ggplot2)
+library(gtools)
 
 
 #### data preparation ####
@@ -64,7 +65,6 @@ youngoldsel3 <- read.csv("data/youngoldsel3.csv",
 #### server output ####  
 
 shinyServer(function(input, output, session) {
-  
   
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
@@ -244,6 +244,24 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  #Data output for check box control 
+  output$countrycheck <- renderUI({
+    
+    cl <- unique(Europe.red1$SIMCOUNTRY)
+    #input checkboxes     
+    checkboxGroupInput(
+      "countryselect", 
+      "Select Country",
+      as.list(
+        setNames(cl, cl)
+      ),
+      selected = c(
+        "Germany",
+        "Syria"
+      )
+    )
+    
+  })
   
   #render data-download
   output$downloadseldates = downloadHandler(
