@@ -119,6 +119,12 @@ shinyServer(function(input, output, session) {
       SIMMATERIAL %in% input$materialselect
     )
     
+    #selection to defined country (ui.R)
+    dates <- filter(
+      dates, 
+      SIMCOUNTRY %in% input$countryselect
+    )
+    
   })
   
   #rendering barplot of periods for output

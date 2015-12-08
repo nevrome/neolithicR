@@ -137,12 +137,45 @@ Europe$SIMMATERIAL[Europe$SIMMATERIAL %in% unknown] <- "unknown"
 Europe$SIMMATERIAL[!(Europe$SIMMATERIAL %in% alldefined)] <- "other"
 
 
+
+#### manual simplification of dataset - MATERIAL ####
+Europe <- data.frame(Europe, SIMCOUNTRY = Europe$COUNTRY, stringsAsFactors=FALSE)
+
+unknown <- c(
+  "n/a",
+  "nd",
+  "NoCountry",
+  "probably Ireland?"
+)
+
+isr_pal <- c(
+  "Israel",
+  "Israel/Palestina"
+)
+
+egy_sin <- c(
+  "Egypt",
+  "Egypt_Sinai"
+)
+
+yugoslavia <- c(
+  "SFRY",
+  "Yugoslavia"
+)
+
+Europe$SIMCOUNTRY[Europe$SIMCOUNTRY %in% unknown] <- "unknown"
+Europe$SIMCOUNTRY[Europe$SIMCOUNTRY %in% isr_pal] <- "Israel/Palestina"
+Europe$SIMCOUNTRY[Europe$SIMCOUNTRY %in% egy_sin] <- "Egypt/Sinai"
+Europe$SIMCOUNTRY[Europe$SIMCOUNTRY %in% yugoslavia] <- "Former Yugoslavia"
+
+
+
 #### general preparations ####
 
 #reduce main data.frame to necessary information for mapping and date selection: 
 #(LABNR, MATERIAL, SPECIES, SITE, PERIOD, CULTURE, LATITUDE, LONGITUDE, METHOD, 
 #CALAGE, CALSTD, REFERENCE, SIMPERIOD, SIMMATERIAL)
-Europe.red0 <- Europe[,c(1,5,6,8,9,10,13,14,15,16,17,18,20,21)]
+Europe.red0 <- Europe[,c(1,5,6,8,9,10,13,14,15,16,17,18,20,21,22)]
 
 #replace "," by "." in the position columns
 Europe.red0$LATITUDE <- chartr(old=",",new=".",x=Europe.red0$LATITUDE)
