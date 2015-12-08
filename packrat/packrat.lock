@@ -146,6 +146,11 @@ Source: CRAN
 Version: 0.1.2
 Hash: 38a0f066373a60824cd3ade2362af363
 
+Package: gtools
+Source: CRAN
+Version: 3.5.0
+Hash: 471b2e2452dfb30fdc1dd6f1b567925a
+
 Package: highr
 Source: CRAN
 Version: 0.5.1

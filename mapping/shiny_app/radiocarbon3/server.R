@@ -159,7 +159,7 @@ shinyServer(function(input, output, session) {
     
     #define sources of background map (static, then dynamic)
     tiles <- input$tiles
-    att <- input$tiles
+    att <- "see Basemap settings"
     
     if(input$type=="type1"){
       
