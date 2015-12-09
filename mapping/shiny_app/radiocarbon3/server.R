@@ -134,6 +134,40 @@ shinyServer(function(input, output, session) {
     
   })
   
+  #rendering density plot of date selection
+  output$datesdensity <- renderPlot({
+    
+    ggplot(
+      datasetInput(),
+      aes(x = CALAGE)
+    ) +
+      geom_line(
+        stat = "density"
+      ) + 
+      geom_point(
+        aes(
+          x = CALAGE, 
+          y = 0,
+          shape = 'barcode'
+          ),
+        size = 3
+      ) +
+      scale_shape_manual(
+        values = c("barcode" = 124),
+        guide = FALSE
+      ) +
+      xlim(
+        input$`range`[1]-700, 
+        input$`range`[2]+700
+      ) +
+      labs(
+        y = "Density",
+        x = "calibrated Age BP"
+      ) +
+      ggtitle("Density of date selection")
+      
+  })
+  
   #rendering barplot of periods for output
   output$barplotperiod <- renderPlot({
     
@@ -143,7 +177,7 @@ shinyServer(function(input, output, session) {
       geom = "histogram", 
       xlab = "", 
       ylab= "",
-      main = "Period distribution of currently shown dates")
+      main = "Period distribution")
   
   })
   
@@ -156,7 +190,7 @@ shinyServer(function(input, output, session) {
       geom = "histogram", 
       xlab = "", 
       ylab= "",
-      main = "Material distribution of currently shown dates")
+      main = "Material distribution")
     
   })
 

@@ -24,6 +24,19 @@ countries <- sort(countries)
 countries1 <- unique(countries[1:length(countries)/2])
 countries2 <- countries[!countries %in% countries1]
 
+#### defining period list ####
+
+periods <- list(
+  "Palaeolithic" = "palaeolithic",
+  "Epipalaeolithic" = "epipalaeolithic",
+  "Neolithic" = "neolithic", 
+  "Chalcolithic" = "chalcolithic",
+  "Bronze age" = "bronzeage",
+  "Iron age" = "ironage",
+  "Egypt" = "egypt",
+  "Other" = "other"
+)
+
 
 
 #### definition of frontend output/input ####
@@ -90,21 +103,8 @@ shinyUI(
            checkboxGroupInput(
              "periodselect", 
              "Select Period (attribution in DB inconsistent) ",
-             list(
-               "Palaeolithic" = "palaeolithic",
-               "Epipalaeolithic" = "epipalaeolithic",
-               "Neolithic" = "neolithic", 
-               "Chalcolithic" = "chalcolithic",
-               "Bronze age" = "bronzeage",
-               "Iron age" = "ironage",
-               "Egypt" = "egypt",
-               "other" = "other"
-             ),
-             selected = c(
-               "neolithic",
-               "chalcolithic",
-               "epipalaeolithic"
-             )
+             choices = periods,
+             selected = periods
            ),
            
            #input checkboxes     
@@ -115,7 +115,7 @@ shinyUI(
                "Charcoal" = "charcoal",
                "Bone" = "bone",
                "Other" = "other",
-               "Unknown" = "nd"
+               "???" = "nd"
              ),
              selected = c(
                "charcoal",
@@ -213,6 +213,47 @@ shinyUI(
         'downloadseldates', 
         'Download current selection as tab separated .csv file'
         )
+    ),
+
+    #Analysis
+    tabPanel(
+      'Analysis (selection)',
+      
+      fluidRow(
+        
+        #dates density plot
+        plotOutput(
+          "datesdensity", 
+          height = "200px", 
+          width = "100%"
+        )
+        
+      ),
+      
+      fluidRow(
+        
+        column(6,
+        
+          #period barplot output 
+          plotOutput(
+            "barplotperiod", 
+            height = "400px", 
+            width = "100%"
+          )
+          
+        ),
+        
+        column(6,
+               
+          #material barplot output 
+          plotOutput(
+            "barplotmaterial", 
+            height = "400px", 
+            width = "100%"
+          )
+          
+        )
+      )
     ),
     
     #complete datatable  
