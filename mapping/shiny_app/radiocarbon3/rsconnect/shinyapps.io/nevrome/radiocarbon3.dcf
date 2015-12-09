@@ -1,8 +1,7 @@
 name: radiocarbon3
 account: nevrome
 server: shinyapps.io
-bundleId: 293474
+appId: 42785
+bundleId: 327848
 url: https://nevrome.shinyapps.io/radiocarbon3
-when: 1445438998.69521
-asMultiple: FALSE
-asStatic: FALSE
+when: 1449697566.23443
