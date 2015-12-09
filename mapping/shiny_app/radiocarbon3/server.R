@@ -122,7 +122,7 @@ shinyServer(function(input, output, session) {
     #selection to defined country (ui.R)
     dates <- filter(
       dates, 
-      SIMCOUNTRY %in% input$countryselect
+      SIMCOUNTRY %in% c(input$countryselect1, input$countryselect2)
     )
     
   })
@@ -224,7 +224,7 @@ shinyServer(function(input, output, session) {
   
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable(
-    options = list(pageLength = 5), 
+    options = list(pageLength = 10), 
     {
     
       #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
@@ -236,32 +236,13 @@ shinyServer(function(input, output, session) {
   
   #render datatable, that shows all dates
   output$radiodat_complete = renderDataTable(
-    options = list(pageLength = 5), 
+    options = list(pageLength = 10), 
     {
   
       Europe_complete
                
     }
   )
-  
-  #Data output for check box control 
-  output$countrycheck <- renderUI({
-    
-    cl <- unique(Europe.red1$SIMCOUNTRY)
-    #input checkboxes     
-    checkboxGroupInput(
-      "countryselect", 
-      "Select Country",
-      as.list(
-        setNames(cl, cl)
-      ),
-      selected = c(
-        "Germany",
-        "Syria"
-      )
-    )
-    
-  })
   
   #render data-download
   output$downloadseldates = downloadHandler(
