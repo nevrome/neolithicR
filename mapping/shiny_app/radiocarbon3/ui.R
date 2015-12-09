@@ -182,7 +182,7 @@ shinyUI(
                "countryselect1", 
                "Select Country",
                choices = countries1,
-               selected = countries1
+               selected = ""
              )
            ),
            
@@ -193,14 +193,13 @@ shinyUI(
                "countryselect2", 
                " ",
                choices = countries2,
-               selected = countries2
-             )
-           )
-         )
-         
+               selected = "Turkey"
+              )
+            )
+          )
         )
       )
-      ),
+    ),
   
 
     #output datatable
@@ -215,7 +214,8 @@ shinyUI(
         'Download current selection as tab separated .csv file'
         )
     ),
-      
+    
+    #complete datatable  
     tabPanel(
       'Datatable (complete)',
       dataTableOutput("radiodat_complete")

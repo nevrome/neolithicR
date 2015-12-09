@@ -120,10 +120,17 @@ shinyServer(function(input, output, session) {
     )
     
     #selection to defined country (ui.R)
-    dates <- filter(
+    dates.country <- filter(
       dates, 
       SIMCOUNTRY %in% c(input$countryselect1, input$countryselect2)
     )
+
+    #switch to activate country selection (ui.R)
+    if (input$countrydecide) {
+      dates.country
+    } else {
+      dates
+    }
     
   })
   
