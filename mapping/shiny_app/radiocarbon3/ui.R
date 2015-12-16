@@ -104,7 +104,7 @@ shinyUI(
              "periodselect", 
              "Select Period (attribution in DB inconsistent) ",
              choices = periods,
-             selected = periods
+             selected = "neolithic"
            ),
            
            #input checkboxes     
@@ -155,7 +155,7 @@ shinyUI(
              min = 0,
              max = 18000,
              step= 100,
-             value =c(8000,10000)
+             value =c(6000,12000)
            )
          ),
          

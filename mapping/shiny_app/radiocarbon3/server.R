@@ -15,56 +15,61 @@ library(ggplot2)
 library(gtools)
 
 
-#### data preparation ####
-
-#load dataset
-#load dataset
-Europe_complete <- read.csv("data/Europe_complete.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-Europe.red1 <- read.csv("data/Europe.red1.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-Europe.red2 <- read.csv("data/Europe.red2.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-Europe.red3 <- read.csv("data/Europe.red3.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-youngoldsel1 <- read.csv("data/youngoldsel1.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-youngoldsel2 <- read.csv("data/youngoldsel2.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-youngoldsel3 <- read.csv("data/youngoldsel3.csv", 
-                   sep="\t", 
-                   header=TRUE, 
-                   row.names=1, 
-                   stringsAsFactors = FALSE)
-
-
 #### server output ####  
 
 shinyServer(function(input, output, session) {
+
+  #load data
+  withProgress(message = 'Load Data', value = 0, {
+    
+    Europe_complete <- read.csv("data/Europe_complete.csv", 
+                                sep="\t", 
+                                header=TRUE, 
+                                row.names=1, 
+                                stringsAsFactors = FALSE)
+    
+    incProgress(1/3, detail = paste("Primary Data"))
+    
+    Europe.red1 <- read.csv("data/Europe.red1.csv", 
+                            sep="\t", 
+                            header=TRUE, 
+                            row.names=1, 
+                            stringsAsFactors = FALSE)
+    
+    Europe.red2 <- read.csv("data/Europe.red2.csv", 
+                            sep="\t", 
+                            header=TRUE, 
+                            row.names=1, 
+                            stringsAsFactors = FALSE)
+    
+    Europe.red3 <- read.csv("data/Europe.red3.csv", 
+                            sep="\t", 
+                            header=TRUE, 
+                            row.names=1, 
+                            stringsAsFactors = FALSE)
+    
+    incProgress(2/3, detail = paste("Secondary Data"))
+    
+    youngoldsel1 <- read.csv("data/youngoldsel1.csv", 
+                             sep="\t", 
+                             header=TRUE, 
+                             row.names=1, 
+                             stringsAsFactors = FALSE)
+    
+    youngoldsel2 <- read.csv("data/youngoldsel2.csv", 
+                             sep="\t", 
+                             header=TRUE, 
+                             row.names=1, 
+                             stringsAsFactors = FALSE)
+    
+    youngoldsel3 <- read.csv("data/youngoldsel3.csv", 
+                             sep="\t", 
+                             header=TRUE, 
+                             row.names=1, 
+                             stringsAsFactors = FALSE)
+    
+  })
+  
   
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
@@ -131,42 +136,48 @@ shinyServer(function(input, output, session) {
     } else {
       dates
     }
-    
+      
   })
+  
   
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
     
-    ggplot(
-      datasetInput(),
-      aes(x = CALAGE)
-    ) +
-      geom_line(
-        stat = "density"
-      ) + 
-      geom_point(
-        aes(
-          x = CALAGE, 
-          y = 0,
-          shape = 'barcode'
-          ),
-        size = 3
+    withProgress(message = 'Loading Density Plot', value = 0, {
+    
+      ggplot(
+        datasetInput(),
+        aes(x = CALAGE)
       ) +
-      scale_shape_manual(
-        values = c("barcode" = 124),
-        guide = FALSE
-      ) +
-      xlim(
-        input$`range`[1]-700, 
-        input$`range`[2]+700
-      ) +
-      labs(
-        y = "Density",
-        x = "calibrated Age BP"
-      ) +
-      ggtitle("Density of date selection")
+        geom_line(
+          stat = "density"
+        ) + 
+        geom_point(
+          aes(
+            x = CALAGE, 
+            y = 0,
+            shape = 'barcode'
+            ),
+          size = 3
+        ) +
+        scale_shape_manual(
+          values = c("barcode" = 124),
+          guide = FALSE
+        ) +
+        xlim(
+          input$`range`[1]-700, 
+          input$`range`[2]+700
+        ) +
+        labs(
+          y = "Density",
+          x = "calibrated Age BP"
+        ) +
+        ggtitle("Density of date selection")
+      
+    })
       
   })
+  
   
   #rendering barplot of periods for output
   output$barplotperiod <- renderPlot({
@@ -180,6 +191,7 @@ shinyServer(function(input, output, session) {
       main = "Period distribution")
   
   })
+  
   
   #rendering barplot of materials for output
   output$barplotmaterial <- renderPlot({
@@ -198,67 +210,75 @@ shinyServer(function(input, output, session) {
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
     
-    #define sources of background map (static, then dynamic)
-    tiles <- input$tiles
-    att <- "see Basemap settings"
+    withProgress(message = 'Loading Map', value = 0, {
     
-    if(input$type=="type1"){
+      #define sources of background map (static, then dynamic)
+      tiles <- input$tiles
+      att <- "see Basemap settings"
       
-      #text popup definition
-      site.popup <- paste0(
-        "<strong>Site: </strong>", 
-        datasetInput()$SITE, 
-        "<br><strong>Lab number: </strong>",
-        datasetInput()$LABNR, 
-        "<br><strong>Age: </strong>",
-        datasetInput()$CALAGE, 
-        "calBP",
-        "<br><strong>Reference: </strong>",
-        datasetInput()$REFERENCE 
-      )
-      
-      #preparation of mapping for shiny frontend
-      map = leaflet(datasetInput()) %>% 
-        addTiles(
-          urlTemplate = tiles,
-          attribution = att) %>%  
-        addCircles(
-          lat = datasetInput()$LATITUDE, 
-          lng = datasetInput()$LONGITUDE, 
-          color = datasetInput()$MAINCOLOR,
-          radius = datasetInput()$CALAGE,
-          popup = site.popup
-        )      
-      
-    } else if(input$type=="type2"){
-    
-      #text popup definition
-      site.popup <- paste0(
-        "<strong>Site: </strong>", 
-        datasetInput()$SITE, 
-        "<br><strong>Lab number: </strong>",
-        datasetInput()$LABNR, 
-        "<br><strong>Age: </strong>",
-        datasetInput()$CALAGE, 
-        "calBP",
-        "<br><strong>Reference: </strong>",
-        datasetInput()$REFERENCE 
-      )
-      
-      #preparation of mapping for shiny frontend
-      map = leaflet(datasetInput()) %>% 
-        addTiles(
-          urlTemplate = tiles,
-          attribution = att) %>%  
-        addCircles(
-          lat = datasetInput()$LATITUDE, 
-          lng = datasetInput()$LONGITUDE + datasetInput()$OFFSET, 
-          color = datasetInput()$COLOR,
-          radius = datasetInput()$CALAGE,
-          popup = site.popup
+      if(input$type=="type1"){
+        
+        #text popup definition
+        site.popup <- paste0(
+          "<strong>Site: </strong>", 
+          datasetInput()$SITE, 
+          "<br><strong>Lab number: </strong>",
+          datasetInput()$LABNR, 
+          "<br><strong>Age: </strong>",
+          datasetInput()$CALAGE, 
+          "calBP",
+          "<br><strong>Reference: </strong>",
+          datasetInput()$REFERENCE 
         )
+        
+        incProgress(1, detail = paste("● Live Rendering")) 
+        
+        #preparation of mapping for shiny frontend
+        map = leaflet(datasetInput()) %>% 
+          addTiles(
+            urlTemplate = tiles,
+            attribution = att) %>%  
+          addCircles(
+            lat = datasetInput()$LATITUDE, 
+            lng = datasetInput()$LONGITUDE, 
+            color = datasetInput()$MAINCOLOR,
+            radius = datasetInput()$CALAGE,
+            popup = site.popup
+          )      
+        
+      } else if(input$type=="type2"){
       
-    }
+        #text popup definition
+        site.popup <- paste0(
+          "<strong>Site: </strong>", 
+          datasetInput()$SITE, 
+          "<br><strong>Lab number: </strong>",
+          datasetInput()$LABNR, 
+          "<br><strong>Age: </strong>",
+          datasetInput()$CALAGE, 
+          "calBP",
+          "<br><strong>Reference: </strong>",
+          datasetInput()$REFERENCE 
+        )
+        
+        incProgress(1, detail = paste("● Live Rendering")) 
+        
+        #preparation of mapping for shiny frontend
+        map = leaflet(datasetInput()) %>% 
+          addTiles(
+            urlTemplate = tiles,
+            attribution = att) %>%  
+          addCircles(
+            lat = datasetInput()$LATITUDE, 
+            lng = datasetInput()$LONGITUDE + datasetInput()$OFFSET, 
+            color = datasetInput()$COLOR,
+            radius = datasetInput()$CALAGE,
+            popup = site.popup
+          )
+        
+      }
+      
+    })
     
   })
   
@@ -284,6 +304,7 @@ shinyServer(function(input, output, session) {
                
     }
   )
+  
   
   #render data-download
   output$downloadseldates = downloadHandler(
