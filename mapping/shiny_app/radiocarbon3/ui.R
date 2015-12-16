@@ -268,7 +268,7 @@ shinyUI(
       textInput(
         "tiles", 
         "Specify Basemap tile sources", 
-        value = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
+        value = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
         width = 800
       ),
       
