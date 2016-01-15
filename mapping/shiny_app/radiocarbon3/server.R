@@ -295,26 +295,35 @@ shinyServer(function(input, output, session) {
   
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable(
-      DT::datatable(datasetInput()[,c(1:6)], 
-                    options = list(pageLength = nrow(datasetInput())),
-                    filter = 'top')
+      DT::datatable(datasetInput()[,1:ncol(datasetInput())-1],
+                    filter = 'top',
+                    extensions = c('colVis', 'Responsive'),
+                    options = list(pageLength = 10,
+                                   lengthMenu = c(10, 20, 50, 100, nrow(datasetInput())),
+                                   dom = 'C<"clear">lfrtip',
+                                   colVis = list(exclude = c(0,1)))
+                    #selection = list(selected = c(1, 3, 4, 6, 9))
+      )
   )
+  
+  # render selection buttons for manual selection
+  proxy = dataTableProxy('radiodat')
+  
+  observeEvent(input$clear1, {
+    selectRows(proxy, NULL)
+  })
+  observeEvent(input$selall, {
+    selectRows(proxy, input$radiodat_rows_all)
+  })
   
   #render text output for manual selection
   output$selectiontext = renderPrint({
-    s = input$radiodat_rows_selected
+    s = datasetInput()[input$radiodat_rows_selected,]$LABNR
     if (length(s)) {
-      cat('These rows were selected:\n\n')
+      cat('These dates were selected:\n')
       cat(s, sep = ', ')
     }
   })
-  
-  
-  #render datatable, that shows all dates
-  output$radiodat_complete = renderDataTable(
-      DT::datatable(Europe_complete)
-  )
-  
   
   #render data-download
   output$downloadseldates = downloadHandler(

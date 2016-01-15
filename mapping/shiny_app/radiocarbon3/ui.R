@@ -204,17 +204,20 @@ shinyUI(
 
     #output datatable
     tabPanel(
-      'Datatable (selection)',
-      verbatimTextOutput('selectiontext'),
+      'Datatable',
       
+      #selection buttons and download
+      actionButton('selall', 'select all current rows'),
+      actionButton('clear1', 'clear Rows'),
       downloadButton(
         'downloadseldates', 
         'Download current selection as tab separated .csv file'
-        ),
+      ),
       
-      dataTableOutput(
-        "radiodat"
-      )
+      #datatable output
+      dataTableOutput("radiodat"),
+      
+      verbatimTextOutput('selectiontext')
     ),
 
     #Analysis
@@ -257,13 +260,7 @@ shinyUI(
         )
       )
     ),
-    
-    #complete datatable  
-    tabPanel(
-      'Datatable (complete)',
-      dataTableOutput("radiodat_complete")
-    ),
-      
+
     tabPanel(
       'Basemap settings',
       

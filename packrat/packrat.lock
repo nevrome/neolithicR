@@ -14,10 +14,14 @@ Version: 0.3.1
 Hash: 096699d1ac1cf530acfc646a0c90ee5d
 
 Package: DT
-Source: CRAN
-Version: 0.1
-Hash: 66d3d04d40c505e567c1328eae0409ee
+Source: github
+Version: 0.1.40
+Hash: fb12e4b603d9bd742e18bbb92a8d7a46
 Requires: htmltools, htmlwidgets, magrittr
+GithubRepo: DT
+GithubUsername: rstudio
+GithubRef: master
+GithubSha1: 7820e9e35bb8286a9c86257dd0210b83d1d6257c
 
 Package: PKI
 Source: CRAN
@@ -116,8 +120,8 @@ Hash: 08eed0c80510af29bb15f840ccfe37ce
 
 Package: digest
 Source: CRAN
-Version: 0.6.8
-Hash: de202f956596a476d09304e3a2ebf1e5
+Version: 0.6.9
+Hash: fd55d5a024f160fc001a5ece1e27782d
 
 Package: dplyr
 Source: CRAN
@@ -164,8 +168,8 @@ Hash: 114ef5abcf58bebbf6ac083b9cacbbd8
 
 Package: htmltools
 Source: CRAN
-Version: 0.2.6
-Hash: 595e7dea94f5f049dfc1ed739f5161af
+Version: 0.3
+Hash: 7ccc01f4d22d73d0d9b0d2a7781e7ff6
 Requires: digest
 
 Package: htmlwidgets
