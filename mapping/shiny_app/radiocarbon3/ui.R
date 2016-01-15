@@ -205,14 +205,16 @@ shinyUI(
     #output datatable
     tabPanel(
       'Datatable (selection)',
-      dataTableOutput(
-        "radiodat"
-        ),
+      verbatimTextOutput('selectiontext'),
       
       downloadButton(
         'downloadseldates', 
         'Download current selection as tab separated .csv file'
-        )
+        ),
+      
+      dataTableOutput(
+        "radiodat"
+      )
     ),
 
     #Analysis

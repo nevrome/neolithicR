@@ -13,6 +13,7 @@ library(magrittr)
 library(dplyr)
 library(ggplot2)
 library(gtools)
+library(DT)
 
 
 #### server output ####  
@@ -218,31 +219,40 @@ shinyServer(function(input, output, session) {
       
       if(input$type=="type1"){
         
+        manualsel <- input$radiodat_rows_selected
+        
+        if (length(manualsel) != 0){
+          seldata <-datasetInput()[manualsel,]
+        } else {
+          seldata <-datasetInput()
+        }
+        
+        
         #text popup definition
         site.popup <- paste0(
           "<strong>Site: </strong>", 
-          datasetInput()$SITE, 
+          seldata$SITE, 
           "<br><strong>Lab number: </strong>",
-          datasetInput()$LABNR, 
+          seldata$LABNR, 
           "<br><strong>Age: </strong>",
-          datasetInput()$CALAGE, 
+          seldata$CALAGE, 
           "calBP",
           "<br><strong>Reference: </strong>",
-          datasetInput()$REFERENCE 
+          seldata$REFERENCE 
         )
         
-        incProgress(1, detail = paste("● Live Rendering")) 
+        incProgress(1, detail = paste("● Live Rendering"))
         
         #preparation of mapping for shiny frontend
-        map = leaflet(datasetInput()) %>% 
+        map = leaflet(seldata) %>% 
           addTiles(
             urlTemplate = tiles,
             attribution = att) %>%  
           addCircles(
-            lat = datasetInput()$LATITUDE, 
-            lng = datasetInput()$LONGITUDE, 
-            color = datasetInput()$MAINCOLOR,
-            radius = datasetInput()$CALAGE,
+            lat = seldata$LATITUDE, 
+            lng = seldata$LONGITUDE, 
+            color = seldata$MAINCOLOR,
+            radius = seldata$CALAGE,
             popup = site.popup
           )      
         
@@ -285,24 +295,24 @@ shinyServer(function(input, output, session) {
   
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable(
-    options = list(pageLength = 10), 
-    {
-    
-      #reduce data.frame to necessary information (LABNR, SITE, LATITUDE, LONGITUDE, CALAGE, REFERENCE)
-      dates <- datasetInput()[,c(1:6)]
-      
-    }
+      DT::datatable(datasetInput()[,c(1:6)], 
+                    options = list(pageLength = nrow(datasetInput())),
+                    filter = 'top')
   )
+  
+  #render text output for manual selection
+  output$selectiontext = renderPrint({
+    s = input$radiodat_rows_selected
+    if (length(s)) {
+      cat('These rows were selected:\n\n')
+      cat(s, sep = ', ')
+    }
+  })
   
   
   #render datatable, that shows all dates
   output$radiodat_complete = renderDataTable(
-    options = list(pageLength = 10), 
-    {
-  
-      Europe_complete
-               
-    }
+      DT::datatable(Europe_complete)
   )
   
   
