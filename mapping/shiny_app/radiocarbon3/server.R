@@ -183,27 +183,23 @@ shinyServer(function(input, output, session) {
   #rendering barplot of periods for output
   output$barplotperiod <- renderPlot({
     
-    qplot(
-      SIMPERIOD, 
-      data=datasetInput(),
-      geom = "histogram", 
-      xlab = "", 
-      ylab= "",
-      main = "Period distribution")
-  
+    ggplot(datasetInput(), aes(SIMPERIOD)) +
+      geom_bar() +
+      ggtitle("Period distribution") +
+      xlab("")+ 
+      ylab("")
+      
   })
   
   
   #rendering barplot of materials for output
   output$barplotmaterial <- renderPlot({
     
-    qplot(
-      SIMMATERIAL, 
-      data=datasetInput(),
-      geom = "histogram", 
-      xlab = "", 
-      ylab= "",
-      main = "Material distribution")
+    ggplot(datasetInput(), aes(SIMMATERIAL)) +
+      geom_bar() +
+      ggtitle("Material distribution") +
+      xlab("")+ 
+      ylab("")
     
   })
 
