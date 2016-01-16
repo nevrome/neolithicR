@@ -85,7 +85,7 @@ shinyUI(
                "Show every date" = "type1",
                "Show oldest and youngest date" = "type2"
              ),
-             selected = "type1"
+            selected = "type1"
            ),
            
            selectInput(
@@ -130,7 +130,9 @@ shinyUI(
              "countrydecide",
              "Yes please!",
              value = FALSE
-           )
+           ),
+           
+           actionButton("selectall", label = "⚠ select all dates  ⚠ " )
            
          ),
          
@@ -155,7 +157,7 @@ shinyUI(
              min = 0,
              max = 18000,
              step= 100,
-             value =c(6000,12000)
+             value = c(6000, 12000)
            )
          ),
          

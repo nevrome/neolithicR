@@ -140,6 +140,35 @@ shinyServer(function(input, output, session) {
       
   })
   
+  #select all dates button
+  observe({
+    if (input$selectall > 0) {
+      updateCheckboxGroupInput(
+        session = session, 
+        inputId = "periodselect", 
+        selected = periods
+      )
+      updateCheckboxGroupInput(
+        session = session, 
+        inputId = "materialselect", 
+        selected = list(
+          "Charcoal" = "charcoal",
+          "Bone" = "bone",
+          "Other" = "other",
+          "???" = "nd")
+      )
+      updateCheckboxInput(
+        session = session, 
+        inputId = "countrydecide", 
+        value = FALSE
+      )
+      updateSliderInput(
+        session = session, 
+        inputId = "range", 
+        value = c(0, 18000)
+      )
+    }
+  })
   
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
