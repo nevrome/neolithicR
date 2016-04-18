@@ -322,11 +322,12 @@ shinyServer(function(input, output, session) {
   output$radiodat = renderDataTable(
       DT::datatable(datasetInput()[,1:ncol(datasetInput())-1],
                     filter = 'top',
-                    extensions = c('colVis', 'Responsive'),
+#                    extensions = c('colVis', 'Responsive'),
+                    extensions = c('Responsive'),
                     options = list(pageLength = 10,
                                    lengthMenu = c(10, 20, 50, 100, nrow(datasetInput())),
-                                   dom = 'C<"clear">lfrtip',
-                                   colVis = list(exclude = c(0,1)))
+                                   dom = 'C<"clear">lfrtip')
+#                                   colVis = list(exclude = c(0,1)))
                     #selection = list(selected = c(1, 3, 4, 6, 9))
       )
   )

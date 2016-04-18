@@ -36,8 +36,8 @@ Requires: base64enc
 
 Package: R6
 Source: CRAN
-Version: 2.1.1
-Hash: 20a88b2c9c84aecff2702789a4d102f5
+Version: 2.1.2
+Hash: c515e41c73294952cbb33ee1c1be5a2d
 
 Package: RColorBrewer
 Source: CRAN
@@ -108,15 +108,15 @@ Hash: 00bb12245cd975c450cc4a960884fa15
 
 Package: curl
 Source: CRAN
-Version: 0.9.4
-Hash: f0845d30266233da7d910ac687a5174b
+Version: 0.9.5
+Hash: 03562aad7537914f516bd67e9bba28b1
 
 Package: devtools
 Source: CRAN
-Version: 1.9.1
-Hash: 894e4e2f04fb749f786f15cf01181a0c
-Requires: curl, digest, evaluate, git2r, httr, jsonlite, memoise,
-    roxygen2, rstudioapi, rversions, whisker
+Version: 1.10.0
+Hash: 11261bd97eda1c73da7136c4e2031e97
+Requires: digest, git2r, httr, jsonlite, memoise, rstudioapi, whisker,
+    withr
 
 Package: dichromat
 Source: CRAN
@@ -191,9 +191,9 @@ Requires: Rcpp
 
 Package: httr
 Source: CRAN
-Version: 1.0.0
-Hash: 165c156aaf69073f9a1f8a4211c626d9
-Requires: R6, curl, digest, jsonlite, mime, stringr
+Version: 1.1.0
+Hash: 27ffb4b4dbb8ac4019126070d66910fc
+Requires: R6, curl, jsonlite, mime, openssl
 
 Package: jsonlite
 Source: CRAN
@@ -202,8 +202,8 @@ Hash: 4a983f753b6e88ae0f5a6ac152d8cc32
 
 Package: knitr
 Source: CRAN
-Version: 1.12
-Hash: bbb197833ff9b57c328c0fc9f924cb92
+Version: 1.12.3
+Hash: d537760d13021cf23fa2446381d9e0b2
 Requires: digest, evaluate, formatR, highr, markdown, stringr, yaml
 
 Package: labeling
@@ -236,8 +236,8 @@ Requires: mime
 
 Package: memoise
 Source: CRAN
-Version: 0.2.1
-Hash: 812e6a1dd77a0ca4da41f3239de8e447
+Version: 1.0.0
+Hash: 56e7087c3559eb7ba72a9afb349bf896
 Requires: digest
 
 Package: mgcv
@@ -255,6 +255,11 @@ Source: CRAN
 Version: 0.4.2
 Hash: 72d343a6664778029f49a7ad36de1cab
 Requires: colorspace
+
+Package: openssl
+Source: CRAN
+Version: 0.9.1
+Hash: 8a4d4c380ac9a71b8a387bb8e586270b
 
 Package: packrat
 Source: CRAN
@@ -313,8 +318,8 @@ GithubSha1: fcac892a69817febd7b655b189bf57193260cda0
 
 Package: rstudioapi
 Source: CRAN
-Version: 0.4.0
-Hash: 1daee7a586b46f99ab9114668aa05cc7
+Version: 0.5
+Hash: f942db72a8f51e968b061f28058e2c57
 
 Package: rversions
 Source: CRAN
@@ -369,6 +374,11 @@ Package: whisker
 Source: CRAN
 Version: 0.3-2
 Hash: 803d662762e532705c2c066a82d066e7
+
+Package: withr
+Source: CRAN
+Version: 1.0.0
+Hash: f48f79f631cdcb7e45250c5da49174cd
 
 Package: xml2
 Source: CRAN
