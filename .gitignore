@@ -1,9 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
-packrat/lib*/
-results
-mapping/*.html
+*.html
 
 # Compiled source #
 ###################

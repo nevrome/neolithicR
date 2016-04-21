@@ -1,3 +1,7 @@
+New Version in developement. For the old version see branch solid.
+
+***
+
 ## WebGIS-App
 
 #### Current version
