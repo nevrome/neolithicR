@@ -38,7 +38,7 @@ CARDres <- merge(
 )
 
 # write results into database
-dbWriteTable(con, "dates", CARDres, append = TRUE)
+dbWriteTable(con, "dates", CARDres, overwrite = TRUE)
 
 # test new state
 # test <- dbGetQuery(con, 'select * from dates')
