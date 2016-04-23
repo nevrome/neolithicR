@@ -1,8 +1,8 @@
 #Reminder: starting app and push to shinyapps.io
-#library(shiny)
-#runApp("mapping/shiny_app/radiocarbon3/", launch.browser=TRUE)
-#
-#shinyapps::deployApp('mapping/shiny_app/radiocarbon3/')
+# library(shiny)
+# runApp("modules/radiocarbon5/", launch.browser=TRUE)
+# library(rsconnect)
+# deployApp('modules/radiocarbon5/')
 
 
 #### loading libraries ####
@@ -24,6 +24,7 @@ shinyServer(function(input, output, session) {
   withProgress(message = 'Load Data', value = 0, {
     
     load(file = "data/c14data.RData")
+    dates <- datestable
     
   })
   
@@ -170,7 +171,7 @@ shinyServer(function(input, output, session) {
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable({
     
-    tab <- datestable[,c("ORIGIN", "LABNR", "SITE", "CALAGE", "CALSTD")]
+    tab <- datasetInput()[,c("ORIGIN", "LABNR", "SITE", "CALAGE", "CALSTD")]
       
     DT::datatable(tab)
     

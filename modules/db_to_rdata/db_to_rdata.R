@@ -10,7 +10,7 @@ datestable <- datestable[!is.na(datestable$LONGITUDE),]
 datestable  <- datestable[!is.na(datestable$LATITUDE),]
 
 # store data.frame datestable as a .RData object into the app file system
-save(datestable, file = "modules/radiocarbon3/data/c14data.RData")
+save(datestable, file = "modules/radiocarbon5/data/c14data.RData")
 
 # test
 # load(file = "modules/radiocarbon3/data/c14data.RData")
