@@ -31,14 +31,29 @@ shinyUI(
            class = "panel panel-default", 
            fixed = TRUE, 
            draggable = TRUE, 
-           top = 60, 
+           top = 65, 
            left = "auto", 
-           right = 20, 
+           right = 10, 
            bottom = "auto",
-           width = 330, 
+           width = 600, 
            height = "auto",
            
-           h2("neolithicRC")
+           h3("NeolithicRC"),
+           textOutput('numbertext'),
+           
+           #dates density plot
+           plotOutput(
+             "datesdensity", 
+             height = "250px", 
+             width = "100%"
+           ),
+          
+           #period barplot output 
+           plotOutput(
+             "calplot", 
+             height = "350px", 
+             width = "100%"
+           )
            
          ),
          
@@ -63,7 +78,7 @@ shinyUI(
              min = 0,
              max = 18000,
              step= 100,
-             value = c(300, 1000)
+             value = c(2300, 7700)
            )
          )
          
@@ -86,47 +101,6 @@ shinyUI(
       #datatable output
       dataTableOutput("radiodat")
     
-    ),
-
-    #Analysis
-    tabPanel(
-      'Analysis (selection)',
-      
-      fluidRow(
-        
-        #dates density plot
-        plotOutput(
-          "datesdensity", 
-          height = "200px", 
-          width = "100%"
-        )
-        
-      ),
-      
-      fluidRow(
-        
-        column(6,
-        
-          #period barplot output 
-          plotOutput(
-            "barplotcountry", 
-            height = "400px", 
-            width = "100%"
-          )
-          
-        ),
-        
-        column(6,
-               
-          #material barplot output 
-          plotOutput(
-            "barplotmaterial", 
-            height = "400px", 
-            width = "100%"
-          )
-          
-        )
-      )
     ),
 
     tabPanel(

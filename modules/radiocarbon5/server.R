@@ -14,6 +14,7 @@ library(dplyr)
 library(ggplot2)
 library(gtools)
 library(DT)
+library(Bchron)
 
 
 #### server output ####  
@@ -25,6 +26,8 @@ shinyServer(function(input, output, session) {
     
     load(file = "data/c14data.RData")
     dates <- datestable
+    
+    data(intcal13)
     
   })
   
@@ -43,68 +46,62 @@ shinyServer(function(input, output, session) {
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
     
-    withProgress(message = 'Loading Density Plot', value = 0, {
+    withProgress(message = '● Loading Density Plot', value = 0, {
     
-      ggplot(
-        datasetInput(),
-        aes(x = CALAGE)
-      ) +
+      ggplot(datasetInput(), aes(x = CALAGE)) +
+        geom_rug() +
         geom_line(
-          stat = "density"
+          stat = "density",
+          color = "red"
         ) + 
-        geom_point(
-          aes(
-            x = CALAGE, 
-            y = 0,
-            shape = 'barcode'
-            ),
-          size = 3
-        ) +
-        scale_shape_manual(
-          values = c("barcode" = 124),
-          guide = FALSE
-        ) +
         xlim(
-          input$`range`[1]-700, 
-          input$`range`[2]+700
-        ) +
+          input$`range`[1], 
+          input$`range`[2]
+        ) + 
         labs(
-          y = "Density",
+          y = "",
           x = "calibrated Age BP"
         ) +
-        ggtitle("Density of date selection")
+        ggtitle("Density of date selection") +
+        theme_bw()
       
     })
       
   })
   
   
-  #rendering barplot of countries for output
-  output$barplotcountry <- renderPlot({
+  #rendering calibration plot for output
+  output$calplot <- renderPlot({
     
-    ggplot(datasetInput(), aes(COUNTRY)) +
-      geom_bar() +
-      ggtitle("Country distribution") +
-      xlab("") + 
-      ylab("") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+    ggplot(datasetInput(), aes(x = CALAGE, y = C14AGE)) +
+      geom_point() +
+      geom_rug() +
+      geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3) +
+      ggtitle("Calibration Overview") +
+      xlab("calibrated Age BP") + 
+      ylab("C14 Age BP") + 
+      theme_bw() +
+      # coord_cartesian(
+      #   xlim = c(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)),
+      #   ylim = c(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE))
+      # ) +
+      xlim(input$`range`[1], input$`range`[2]) +
+      ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE)) +
+      geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "green") +
+      annotate(
+        "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
+        label = "Spline based on IntCal13", 
+        size = 5, color = "green"
+      ) +      
+      annotate(
+        "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -3, 
+        label = "www.radiocarbon.org", 
+        size = 5, color = "green"
+      )
+      
       
   })
   
-  
-  #rendering barplot of materials for output
-  output$barplotmaterial <- renderPlot({
-    
-    ggplot(datasetInput(), aes(MATERIAL)) +
-      geom_bar() +
-      ggtitle("Material distribution") +
-      xlab("") + 
-      ylab("") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
-    
-  })
-
- 
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
     
@@ -125,10 +122,10 @@ shinyServer(function(input, output, session) {
           # min(seldata$LATITUDE),
           # max(seldata$LONGITUDE),
           # max(seldata$LATITUDE)
-          -150,
           -70,
-          150,
-          70
+          -75,
+          270,
+         65
           )
 
       })
@@ -136,7 +133,7 @@ shinyServer(function(input, output, session) {
   
   observe({
     
-    #withProgress(message = '● Live Rendering', value = 0, {
+    withProgress(message = '● Rendering Map', value = 0, {
     
       seldata <- datasetInput()
       
@@ -163,7 +160,7 @@ shinyServer(function(input, output, session) {
           popup = site.popup
         )    
     
-    #})
+    })
   
   })
   
@@ -175,6 +172,11 @@ shinyServer(function(input, output, session) {
       
     DT::datatable(tab)
     
+  })
+  
+  #render textelement with number of dates
+  output$numbertext = renderPrint({
+    cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected")
   })
   
   #render data-download
