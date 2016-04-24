@@ -87,16 +87,16 @@ shinyServer(function(input, output, session) {
       # ) +
       xlim(input$`range`[1], input$`range`[2]) +
       ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE)) +
-      geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "green") +
+      geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "darkgreen") +
       annotate(
         "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
         label = "Spline based on IntCal13", 
-        size = 5, color = "green"
+        size = 5, color = "darkgreen"
       ) +      
       annotate(
         "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -3, 
         label = "www.radiocarbon.org", 
-        size = 5, color = "green"
+        size = 5, color = "darkgreen"
       )
       
       
