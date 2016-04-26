@@ -46,6 +46,7 @@ modules/radiocarbon5/rsconnect
 *.log
 *.sqlite
 *.db
+modules/radiocarbon5/data/*.RData
 
 ######################
 # OS generated files 
