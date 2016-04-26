@@ -40,8 +40,30 @@ shinyServer(function(input, output, session) {
       CALAGE >= input$range[1], 
       CALAGE <= input$range[2]
     )
+    
+    #selection of data origin (ui.R)
+    dates <- filter(
+      dates, 
+      ORIGIN %in% input$originselect
+    )
 
   })
+  
+  # output$card <- renderUI({
+  #   tags$a(href = "https://github.com/dirkseidensticker/CARD", "Github")
+  # })
+  # 
+  # output$euroevol <- renderUI({
+  #   tags$a(href = "http://discovery.ucl.ac.uk/1469811/", "UCL")
+  # })
+  # 
+  # output$radon <- renderUI({
+  #   tags$a(href = "http://radon.ufg.uni-kiel.de/", "Uni Kiel")
+  # })
+  # 
+  # output$radonb <- renderUI({
+  #   tags$a(href = "http://radon-b.ufg.uni-kiel.de/", "Uni Kiel")
+  # })
   
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
@@ -73,10 +95,9 @@ shinyServer(function(input, output, session) {
   #rendering calibration plot for output
   output$calplot <- renderPlot({
     
-    ggplot(datasetInput(), aes(x = CALAGE, y = C14AGE)) +
+    calplotint <- ggplot(datasetInput(), aes(x = CALAGE, y = C14AGE)) +
       geom_point() +
       geom_rug() +
-      geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3) +
       ggtitle("Calibration Overview") +
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
@@ -86,7 +107,6 @@ shinyServer(function(input, output, session) {
       #   ylim = c(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE))
       # ) +
       xlim(input$`range`[1], input$`range`[2]) +
-      ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE)) +
       geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "darkgreen") +
       annotate(
         "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
@@ -98,7 +118,17 @@ shinyServer(function(input, output, session) {
         label = "www.radiocarbon.org", 
         size = 5, color = "darkgreen"
       )
-      
+    
+    # condition to allow the plot and the calspline to be rendered without data
+    if (nrow(datasetInput()) > 0) {  
+      calplotfin <- calplotint +
+      ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE)) +
+      geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3)
+    } else {
+      calplotfin <- calplotint 
+    }
+    
+    calplotfin
       
   })
   

@@ -41,6 +41,35 @@ shinyUI(
            h3("NeolithicRC"),
            textOutput('numbertext'),
            
+           fluidRow(
+             
+             column(8,
+               #input checkbox     
+               checkboxGroupInput(
+                 "originselect", 
+                 label = NULL,
+                 list(
+                   "CARD" = "CARD", 
+                   "EuroEvol" = "EuroEvol",
+                   "Radon" = "Radon",
+                   "Radon-b" = "Radon-b"
+                 ),
+                 selected = c(
+                   "CARD"
+                 ),
+                 inline = TRUE
+                )
+             )
+             
+             # column(4,
+             #  htmlOutput("card"),
+             #  htmlOutput("euroevol"),
+             #  htmlOutput("radon"),
+             #  htmlOutput("radonb")
+             # )
+
+           ),
+           
            #dates density plot
            plotOutput(
              "datesdensity", 
