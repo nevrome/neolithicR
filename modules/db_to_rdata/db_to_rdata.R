@@ -9,6 +9,15 @@ datestable = dbGetQuery(con, 'select * from dates')
 datestable <- datestable[!is.na(datestable$LONGITUDE),]
 datestable  <- datestable[!is.na(datestable$LATITUDE),]
 
+# sort by CALAGE
+datestable <- datestable[order(datestable$CALAGE, decreasing=TRUE),]
+
+# add colour value
+datestable <- data.frame(
+  datestable, 
+  MAINCOLOR = rainbow(nrow(datestable), alpha = NULL, start = 0, end = 2/6)
+)
+
 # store data.frame datestable as a .RData object into the app file system
 save(datestable, file = "modules/radiocarbon5/data/c14data.RData")
 

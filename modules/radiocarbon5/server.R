@@ -155,7 +155,7 @@ shinyServer(function(input, output, session) {
         addCircles(
           lat = ~LATITUDE, 
           lng = ~LONGITUDE, 
-          #color = seldata$MAINCOLOR,
+          color = ~MAINCOLOR,
           radius = ~CALAGE,
           popup = site.popup
         )    
