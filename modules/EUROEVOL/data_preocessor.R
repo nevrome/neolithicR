@@ -40,8 +40,22 @@ CommonSites <- read.csv(
 # merging of the two tables (Right inner join)
 EUROEVOL <- merge(x = C14Samples, y = CommonSites, by = "SiteID", all = FALSE)
 
+# adjust attribute selection
+EUROEVOL <- subset(EUROEVOL, select=-c(SiteID, C14ID, PhaseCode))
+
 # adjust attribute names
-colnames(EUROEVOL)[c(11,12)] <- c("LATITUDE", "LONGITUDE")
+colnames(EUROEVOL) <- c(
+  "PERIOD", 
+  "C14AGE",
+  "C14STD", 
+  "LABNR", 
+  "MATERIAL",
+  "SPECIES",
+  "COUNTRY",
+  "LATITUDE", 
+  "LONGITUDE",
+  "SITE"
+  )
 
 # add key attributes ORIGIN and ID
 EUROEVOL <- data.frame(
@@ -50,4 +64,20 @@ EUROEVOL <- data.frame(
   EUROEVOL
 )
 
-# ...
+# connect to database and load the content of the table "dates" into a dataframe
+con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
+datestable = dbGetQuery(con, 'select * from dates')
+
+# merge database with new data
+res <- merge(
+  EUROEVOL, 
+  datestable, 
+  all.x = TRUE, all.y = TRUE, 
+  incomparables = NULL
+)
+
+# write results into database
+dbWriteTable(con, "dates", res, overwrite = TRUE)
+
+# test new state
+# test <- dbGetQuery(con, 'select * from dates')

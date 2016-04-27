@@ -169,7 +169,9 @@ shinyServer(function(input, output, session) {
       
       #text popup definition
       site.popup <- paste0(
-        "<strong>Site: </strong>", 
+        "<strong>Data Source: </strong>", 
+        seldata$ORIGIN, 
+        "<br><strong>Site: </strong>", 
         seldata$SITE, 
         "<br><strong>Lab number: </strong>",
         seldata$LABNR, 

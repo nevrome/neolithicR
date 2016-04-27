@@ -22,4 +22,4 @@ datestable <- data.frame(
 save(datestable, file = "modules/radiocarbon5/data/c14data.RData")
 
 # test
-# load(file = "modules/radiocarbon3/data/c14data.RData")
+# load(file = "modules/radiocarbon5/data/c14data.RData")

@@ -50,7 +50,7 @@ shinyUI(
                  label = NULL,
                  list(
                    "CARD" = "CARD", 
-                   "EuroEvol" = "EuroEvol",
+                   "EuroEvol" = "EUROEVOL",
                    "Radon" = "Radon",
                    "Radon-b" = "Radon-b"
                  ),
