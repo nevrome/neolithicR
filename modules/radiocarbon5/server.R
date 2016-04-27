@@ -95,17 +95,12 @@ shinyServer(function(input, output, session) {
   #rendering calibration plot for output
   output$calplot <- renderPlot({
     
-    calplotint <- ggplot(datasetInput(), aes(x = CALAGE, y = C14AGE)) +
-      geom_point() +
-      geom_rug() +
+    # plot without data
+    calplotc <- ggplot(datasetInput(), aes(x = CALAGE, y = C14AGE)) +
       ggtitle("Calibration Overview") +
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      # coord_cartesian(
-      #   xlim = c(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)),
-      #   ylim = c(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE))
-      # ) +
       xlim(input$`range`[1], input$`range`[2]) +
       geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "darkgreen") +
       annotate(
@@ -119,16 +114,26 @@ shinyServer(function(input, output, session) {
         size = 5, color = "darkgreen"
       )
     
-    # condition to allow the plot and the calspline to be rendered without data
+    # plot with data
     if (nrow(datasetInput()) > 0) {  
-      calplotfin <- calplotint +
-      ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE)) +
-      geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3)
-    } else {
-      calplotfin <- calplotint 
-    }
+      
+      # plot with a big amount of dates
+      calplotc <- calplotc +
+      geom_point() +
+      ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE))
+
+      # plot with a small amount of dates  
+      if (nrow(datasetInput()) < 200) {
+        
+        calplotc <- calplotc +
+        geom_rug() +
+        geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3)
+     
+      }
+
+    } 
     
-    calplotfin
+    calplotc
       
   })
   
