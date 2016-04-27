@@ -193,7 +193,7 @@ shinyServer(function(input, output, session) {
           lat = ~LATITUDE, 
           lng = ~LONGITUDE, 
           color = ~MAINCOLOR,
-          radius = ~CALAGE,
+          radius = ~CALAGE*2,
           popup = site.popup
         )    
     

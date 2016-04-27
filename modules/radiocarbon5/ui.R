@@ -50,12 +50,13 @@ shinyUI(
                  label = NULL,
                  list(
                    "CARD" = "CARD", 
-                   "EuroEvol" = "EUROEVOL",
-                   "Radon" = "Radon",
-                   "Radon-b" = "Radon-b"
+                   "EuroEvol" = "EUROEVOL" #,
+                   # "Radon" = "Radon",
+                   # "Radon-b" = "Radon-b"
                  ),
                  selected = c(
-                   "CARD"
+                   "CARD",
+                   "EUROEVOL"
                  ),
                  inline = TRUE
                 )
@@ -107,7 +108,7 @@ shinyUI(
              min = 0,
              max = 18000,
              step= 100,
-             value = c(2300, 7700)
+             value = c(7000, 7500)
            )
          )
          
