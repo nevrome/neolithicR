@@ -136,65 +136,39 @@ shinyUI(
     tabPanel(
       'Context maps',
       
-      helpText(
-        "Density estimation maps for the different datasets and the current selection. Loading the maps takes some time."
-      ),
-      
-      helpText(
-        "Map projection is Van der Grinten."
-      ),
-      
       fluidRow(
-        
-        column(6,
       
-          #datedistglob output
-          plotOutput(
-            "datedistglob",
-            height = "700px",
-            width = "100%"
+        column(3, 
+        
+          selectInput("mapsel", "Select map", choices = c(
+             "Complete dataset" = "cd",
+             "Current data selection" = "cs",
+             "CARD" = "ca",
+             "EUROEVOL" = "eu"
+            )
           )
-        
+          
         ),
         
-        column(6,
-               
-           #datedistglob output
-           plotOutput(
-             "datedistSELECTION",
-             height = "700px",
-             width = "100%"
-           )
-               
-        )
-        
-      ),
+        column(6, 
       
-      fluidRow(
-        
-        column(6,
-               
-           #datedistglob output
-           plotOutput(
-             "datedistEUROEVOL",
-             height = "700px",
-             width = "100%"
-           )
-               
-        ),
-        
-        column(6,
-               
-           #datedistglob output
-           plotOutput(
-             "datedistCARD",
-             height = "700px",
-             width = "100%"
-           )
+           helpText(
+             "Density estimation maps for the different datasets and the current selection. Loading the maps takes some time."
+           ),
+           
+           helpText(
+             "Map projection is Van der Grinten."
+           )     
                
         )
-        
-      )
+      
+      ), 
+      
+      plotOutput(
+          "datedens",
+          height = "700px",
+          width = "100%"
+        )
       
     ),
     
