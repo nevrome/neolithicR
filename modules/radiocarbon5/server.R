@@ -21,15 +21,12 @@ library(Bchron)
 
 shinyServer(function(input, output, session) {
 
-  #load data
-  withProgress(message = 'Load Data', value = 0, {
-    
-    load(file = "data/c14data.RData")
-    dates <- datestable
-    
-    data(intcal13)
-    
-  })
+  load(file = "data/c14data.RData")
+  
+  dates <- datestable
+  
+  data(intcal13)
+
   
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
@@ -135,6 +132,186 @@ shinyServer(function(input, output, session) {
     
     calplotc
       
+  })
+  
+  output$datedistglob <- renderPlot({
+  
+    withProgress(message = '● Complete dataset', value = 0, {
+      
+      ggplot() +
+        ggtitle("Complete dataset") +
+        stat_density2d(
+          data = datestable,
+          aes(x = LONGITUDE, y = LATITUDE, size = ..density.., colour = ..density..),
+          contour = FALSE,
+          n = 200,
+          geom = "point"
+        ) +
+        scale_colour_gradient(
+          low = "white", high = "blue",
+          guide = "colourbar"
+        ) +
+        guides(
+          density = FALSE,
+          size = FALSE
+        ) +
+        geom_polygon(
+          data = map_data("world"),  
+          aes(x = long, y = lat, group = group),
+          alpha = 0, 
+          colour = "grey"
+        ) +
+        coord_map(
+          projection = "vandergrinten",
+          xlim = c(min(datestable$LONGITUDE)-9, max(datestable$LONGITUDE)+9),
+          ylim = c(min(datestable$LATITUDE)-2, max(datestable$LATITUDE)+2)
+        ) +
+        theme_bw()
+
+    })
+      
+  })
+  
+  output$datedistSELECTION <- renderPlot({
+    
+    datesSELECTION <- datasetInput()
+      
+    withProgress(message = '● SELECTION', value = 0, {
+      
+      ggplot() +
+        ggtitle("Current selection") +
+        stat_density2d(
+          data = datesSELECTION,
+          aes(x = LONGITUDE, y = LATITUDE, size = ..density.., colour = ..density..),
+          contour = FALSE,
+          n = 200,
+          geom = "point"
+        ) +
+        scale_colour_gradient(
+          low = "white", high = "blue",
+          guide = "colourbar"
+        ) +
+        guides(
+          density = FALSE,
+          size = FALSE
+        ) +
+        geom_polygon(
+          data = map_data("world"),  
+          aes(x = long, y = lat, group = group),
+          alpha = 0, 
+          colour = "grey"
+        ) +
+        coord_map(
+          projection = "vandergrinten",
+          xlim = c(min(datesSELECTION$LONGITUDE)-9, max(datesSELECTION$LONGITUDE)+9),
+          ylim = c(min(datesSELECTION$LATITUDE)-2, max(datesSELECTION$LATITUDE)+2)
+        ) +
+        theme_bw()
+      
+    })
+    
+  })
+  
+  output$datedistCARD <- renderPlot({
+    
+    datesCARD <- filter(
+      datestable, 
+      ORIGIN == "CARD"
+    )
+    
+    withProgress(message = '● CARD', value = 0, {
+    
+      ggplot() +
+        ggtitle("CARD") +
+        # geom_hex(
+        #   data = datesCARD,
+        #   aes(x = LONGITUDE, y = LATITUDE),
+        #   bins = 200
+        # ) +
+        # stat_density2d(
+        #   data = datesCARD,
+        #   aes(x = LONGITUDE, y = LATITUDE, fill = ..level.., alpha = ..level..),
+        #   size = 5,
+        #   bins = 50,
+        #   geom = "polygon"
+        # ) +
+        stat_density2d(
+          data = datesCARD,
+          aes(x = LONGITUDE, y = LATITUDE, size = ..density.., colour = ..density..),
+          contour = FALSE,
+          n = 130,
+          geom = "point"
+        ) +
+        scale_colour_gradient(
+          low = "white", high = "blue",
+          guide = "colourbar"
+        ) +
+        guides(
+          density = FALSE,
+          size = FALSE
+        ) +
+        # coord_cartesian(
+        #   xlim = c(min(datesCARD$LONGITUDE)-2, max(datesCARD$LONGITUDE)+2),
+        #   ylim = c(min(datesCARD$LATITUDE)-2, max(datesCARD$LATITUDE)+2)
+        # ) +
+        geom_polygon(
+          data = map_data("world"),  
+          aes(x = long, y = lat, group = group),
+          alpha = 0, 
+          colour = "grey"
+        ) +
+        coord_map(
+          projection = "vandergrinten",
+          xlim = c(min(datesCARD$LONGITUDE)-9, max(datesCARD$LONGITUDE)+9),
+          ylim = c(min(datesCARD$LATITUDE)-2, max(datesCARD$LATITUDE)+2)
+        ) +
+        theme_bw()
+      
+    })
+    
+  })
+  
+  output$datedistEUROEVOL <- renderPlot({
+    
+    datesEUROEVOL <- filter(
+      datestable, 
+      ORIGIN == "EUROEVOL"
+    )
+    
+    withProgress(message = '● EUROEVOL', value = 0, {
+      
+      ggplot() +
+        ggtitle("EUROEVOL") +
+        stat_density2d(
+          data = datesEUROEVOL,
+          aes(x = LONGITUDE, y = LATITUDE, size = ..density.., colour = ..density..),
+          contour = FALSE,
+          n = 200,
+          geom = "point"
+        ) +
+        scale_colour_gradient(
+          low = "white", high = "blue",
+          guide = "colourbar"
+        ) +
+        guides(
+          density = FALSE,
+          size = FALSE
+        ) +
+        geom_polygon(
+          data = map_data("world"),  
+          aes(x = long, y = lat, group = group),
+          alpha = 0, 
+          colour = "grey"
+        ) +
+        coord_map(
+          projection = "vandergrinten",
+          xlim = c(min(datesEUROEVOL$LONGITUDE)-9, max(datesEUROEVOL$LONGITUDE)+9),
+          ylim = c(min(datesEUROEVOL$LATITUDE)-2, max(datesEUROEVOL$LATITUDE)+2)
+        ) +
+        theme_bw()
+      
+    })
+    
   })
   
   #rendering the map file for output
