@@ -24,7 +24,7 @@ library(shinysky)
 shinyServer(function(input, output, session) {
 
   # change to map view directly after start to preload map
-  updateTabsetPanel(session, "nav", selected = "Interactive map")
+  #updateTabsetPanel(session, "nav", selected = "Interactive map")
   
   # send start message
   observe({
@@ -205,37 +205,12 @@ shinyServer(function(input, output, session) {
   output$radiocarbon = renderLeaflet({
     
     withProgress(message = ' ', value = 0, {
-    
+
       #define sources (static, then dynamic)
       tiles <- input$tiles
       att <- "see Basemap settings"
-      #seldata <- datasetInput()
-      
-      #preparation of mapping for shiny frontend
-      map = leaflet() %>% 
-        addTiles(
-          urlTemplate = tiles,
-          attribution = att)  %>% 
-        fitBounds(
-          # min(seldata$LONGITUDE),
-          # min(seldata$LATITUDE),
-          # max(seldata$LONGITUDE),
-          # max(seldata$LATITUDE)
-          -70,
-          -35,
-          270,
-         65
-          )
-
-      })
-  })
-  
-  observe({
-    
-    withProgress(message = '● Rendering Map', value = 0, {
-    
       seldata <- datasetInput()
-      
+          
       #text popup definition
       site.popup <- paste0(
         "<strong>Data Source: </strong>", 
@@ -245,26 +220,33 @@ shinyServer(function(input, output, session) {
         "<br><strong>Lab number: </strong>",
         seldata$LABNR, 
         "<br><strong>Age: </strong>",
-        seldata$CALAGE, 
-        "calBP",
+        seldata$CALAGE, "calBP",
         "<br><strong>Reference: </strong>",
         seldata$REFERENCE 
       )
       
-      leafletProxy("radiocarbon", data = seldata) %>%
-        clearShapes() %>%
+      #preparation of mapping for shiny frontend
+      leaflet(seldata) %>% 
+        addTiles(
+          urlTemplate = tiles,
+          attribution = att)  %>% 
+        fitBounds(
+          min(seldata$LONGITUDE),
+          min(seldata$LATITUDE),
+          max(seldata$LONGITUDE)+30,
+          max(seldata$LATITUDE)
+          # -70, -35, 270, 65
+          ) %>% 
         addCircles(
-          lat = ~LATITUDE, 
-          lng = ~LONGITUDE, 
-          color = ~MAINCOLOR,
-          radius = ~CALAGE*2,
+          lat = seldata$LATITUDE, 
+          lng = seldata$LONGITUDE, 
+          color = seldata$MAINCOLOR,
+          radius = seldata$CALAGE*2,
           popup = site.popup
         )    
-    
-    })
-  
+
+      })
   })
-  
   
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable({
