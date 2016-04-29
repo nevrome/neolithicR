@@ -6,8 +6,102 @@ library(ShinyDash)
 #### definition of frontend output/input ####
 shinyUI(
   navbarPage(
-    "neolithicRC", 
+    "neolithicRC - Search tool for radiocarbon dates", 
     id="nav",
+    
+    tabPanel("Search and Filter",
+    
+      fluidRow( 
+        
+        singleton(
+          tags$head(tags$script(src = "message-handler.js"))
+        ),
+        
+        column(3,
+             
+          select2Input(
+            "originselect",
+            "Data source selection",
+            choices = unique(datestable$ORIGIN),
+            selected = unique(datestable$ORIGIN),
+            type = c("input"),
+            width = "100%"
+          ),
+          
+          select2Input(
+            "countryselect",
+            "Country selection",
+            choices = unique(datestable$COUNTRY),
+            select = c(),
+            type = c("input"),
+            width = "100%"
+          )
+          
+        ),
+        
+        column(3,
+          
+         select2Input(
+           "materialselect",
+           "Material selection",
+           choices = unique(datestable$MATERIAL),
+           select = c(),
+           type = c("input")
+         ),
+         
+         select2Input(
+           "speciesselect",
+           "Species selection",
+           choices = unique(datestable$SPECIES),
+           type = c("input")
+         )     
+      
+        ),
+        
+        column(3,
+               
+         textInput(
+           "siteselect",
+           "Site selection"
+         ),
+         
+         select2Input(
+           "periodselect",
+           "Period/Culture selection",
+           choices = c(unique(datestable$PERIOD), unique(datestable$CULTURE)),
+           type = c("input")
+         )
+               
+        ),
+        
+        column(3,
+               
+          textOutput('numbertext')
+               
+        )
+        
+      ),
+      
+      sliderInput(
+        "range", 
+        "calibrated age BP:", 
+        width = "100%", 
+        min = min(datestable$CALAGE),
+        max = max(datestable$CALAGE),
+        step= 100,
+        value = c(min(datestable$CALAGE), max(datestable$CALAGE))
+      ),
+      
+      #datatable output
+      dataTableOutput("radiodat"),
+
+      #selection buttons and download
+      downloadButton(
+        'downloadseldates', 
+        'Download current selection as tab separated .csv file'
+      )
+            
+    ),
     
     tabPanel("Interactive map",
        
@@ -39,37 +133,7 @@ shinyUI(
            height = "auto",
            
            h3("NeolithicRC"),
-           textOutput('numbertext'),
-           
-           fluidRow(
-             
-             column(8,
-               #input checkbox     
-               checkboxGroupInput(
-                 "originselect", 
-                 label = NULL,
-                 list(
-                   "CARD" = "CARD", 
-                   "EuroEvol" = "EUROEVOL" #,
-                   # "Radon" = "Radon",
-                   # "Radon-b" = "Radon-b"
-                 ),
-                 selected = c(
-                   "CARD",
-                   "EUROEVOL"
-                 ),
-                 inline = TRUE
-                )
-             )
-             
-             # column(4,
-             #  htmlOutput("card"),
-             #  htmlOutput("euroevol"),
-             #  htmlOutput("radon"),
-             #  htmlOutput("radonb")
-             # )
-
-           ),
+           #textOutput('numbertext'),
            
            #dates density plot
            plotOutput(
@@ -85,54 +149,11 @@ shinyUI(
              width = "100%"
            )
            
-         ),
-         
-         # Control Panel 2 (Slider)
-         absolutePanel(
-           id = "controls", 
-           class = "panel panel-default", 
-           fixed = TRUE, 
-           draggable = TRUE, 
-           top = "90%", 
-           left = "auto", 
-           right = "27%", 
-           bottom = "auto",
-           width = "70%", 
-           height = 100,
-           
-           # timeframe slider
-           sliderInput(
-             "range", 
-             "calibrated age BP:", 
-             width = "100%", 
-             min = 0,
-             max = 18000,
-             step= 100,
-             value = c(7000, 7500)
-           )
          )
          
-          
-        
       )
     ),
   
-
-    #output datatable
-    tabPanel(
-      'Datatable',
-      
-      #selection buttons and download
-      downloadButton(
-        'downloadseldates', 
-        'Download current selection as tab separated .csv file'
-      ),
-      
-      #datatable output
-      dataTableOutput("radiodat")
-    
-    ),
-
     tabPanel(
       'Context maps',
       

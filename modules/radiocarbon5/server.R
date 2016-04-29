@@ -17,33 +17,42 @@ library(DT)
 library(Bchron)
 library(maps)
 library(mapproj)
-
+library(shinysky)
 
 #### server output ####  
 
 shinyServer(function(input, output, session) {
 
+  # change to map view directly after start to preload map
+  updateTabsetPanel(session, "nav", selected = "Interactive map")
+  
+  # send start message
+  observe({
+    session$sendCustomMessage(
+        type = 'startmessage',
+        message = 
+        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases CARD, CalPal-DB, EUROEVOL, RADON and RADON-B. For reference see https://github.com/nevrome/neolithicR"
+      )
+  })
+
+  # load data
   load(file = "data/c14data.RData")
-  
   dates <- datestable
-  
   data(intcal13)
 
-  
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
     
-    #selection to defined range (ui.R)
+    #selection of data (ui.R)
     dates <- filter(
-      dates, 
-      CALAGE >= input$range[1], 
-      CALAGE <= input$range[2]
-    )
-    
-    #selection of data origin (ui.R)
-    dates <- filter(
-      dates, 
-      ORIGIN %in% input$originselect
+      dates,
+      CALAGE >= input$range[1] &
+      CALAGE <= input$range[2] &
+      ORIGIN %in% input$originselect &
+      COUNTRY %in% input$countryselect & 
+      #PERIOD %in% input$periodselect || CULTURE %in% input$periodselect &
+      MATERIAL %in% input$materialselect
+      #SPECIES %in% input$speciesselect
     )
 
   })
@@ -213,7 +222,7 @@ shinyServer(function(input, output, session) {
           # max(seldata$LONGITUDE),
           # max(seldata$LATITUDE)
           -70,
-          -75,
+          -35,
           270,
          65
           )
