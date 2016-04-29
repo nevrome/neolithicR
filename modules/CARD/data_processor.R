@@ -20,7 +20,7 @@ colnames(CARD)[c(10,11,12)] <- c("LATITUDE", "LONGITUDE", "REFERENCE")
 
 # add key attributes ORIGIN and ID
 CARD <- data.frame(
-  ORIGIN = rep("CARD", nrow(CARD)),
+  ORIGIN = rep("CARD: https://git.io/vwPGD", nrow(CARD)),
   ID = 1:nrow(CARD), 
   CARD
 )
