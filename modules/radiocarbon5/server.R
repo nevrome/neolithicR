@@ -84,10 +84,7 @@ shinyServer(function(input, output, session) {
           stat = "density",
           color = "red"
         ) + 
-        xlim(
-          input$`range`[1], 
-          input$`range`[2]
-        ) + 
+        xlim(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)) + 
         labs(
           y = "",
           x = "calibrated Age BP"
@@ -109,7 +106,7 @@ shinyServer(function(input, output, session) {
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      xlim(input$`range`[1], input$`range`[2]) +
+      xlim(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)) +
       geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "darkgreen") +
       annotate(
         "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
@@ -204,7 +201,7 @@ shinyServer(function(input, output, session) {
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
     
-    withProgress(message = ' ', value = 0, {
+    withProgress(message = '● Loading Map', value = 0, {
 
       #define sources (static, then dynamic)
       tiles <- input$tiles
@@ -233,7 +230,7 @@ shinyServer(function(input, output, session) {
         fitBounds(
           min(seldata$LONGITUDE),
           min(seldata$LATITUDE),
-          max(seldata$LONGITUDE)+30,
+          max(seldata$LONGITUDE)+15,
           max(seldata$LATITUDE)
           # -70, -35, 270, 65
           ) %>% 
