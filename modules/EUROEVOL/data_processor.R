@@ -59,7 +59,7 @@ colnames(EUROEVOL) <- c(
 
 # add key attributes ORIGIN and ID
 EUROEVOL <- data.frame(
-  ORIGIN = rep("EUROEVOL: http://discovery.ucl.ac.uk/1469811/", nrow(EUROEVOL)),
+  ORIGIN = rep("EUROEVOL", nrow(EUROEVOL)),
   ID = 1:nrow(EUROEVOL), 
   EUROEVOL
 )
