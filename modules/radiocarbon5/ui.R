@@ -26,15 +26,6 @@ shinyUI(
             selected = unique(datestable$ORIGIN),
             type = c("input"),
             width = "100%"
-          ),
-          
-          select2Input(
-            "countryselect",
-            "Country selection",
-            choices = unique(datestable$COUNTRY),
-            select = c(),
-            type = c("input"),
-            width = "100%"
           )
           
         ),
@@ -42,19 +33,21 @@ shinyUI(
         column(3,
           
          select2Input(
+           "countryselect",
+           "Country selection",
+           choices = c("ALL", sort(unique(datestable$COUNTRY))),
+           select = c("Germany"),
+           type = c("input"),
+           width = "100%"
+         ),
+                
+         select2Input(
            "materialselect",
            "Material selection",
-           choices = unique(datestable$MATERIAL),
-           select = c(),
+           choices = c("ALL", sort(unique(datestable$MATERIAL))),
+           select = c("ALL"),
            type = c("input")
-         ),
-         
-         select2Input(
-           "speciesselect",
-           "Species selection",
-           choices = unique(datestable$SPECIES),
-           type = c("input")
-         )     
+         ) 
       
         ),
         
@@ -62,16 +55,14 @@ shinyUI(
                
          textInput(
            "siteselect",
-           "Site selection"
+           "Site search"
          ),
          
-         select2Input(
-           "periodselect",
-           "Period/Culture selection",
-           choices = c(unique(datestable$PERIOD), unique(datestable$CULTURE)),
-           type = c("input")
+         textInput(
+           "culselect",
+           "Period/Culture search"
          )
-               
+         
         ),
         
         column(3,

@@ -43,16 +43,34 @@ shinyServer(function(input, output, session) {
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
     
+    country = input$countryselect
+    if(length(country) != 0 && "ALL" %in% country){
+      country = unique(dates$COUNTRY)
+    }
+    
+    material = input$materialselect
+    if(length(material) != 0 && "ALL" %in% material){
+      material = unique(dates$MATERIAL)
+    }
+    
+    siteterm = input$siteselect
+    sv <- grep(paste("(", siteterm, ")+", sep = ""), dates$SITE, ignore.case = TRUE)
+    dates <- dates[sv,]
+    
+    culterm = input$culselect
+    pev <- grep(paste("(", culterm, ")+", sep = ""), dates$PERIOD, ignore.case = TRUE)
+    cuv <- grep(paste("(", culterm, ")+", sep = ""), dates$CULTURE, ignore.case = TRUE)
+    pecuv <- unique(c(pev, cuv))
+    dates <- dates[pecuv,]
+    
     #selection of data (ui.R)
     dates <- filter(
       dates,
       CALAGE >= input$range[1] &
       CALAGE <= input$range[2] &
       ORIGIN %in% input$originselect &
-      COUNTRY %in% input$countryselect & 
-      #PERIOD %in% input$periodselect || CULTURE %in% input$periodselect &
-      MATERIAL %in% input$materialselect
-      #SPECIES %in% input$speciesselect
+      COUNTRY %in% country & 
+      MATERIAL %in% material
     )
 
   })
@@ -248,7 +266,17 @@ shinyServer(function(input, output, session) {
   #render datatable, that shows the currently mapped dates
   output$radiodat = renderDataTable({
     
-    tab <- datasetInput()[,c("ORIGIN", "LABNR", "SITE", "CALAGE", "CALSTD")]
+    tab <- datasetInput()[,c(
+      "ORIGIN", 
+      "LABNR", 
+      "COUNTRY", 
+      "SITE",
+      "PERIOD",
+      "CULTURE",
+      "MATERIAL", 
+      "CALAGE", 
+      "CALSTD"
+    )]
       
     DT::datatable(tab)
     
