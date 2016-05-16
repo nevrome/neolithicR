@@ -19,6 +19,12 @@ library(maps)
 library(mapproj)
 library(shinysky)
 
+#### loading data ####
+
+load(file = "data/c14data.RData")
+dates <- datestable
+data(intcal13)
+
 #### server output ####  
 
 shinyServer(function(input, output, session) {
@@ -34,11 +40,6 @@ shinyServer(function(input, output, session) {
         "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases CARD, CalPal-DB, EUROEVOL, RADON and RADON-B. For reference see https://github.com/nevrome/neolithicR"
       )
   })
-
-  # load data
-  load(file = "data/c14data.RData")
-  dates <- datestable
-  data(intcal13)
 
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({

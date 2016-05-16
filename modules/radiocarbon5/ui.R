@@ -5,6 +5,10 @@ library(ShinyDash)
 library(shinysky)
 library(DT)
 
+#### loading data ####
+
+load(file = "data/c14data.RData")
+
 #### definition of frontend output/input ####
 shinyUI(
   navbarPage(
