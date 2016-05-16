@@ -2,6 +2,8 @@
 
 library(leaflet)
 library(ShinyDash)
+library(shinysky)
+library(DT)
 
 #### definition of frontend output/input ####
 shinyUI(
