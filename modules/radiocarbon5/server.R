@@ -1,8 +1,19 @@
-#Reminder: starting app and push to shinyapps.io
+#Reminder: starting app 
 # library(shiny)
 # runApp("modules/radiocarbon5/", launch.browser=TRUE)
+
+#Reminder: push to shinyapps.io
 # library(rsconnect)
 # deployApp('modules/radiocarbon5/')
+
+#Reminder: installing packages
+# install.packages(c("magrittr", "dplyr", "shiny", "ggplot2", "gtools", "DT", "Bchron", "maps", "mapproj", "devtools"))
+# devtools::install_github("AnalytixWare/ShinySky")
+# devtools::install_github("trestletech/ShinyDash")
+
+#Reminder: push to vm
+# scp -r -P PORTNUMBER /home/clemens/Rstats/neolithicR/modules/radiocarbon5/* USERNAME@134.2.2.137:/home/USERNAME/ShinyApps/neolithicRC/
+
 
 
 #### loading libraries ####

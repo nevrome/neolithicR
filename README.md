@@ -1,12 +1,25 @@
-## WebGIS-App and Search Engine
+# WebGIS-App and Search Engine
 
-**[Current version of radiocarbon5 on shinyapps.io](https://nevrome.shinyapps.io/radiocarbon5/)**
+##**[Current version of radiocarbon5](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/)**  
+**[Older version of radiocarbon5 on shinyapps.io](https://nevrome.shinyapps.io/radiocarbon5/)**
+
+### Coauthers
+
+- **[Dirk Seidensticker](https://uni-koeln.academia.edu/DirkSeidensticker)** (University of Cologne)
+- **[Bernhard Weninger](http://ufg.phil-fak.uni-koeln.de/10115.html?&L=0)** (University of Cologne)
 
 ### Data
 
-* [CALPAL](https://uni-koeln.academia.edu/BernhardWeninger/CalPal): Radiocarbon Database of the [CalPal software package](http://monrepos-rgzm.de/forschung/ausstattung.html#calpal) by [Bernhard Weninger](http://ufg.phil-fak.uni-koeln.de/10115.html?&L=0). See [nevrome/CalPal-Database](https://github.com/nevrome/CalPal-Database) for an interface.
-* [CARD](https://github.com/dirkseidensticker/CARD): Central African Radiocarbon Database by [Dirk Seidensticker](https://uni-koeln.academia.edu/DirkSeidensticker).
+* [CALPAL](https://uni-koeln.academia.edu/BernhardWeninger/CalPal): Radiocarbon Database of the [CalPal software package](http://monrepos-rgzm.de/forschung/ausstattung.html#calpal) by Bernhard Weninger. See [nevrome/CalPal-Database](https://github.com/nevrome/CalPal-Database) for an interface.
+* [CARD](https://github.com/dirkseidensticker/CARD): Central African Radiocarbon Database by Dirk Seidensticker.
 * [EUROEVOL](http://discovery.ucl.ac.uk/1469811/): Cultural Evolution of Neolithic Europe Dataset by [Katie Manning, Sue Colledge, Enrico Crema, Stephen Shennan and Adrian Timpson](http://openarchaeologydata.metajnl.com/articles/10.5334/joad.40/).
+
+### Acknowledgements
+
+Thanks to  
+
+- [Dr. phil. Matthias Lang](http://www.escience.uni-tuebingen.de/mitarbeiter/dr-matthias-lang.html) and [Dr. rer. nat. Steve Kaminski](http://www.escience.uni-tuebingen.de/mitarbeiter/dr-steve-kaminski.html) of the [eScience-Center](https://www.uni-tuebingen.de/einrichtungen/informations-kommunikations-und-medienzentrum-ikm/escience-center.html) of the University of Tübingen for providing and supporting the virtual server space to host the app.
+- [Dr. Christoph Rinne](https://www.ufg.uni-kiel.de/de/mitarbeiterinnen/wissenschaftliche-mitarbeiter/crinne), [PD Dr. Raiko Krauß](http://www.uni-tuebingen.de/fakultaeten/philosophische-fakultaet/fachbereiche/altertums-und-kunstwissenschaften/ur-und-fruehgeschichte-und-archaeologie-des-mittelalters/juengere-urgeschichte/mitarbeiter/nach-funktion/krauss-raiko-dr.html) and [Dr. Jörg Linstädter ](https://www.dainst.org/mitarbeiter-detailansicht/-/person-display/1241013) for discussion and valuable input.
 
 ### License
 
