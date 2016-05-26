@@ -48,7 +48,7 @@ shinyServer(function(input, output, session) {
     session$sendCustomMessage(
         type = 'startmessage',
         message = 
-        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases CARD, CalPal-DB, EUROEVOL, RADON and RADON-B. For reference see https://github.com/nevrome/neolithicR"
+        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases CARD, CalPal-DB, EUROEVOL and RADON. For reference see https://github.com/nevrome/neolithicR"
       )
   })
 
