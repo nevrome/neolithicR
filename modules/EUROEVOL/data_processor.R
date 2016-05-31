@@ -7,13 +7,15 @@
 # load libraries
 library(RCurl)
 library(RSQLite)
+library(data.table)
 
 # THE SAMPLES
 # read data from URL
 myfile <- getURL(
   'http://discovery.ucl.ac.uk/1469811/7/EUROEVOL09-07-201516-34_C14Samples.csv', 
   ssl.verifyhost =  FALSE, 
-  ssl.verifypeer = FALSE
+  ssl.verifypeer = FALSE,
+  .encoding = "UTF-8"
 )
 
 C14Samples <- read.csv(
@@ -27,15 +29,11 @@ C14Samples <- read.csv(
 myfile <- getURL(
   'http://discovery.ucl.ac.uk/1469811/9/EUROEVOL09-07-201516-34_CommonSites.csv', 
   ssl.verifyhost = FALSE, 
-  ssl.verifypeer = FALSE
+  ssl.verifypeer = FALSE,
+  .encoding = "UTF-8"
 )
 
-CommonSites <- read.csv(
-  textConnection(myfile), 
-  header = T,
-  sep = ",",
-  dec = "."
-)
+CommonSites <- data.frame(fread(myfile))
 
 # merging of the two tables (Right inner join)
 EUROEVOL <- merge(x = C14Samples, y = CommonSites, by = "SiteID", all = FALSE)
