@@ -19,11 +19,13 @@ datestable <- filter(datestable,
        datestable$LONGITUDE < 180 &
        datestable$LONGITUDE > -180 &
        datestable$LATITUDE < 90 &
-       datestable$LATITUDE > -90
+       datestable$LATITUDE > -90  
        )
 
-datestable <- datestable[!(datestable$LONGITUDE > 180 || datestable$LONGITUDE < -180),]
-datestable <- datestable[!(datestable$LATITUDE > 90 || datestable$LATITUDE < -90),]
+datestable <- filter(datestable,
+                     datestable$LONGITUDE != 0 & 
+                     datestable$LATITUDE != 0   
+                     )
 
 # sort by CALAGE
 datestable <- datestable[order(datestable$CALAGE, decreasing=TRUE),]
