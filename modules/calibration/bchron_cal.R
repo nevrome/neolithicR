@@ -6,8 +6,8 @@ library(RSQLite)
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
-newcali <- 0
-alreadycali <- 0
+# newcali <- 0
+# alreadycali <- 0
 
 # precalculated values
 afaktor <- (1-0.683)/2
@@ -15,16 +15,18 @@ afaktor <- (1-0.683)/2
 # loop to calibrate every single date by its own
 for (i in 1:nrow(datestable)) {
 
-  alreadycali <- alreadycali + 1
+  # alreadycali <- alreadycali + 1
+  #
+  # # just calibrate dates, that are not already calibrated (!!! dangerous !!!)
+  # if (is.na(datestable$CALAGE[i])) {
+  # 
+  #   alreadycali <- alreadycali - 1
+  #   newcali <- newcali + 1
+  #   
+  #   print(paste("Already:", alreadycali, "New:", newcali, "To check:", nrow(datestable) - (newcali+alreadycali)))
   
-  # just calibrate dates, that are not already calibrated (!!! dangerous !!!)
-  if (is.na(datestable$CALAGE[i])) {
+    print(paste("To Do:", nrow(datestable) - i))
   
-    alreadycali <- alreadycali - 1
-    newcali <- newcali + 1
-    
-    print(paste("Already:", alreadycali, "New:", newcali, "To check:", nrow(datestable) - (newcali+alreadycali)))
-    
     # dates that are out of the range of the calcurve can not be calibrated
     if (datestable$C14AGE[i] > 100 && datestable$C14AGE[i] < 45000) {
       
@@ -60,7 +62,7 @@ for (i in 1:nrow(datestable)) {
       
     }
     
-  }
+  # }
   
 }
 
