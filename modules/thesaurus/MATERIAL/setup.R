@@ -1,6 +1,7 @@
-# library(RSQLite)
-# con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
-# datestable = dbGetQuery(con, 'select * from dates')
+#### load data ####
+library(RSQLite)
+con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
+datestable = dbGetQuery(con, 'select * from dates')
 
 #### create thesaurus table and add function ####
 MATERIAL_thesaurus <- data.frame()
@@ -140,6 +141,14 @@ wood <- c(
   "twig"
 )
 add(wood, "wood")
+
+#### add already correct values ####
+varlist <- unique(datestable$MATERIAL)
+for (i in 1:length(varlist)){
+  if(!(varlist[i] %in% MATERIAL_thesaurus$var)) {
+    add(varlist[i], varlist[i])
+  }
+}
 
 #### save thesaurus table ####
 save(MATERIAL_thesaurus, file = "modules/radiocarbon5/thesauri/MATERIAL_thesaurus.RData")

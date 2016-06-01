@@ -1,6 +1,7 @@
-# library(RSQLite)
-# con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
-# datestable = dbGetQuery(con, 'select * from dates')
+#### load data ####
+library(RSQLite)
+con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
+datestable = dbGetQuery(con, 'select * from dates')
 
 #### create thesaurus table and add function ####
 COUNTRY_thesaurus <- data.frame()
@@ -95,6 +96,14 @@ United_Arab_Emirates <- c(
   "U.A.E."
 )
 add(United_Arab_Emirates, "United Arab Emirates")
+
+#### add already correct values ####
+varlist <- unique(datestable$COUNTRY)
+for (i in 1:length(varlist)){
+  if(!(varlist[i] %in% COUNTRY_thesaurus$var)) {
+    add(varlist[i], varlist[i])
+  }
+}
 
 #### save thesaurus table ####
 save(COUNTRY_thesaurus, file = "modules/radiocarbon5/thesauri/COUNTRY_thesaurus.RData")
