@@ -142,5 +142,4 @@ wood <- c(
 add(wood, "wood")
 
 #### save thesaurus table ####
-MATERIAL <- MATERIAL_thesaurus
-save(MATERIAL, file = "modules/thesaurus/MATERIAL/MATERIAL_thesaurus.RData")
+save(MATERIAL_thesaurus, file = "modules/radiocarbon5/thesauri/MATERIAL_thesaurus.RData")

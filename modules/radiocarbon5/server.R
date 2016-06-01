@@ -36,6 +36,10 @@ load(file = "data/c14data.RData")
 dates <- datestable
 data(intcal13)
 
+files <- list.files(path = "thesauri/", pattern='*.RData', recursive=T)
+files = lapply(files, function(x) paste0('thesauri/', x))
+lapply(files, load, .GlobalEnv)
+
 #### server output ####  
 
 shinyServer(function(input, output, session) {
@@ -58,23 +62,31 @@ shinyServer(function(input, output, session) {
     country = input$countryselect
     if(length(country) != 0 && "ALL" %in% country){
       country = unique(dates$COUNTRY)
+    } else if (length(country) != 0) {
+      country = c(COUNTRY_thesaurus$var[COUNTRY_thesaurus$cor %in% country], country)
     }
     
     material = input$materialselect
     if(length(material) != 0 && "ALL" %in% material){
       material = unique(dates$MATERIAL)
+    } else if (length(country) != 0) {
+      material = c(MATERIAL_thesaurus$var[MATERIAL_thesaurus$cor %in% material], material)
     }
     
     siteterm = input$siteselect
-    sv <- grep(paste("(", siteterm, ")+", sep = ""), dates$SITE, ignore.case = TRUE)
-    dates <- dates[sv,]
-    
+    if (siteterm != "") {
+      sv <- grep(paste("(", siteterm, ")+", sep = ""), dates$SITE, ignore.case = TRUE)
+      dates <- dates[sv,]
+    }
+
     culterm = input$culselect
-    pev <- grep(paste("(", culterm, ")+", sep = ""), dates$PERIOD, ignore.case = TRUE)
-    cuv <- grep(paste("(", culterm, ")+", sep = ""), dates$CULTURE, ignore.case = TRUE)
-    pecuv <- unique(c(pev, cuv))
-    dates <- dates[pecuv,]
-    
+    if (culterm != "") {
+      pev <- grep(paste("(", culterm, ")+", sep = ""), dates$PERIOD, ignore.case = TRUE)
+      cuv <- grep(paste("(", culterm, ")+", sep = ""), dates$CULTURE, ignore.case = TRUE)
+      pecuv <- unique(c(pev, cuv))
+      dates <- dates[pecuv,]
+    }
+
     #selection of data (ui.R)
     dates <- filter(
       dates,

@@ -97,5 +97,4 @@ United_Arab_Emirates <- c(
 add(United_Arab_Emirates, "United Arab Emirates")
 
 #### save thesaurus table ####
-COUNTRY <- COUNTRY_thesaurus
-save(COUNTRY, file = "modules/thesaurus/COUNTRY/COUNTRY_thesaurus.RData")
+save(COUNTRY_thesaurus, file = "modules/radiocarbon5/thesauri/COUNTRY_thesaurus.RData")

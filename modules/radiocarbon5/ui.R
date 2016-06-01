@@ -9,6 +9,10 @@ library(DT)
 
 load(file = "data/c14data.RData")
 
+files <- list.files(path = "thesauri/", pattern='*.RData', recursive=T)
+files = lapply(files, function(x) paste0('thesauri/', x))
+lapply(files, load, .GlobalEnv)
+
 #### definition of frontend output/input ####
 shinyUI(
   navbarPage(
@@ -41,7 +45,7 @@ shinyUI(
          select2Input(
            "countryselect",
            "Country selection",
-           choices = c("ALL", sort(unique(datestable$COUNTRY))),
+           choices = c("ALL", sort(unique(COUNTRY_thesaurus$cor))),
            select = c("Germany"),
            type = c("input"),
            width = "100%"
@@ -50,7 +54,7 @@ shinyUI(
          select2Input(
            "materialselect",
            "Material selection",
-           choices = c("ALL", sort(unique(datestable$MATERIAL))),
+           choices = c("ALL", sort(unique(MATERIAL_thesaurus$cor))),
            select = c("ALL"),
            type = c("input")
          ) 
