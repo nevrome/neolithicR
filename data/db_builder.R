@@ -50,6 +50,21 @@ rm(list = ls())
 source("modules/RADON/data_processor.R")
 rm(list = ls())
 
-# connect to database 
-con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
-datestable = dbGetQuery(con, 'select * from dates')
+# # connect to database 
+# con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
+# datestable = dbGetQuery(con, 'select * from dates')
+
+# run calibration
+source("modules/calibration/bchron_cal.R")
+rm(list = ls())
+
+# apply/setup thesauri
+source("modules/thesaurus/thesaurus_application.R")
+rm(list = ls())
+
+# export db to .Rdata file and filter
+source("modules/db_to_rdata/db_to_rdata.R")
+rm(list = ls())
+
+# load data
+load(file = "modules/radiocarbon5/data/c14data.RData")
