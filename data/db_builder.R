@@ -41,14 +41,14 @@ dbSendQuery(
 )
 
 # run data_processor scripts for the different sources
-# source("modules/CALPAL/data_processor.R")
-# rm(list = ls())
-# source("modules/EUROEVOL/data_processor.R")
-# rm(list = ls())
+source("modules/CALPAL/data_processor.R")
+rm(list = ls())
+source("modules/EUROEVOL/data_processor.R")
+rm(list = ls())
 source("modules/CARD/data_processor.R")
 rm(list = ls())
-# source("modules/RADON/data_processor.R")
-# rm(list = ls())
+source("modules/RADON/data_processor.R")
+rm(list = ls())
 
 # # connect to database 
 # con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
