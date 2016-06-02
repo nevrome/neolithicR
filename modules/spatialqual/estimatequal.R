@@ -8,31 +8,62 @@ library(rworldxtra)
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
-datestable <- data.frame(datestable, spatqual = NA)
+# transform long and lat value to numeric
+datestable$LONGITUDE <- as.numeric(datestable$LONGITUDE)
+datestable$LATITUDE <- as.numeric(datestable$LATITUDE)
 
-points <- na.omit(data.frame(as.numeric(datestable$LONGITUDE), as.numeric(datestable$LATITUDE)))
+# load world map
+world <- getMap(resolution='high')
 
+# determine country from coordinates
+nna <- unique(c(
+  which(is.na(datestable$LONGITUDE)),
+  which(is.na(datestable$LATITUDE))
+))
+datesred <- datestable[-nna,]
 
-# The single argument to this function, points, is a data.frame in which:
-#   - column 1 contains the longitude in degrees
-#   - column 2 contains the latitude in degrees
-coords2country = function(points)
-{  
-  # load detailed worldmap
-  countriesSP <- getMap(resolution='high')
+coords <- data.frame(lon = datesred$LONGITUDE, lat = datesred$LATITUDE)
+coords <- SpatialPoints(coords, proj4string=CRS(proj4string(world)))
+coordcountry <- as.character(over(coords, world)$ADMIN)
 
-  # setting CRS to that from rworldmap
-  pointsSP = SpatialPoints(points, proj4string=CRS(proj4string(countriesSP)))  
+datestable$COORDCOUNTRY[-nna] <- coordcountry
+
+# loop to check country-coordinate relation for every date
+ldb <- nrow(datestable)
+for (i in 1:ldb) {
+
+  # progress bar
+  print(paste("ToDo: ", ldb-i))
   
-  # get indices of the Polygons object containing each point 
-  indices = over(pointsSP, countriesSP)
+  # simple coord tests
+  lon <- datestable$LONGITUDE[i]
+  lat <- datestable$LATITUDE[i]
   
-  # return the ADMIN names of each country
-  indices$ADMIN  
+  if (is.na(lon) | is.na(lat) | (lon == 0 & lat == 0)) {
+    datestable$SPATQUAL[i] <- "no coords"
+    next()
+  }
+  
+  if (lon > 180 | lon < -180 | lat > 90 | lat < -90) {
+    datestable$SPATQUAL[i] <- "wrong coords"
+    next()
+  }
+  
+  # comparison of country info in db and country info determined from coords
+  coordcountry <- datestable$COORDCOUNTRY[i]
+  dbcountry <- datestable$COUNTRY[i]
+  spatqual <- datestable$SPATQUAL[i]
+  
+  if (dbcountry %in% c("", "n/a", "nd", "NoCountry") | is.na(dbcountry)) {
+    datestable$COUNTRY[i] <- coordcountry
+    next()
+  } else if (!is.na(coordcountry) && dbcountry != coordcountry) {
+    datestable$SPATQUAL[i] <- "doubtful coords"
+    datestable$COUNTRY[i] <- coordcountry
+    next()
+  }
+  
 }
-
-coords2country(points)
-
 
 # write results into database
 dbWriteTable(con, "dates", datestable, overwrite = TRUE)

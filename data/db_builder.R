@@ -23,6 +23,7 @@ dbSendQuery(
     MATERIAL VARCHAR(255),
     SPECIES VARCHAR(255),
     COUNTRY VARCHAR(255),
+    COORDCOUNTRY VARCHAR(255),
     FEATURE VARCHAR(1000),
     FEATURE_DESC VARCHAR(1000),
     SITE VARCHAR(255),
@@ -37,6 +38,7 @@ dbSendQuery(
     CALSTD INT,
     REFERENCE VARCHAR(1000),
     NOTICE VARCHAR(1000),
+    SPATQUAL VARCHAR(255),
     CONSTRAINT DATE_ID PRIMARY KEY (ID, ORIGIN))"
 )
 
@@ -53,6 +55,10 @@ rm(list = ls())
 # # connect to database 
 # con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 # datestable = dbGetQuery(con, 'select * from dates')
+
+# # run country based spatial quality test
+# source("modules/spatialqual/estimatequal.R")
+# rm(list = ls())
 
 # run calibration
 source("modules/calibration/bchron_cal.R")
