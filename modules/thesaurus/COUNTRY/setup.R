@@ -18,7 +18,8 @@ unknown <- c(
   "n/a",
   "nd",
   "NoCountry",
-  "probably Ireland?"
+  "probably Ireland?", 
+  "NA"
 )
 add(unknown, "unknown")
 
@@ -93,9 +94,22 @@ Burundi <- c(
 add(Burundi, "Burundi")
 
 United_Arab_Emirates <- c(
-  "U.A.E."
+  "U.A.E.",
+  "United Arab Emirates"
 )
 add(United_Arab_Emirates, "United Arab Emirates")
+
+Great_Britain <- c(
+  "Great Britain",
+  "United Kingdom"
+)
+add(Great_Britain, "Great Britain")
+
+Cyprus <- c(
+  "Cyprus",
+  "Akrotiri Sovereign Base Area"
+)
+add(Cyprus, "Cyprus")
 
 #### add already correct values ####
 varlist <- unique(datestable$COUNTRY)

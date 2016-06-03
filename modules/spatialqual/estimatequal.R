@@ -3,10 +3,14 @@ library(RSQLite)
 library(sp)
 library(rworldmap)
 library(rworldxtra)
+library(dplyr)
 
 # connect to database and load the content of the table "dates" into a dataframe
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
+
+# load thesaurus
+load("modules/radiocarbon5/thesauri/COUNTRY_thesaurus.RData")
 
 # transform long and lat value to numeric
 datestable$LONGITUDE <- as.numeric(datestable$LONGITUDE)
@@ -52,15 +56,21 @@ for (i in 1:ldb) {
   # comparison of country info in db and country info determined from coords
   coordcountry <- datestable$COORDCOUNTRY[i]
   dbcountry <- datestable$COUNTRY[i]
+  
+  if (is.na(coordcountry)) {
+    next()
+  }
+  
+  corc <- filter(COUNTRY_thesaurus, var == dbcountry)$cor
+  dbcountrysyn <- unique(c(dbcountry, corc, filter(COUNTRY_thesaurus, cor == corc)$var))
+  
   spatqual <- datestable$SPATQUAL[i]
   
   if (dbcountry %in% c("", "n/a", "nd", "NoCountry") | is.na(dbcountry)) {
     datestable$COUNTRY[i] <- coordcountry
-    next()
-  } else if (!is.na(coordcountry) && dbcountry != coordcountry) {
+  } else if (!is.na(coordcountry) && !(coordcountry %in% dbcountrysyn)) {
     datestable$SPATQUAL[i] <- "doubtful coords"
     datestable$COUNTRY[i] <- coordcountry
-    next()
   }
   
 }
