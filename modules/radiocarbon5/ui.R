@@ -159,44 +159,44 @@ shinyUI(
       )
     ),
   
-    tabPanel(
-      'Context maps',
-      
-      fluidRow(
-      
-        column(3, 
-        
-          selectInput("mapsel", "Select map", choices = c(
-             "Complete dataset" = "cd",
-             "Current data selection" = "cs",
-             "CARD" = "ca",
-             "EUROEVOL" = "eu"
-            )
-          )
-          
-        ),
-        
-        column(6, 
-      
-           helpText(
-             "Density estimation maps for the different datasets and the current selection. Loading the maps takes some time."
-           ),
-           
-           helpText(
-             "Map projection is Van der Grinten."
-           )     
-               
-        )
-      
-      ), 
-      
-      plotOutput(
-          "datedens",
-          height = "700px",
-          width = "100%"
-        )
-      
-    ),
+    # tabPanel(
+    #   'Context maps',
+    #   
+    #   fluidRow(
+    #   
+    #     column(3, 
+    #     
+    #       selectInput("mapsel", "Select map", choices = c(
+    #          "Complete dataset" = "cd",
+    #          "Current data selection" = "cs",
+    #          "CARD" = "ca",
+    #          "EUROEVOL" = "eu"
+    #         )
+    #       )
+    #       
+    #     ),
+    #     
+    #     column(6, 
+    #   
+    #        helpText(
+    #          "Density estimation maps for the different datasets and the current selection. Loading the maps takes some time."
+    #        ),
+    #        
+    #        helpText(
+    #          "Map projection is Van der Grinten."
+    #        )     
+    #            
+    #     )
+    #   
+    #   ), 
+    #   
+    #   plotOutput(
+    #       "datedens",
+    #       height = "700px",
+    #       width = "100%"
+    #     )
+    #   
+    # ),
     
     tabPanel(
       'Basemap settings',
