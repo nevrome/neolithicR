@@ -249,7 +249,20 @@ shinyServer(function(input, output, session) {
       tiles <- input$tiles
       att <- "see Basemap settings"
       seldata <- datasetInput()
-          
+      
+      seldata <- filter(
+        seldata,
+        SPATQUAL != "no coords",
+        SPATQUAL != "wrong coords"
+      )  
+      
+      if (!input$doubtfulcheck){
+        seldata <- filter(
+          seldata,
+          SPATQUAL != "doubtful coords"  
+        )
+      }
+      
       #text popup definition
       site.popup <- paste0(
         "<strong>Data Source: </strong>", 
@@ -284,7 +297,7 @@ shinyServer(function(input, output, session) {
           popup = site.popup
         )    
 
-      })
+    })
   })
   
   #render datatable, that shows the currently mapped dates
@@ -299,7 +312,8 @@ shinyServer(function(input, output, session) {
       "CULTURE",
       "MATERIAL", 
       "CALAGE", 
-      "CALSTD"
+      "CALSTD",
+      "SPATQUAL"
     )]
       
     DT::datatable(tab)
@@ -308,7 +322,22 @@ shinyServer(function(input, output, session) {
   
   #render textelement with number of dates
   output$numbertext = renderPrint({
-    cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected")
+    cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected.")
+  })
+  
+  output$originamounttext = renderPrint({
+    unique(datasetInput()$ORIGIN)
+    cat("The selected dates are from the source databases: ", unique(datasetInput()$ORIGIN, "."))
+  })
+  
+  output$duplitext = renderPrint({
+    dupli <- nrow(datasetInput()) - length(unique(datasetInput()$LABNR))
+    cat(dupli, " dates appear in more than one source database.")
+  })
+  
+  output$spatqualtext = renderPrint({
+    notcorr <- nrow(datasetInput()) - sum(datasetInput()$SPATQUAL == "possibly correct")
+    cat(notcorr, " dates have no or doubtful spatial information.")
   })
   
   #render data-download

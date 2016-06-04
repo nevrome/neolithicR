@@ -58,9 +58,15 @@ rm(list = ls())
 # con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 # datestable = dbGetQuery(con, 'select * from dates')
 
-# # run country based spatial quality test
-# source("modules/spatialqual/estimatequal.R")
-# rm(list = ls())
+# setup thesauri
+source("modules/thesaurus/COUNTRY/setup.R")
+rm(list = ls())
+source("modules/thesaurus/MATERIAL/setup.R")
+rm(list = ls())
+
+# run country based spatial quality test
+source("modules/spatialqual/estimatequal.R")
+rm(list = ls())
 
 # run calibration
 source("modules/calibration/bchron_cal.R")

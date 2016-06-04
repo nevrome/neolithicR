@@ -77,7 +77,11 @@ shinyUI(
         
         column(3,
                
-          textOutput('numbertext')
+          textOutput('numbertext'),
+          textOutput('originamounttext'),
+          textOutput('duplitext'),
+          textOutput('spatqualtext'),
+          checkboxInput("doubtfulcheck", label = "Map dates with doubtful coordinates anyway", value = FALSE)
                
         )
         

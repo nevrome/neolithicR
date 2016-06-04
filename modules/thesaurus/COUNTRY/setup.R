@@ -111,6 +111,19 @@ Cyprus <- c(
 )
 add(Cyprus, "Cyprus")
 
+Macedonia <- c(
+  "Macedonia",
+  "Republic of Macedonia"
+)
+add(Macedonia, "Macedonia")
+
+Serbia <- c(
+  "Serbia",
+  "Serbia and Montenegro",
+  "Montenegro"
+)
+add(Serbia, "Serbia and Montenegro")
+
 #### add already correct values ####
 varlist <- unique(datestable$COUNTRY)
 for (i in 1:length(varlist)){

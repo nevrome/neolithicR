@@ -58,6 +58,7 @@ for (i in 1:ldb) {
   dbcountry <- datestable$COUNTRY[i]
   
   if (is.na(coordcountry)) {
+    datestable$SPATQUAL[i] <- "doubtful coords"
     next()
   }
   
@@ -68,9 +69,14 @@ for (i in 1:ldb) {
   
   if (dbcountry %in% c("", "n/a", "nd", "NoCountry") | is.na(dbcountry)) {
     datestable$COUNTRY[i] <- coordcountry
-  } else if (!is.na(coordcountry) && !(coordcountry %in% dbcountrysyn)) {
-    datestable$SPATQUAL[i] <- "doubtful coords"
+    datestable$SPATQUAL[i] <- "possibly correct"
+    next()
+  } else if (!(coordcountry %in% dbcountrysyn)) {
     datestable$COUNTRY[i] <- coordcountry
+    datestable$SPATQUAL[i] <- "doubtful coords"
+    next()
+  } else {
+    datestable$SPATQUAL[i] <- "possibly correct"
   }
   
 }
