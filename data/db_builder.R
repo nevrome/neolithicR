@@ -1,3 +1,5 @@
+# sqlite3 rc.db
+
 # load libraries
 library(RSQLite)
 
