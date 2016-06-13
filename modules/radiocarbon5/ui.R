@@ -27,7 +27,7 @@ shinyUI(
           tags$head(tags$script(src = "message-handler.js"))
         ),
         
-        column(3,
+        column(2,
              
           select2Input(
             "originselect",
@@ -40,7 +40,7 @@ shinyUI(
           
         ),
         
-        column(3,
+        column(2,
           
          select2Input(
            "countryselect",
@@ -61,7 +61,7 @@ shinyUI(
       
         ),
         
-        column(3,
+        column(2,
                
          textInput(
            "siteselect",
@@ -75,7 +75,16 @@ shinyUI(
          
         ),
         
-        column(3,
+        column(2,
+               
+          textInput(
+            "labselect",
+            "Lab Number search"
+          )   
+          
+        ),
+        
+        column(4,
                
           textOutput('numbertext'),
           textOutput('originamounttext'),

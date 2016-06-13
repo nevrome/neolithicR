@@ -73,6 +73,12 @@ shinyServer(function(input, output, session) {
       material = c(MATERIAL_thesaurus$var[MATERIAL_thesaurus$cor %in% material], material)
     }
     
+    labterm = input$labselect
+    if (labterm != "") {
+      lnv <- grep(paste("(", labterm, ")+", sep = ""), dates$LABNR, ignore.case = TRUE)
+      dates <- dates[lnv,]
+    }
+    
     siteterm = input$siteselect
     if (siteterm != "") {
       sv <- grep(paste("(", siteterm, ")+", sep = ""), dates$SITE, ignore.case = TRUE)
