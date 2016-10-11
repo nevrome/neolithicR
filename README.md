@@ -6,13 +6,17 @@
 
 ### Coauthers
 
-- **[Dirk Seidensticker](https://uni-koeln.academia.edu/DirkSeidensticker)** (University of Cologne)
+- **[Dirk Seidensticker](https://uni-tuebingen.academia.edu/DirkSeidensticker)** (University of Tübingen)
 - **[Bernhard Weninger](http://ufg.phil-fak.uni-koeln.de/10115.html?&L=0)** (University of Cologne)
 
 ### Data
 
 * [CALPAL](https://uni-koeln.academia.edu/BernhardWeninger/CalPal): Radiocarbon Database of the [CalPal software package](http://monrepos-rgzm.de/forschung/ausstattung.html#calpal) by **Bernhard Weninger**. See [nevrome/CalPal-Database](https://github.com/nevrome/CalPal-Database) for an interface.
+<<<<<<< HEAD
 * [aDRAC](https://github.com/dirkseidensticker/aDRAC): Central African Radiocarbon Database by **Dirk Seidensticker**.
+=======
+* [aDRAC](https://github.com/dirkseidensticker/aDRAC): *Archives des datations radiocarbone d'Afrique centrale* by **Dirk Seidensticker**.
+>>>>>>> 016f9179b2db851e7300a5e5beb7fa5f0af09131
 * [EUROEVOL](http://discovery.ucl.ac.uk/1469811/): Cultural Evolution of Neolithic Europe Dataset by [**Katie Manning**, **Sue Colledge**, **Enrico Crema**, **Stephen Shennan** and **Adrian Timpson**](http://openarchaeologydata.metajnl.com/articles/10.5334/joad.40/).
 * [RADON](http://radon.ufg.uni-kiel.de/): Central European and Scandinavian database of 14C dates for the Neolithic and Early Bronze Age by [Dirk Raetzel-Fabian, Martin Furholt, **Martin Hinz**, Johannes Müller, **Christoph Rinne**, Karl-Göran Sjögren und Hans-Peter Wotzka](http://www.jna.uni-kiel.de/index.php/jna/article/view/65).
 
