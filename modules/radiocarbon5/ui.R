@@ -178,7 +178,7 @@ shinyUI(
     #       selectInput("mapsel", "Select map", choices = c(
     #          "Complete dataset" = "cd",
     #          "Current data selection" = "cs",
-    #          "CARD" = "ca",
+    #          "aDRAC" = "ca",
     #          "EUROEVOL" = "eu"
     #         )
     #       )

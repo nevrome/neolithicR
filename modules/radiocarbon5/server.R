@@ -52,7 +52,7 @@ shinyServer(function(input, output, session) {
     session$sendCustomMessage(
         type = 'startmessage',
         message = 
-        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases CARD, CalPal-DB, EUROEVOL and RADON. For reference see https://github.com/nevrome/neolithicR"
+        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases aDRAC, CalPal-DB, EUROEVOL and RADON. For reference see https://github.com/nevrome/neolithicR"
       )
   })
 
@@ -105,8 +105,8 @@ shinyServer(function(input, output, session) {
 
   })
   
-  # output$card <- renderUI({
-  #   tags$a(href = "https://github.com/dirkseidensticker/CARD", "Github")
+  # output$aDRAC <- renderUI({
+  #   tags$a(href = "https://github.com/dirkseidensticker/aDRAC", "Github")
   # })
   # 
   # output$euroevol <- renderUI({
@@ -203,7 +203,7 @@ shinyServer(function(input, output, session) {
   #     } else if (input$mapsel == "ca") {
   #       dfp <- filter(
   #         datestable, 
-  #         ORIGIN == "CARD"
+  #         ORIGIN == "aDRAC"
   #       )
   #     } else if (input$mapsel == "eu") {
   #       dfp <- filter(
