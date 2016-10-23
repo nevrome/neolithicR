@@ -1,11 +1,8 @@
 # WebGIS-App and Search Engine
 
-##**[neolithicRC.de](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/)**  
+**[neolithicRC.de](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/)**  
 
 ***
-
-### Structure
-![project structure diagram](https://raw.githubusercontent.com/nevrome/neolithicR/master/presentation/project_setup.png)
 
 ### Coauthers
 
@@ -18,6 +15,11 @@
 * [aDRAC](https://github.com/dirkseidensticker/aDRAC): *Archives des datations radiocarbone d'Afrique centrale* by **Dirk Seidensticker**.
 * [EUROEVOL](http://discovery.ucl.ac.uk/1469811/): Cultural Evolution of Neolithic Europe Dataset by [**Katie Manning**, **Sue Colledge**, **Enrico Crema**, **Stephen Shennan** and **Adrian Timpson**](http://openarchaeologydata.metajnl.com/articles/10.5334/joad.40/).
 * [RADON](http://radon.ufg.uni-kiel.de/): Central European and Scandinavian database of 14C dates for the Neolithic and Early Bronze Age by [Dirk Raetzel-Fabian, Martin Furholt, **Martin Hinz**, Johannes Müller, **Christoph Rinne**, Karl-Göran Sjögren und Hans-Peter Wotzka](http://www.jna.uni-kiel.de/index.php/jna/article/view/65).
+
+### Project structure
+<p align="center">
+<img src="https://raw.githubusercontent.com/nevrome/neolithicR/master/presentation/project_setup.png", alt="project structure diagram">
+</p>
 
 ### Acknowledgements
 
