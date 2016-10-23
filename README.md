@@ -4,6 +4,9 @@
 
 ***
 
+### Structure
+![project structure diagram](https://raw.githubusercontent.com/nevrome/neolithicR/master/presentation/project_setup.png)
+
 ### Coauthers
 
 - **[Dirk Seidensticker](https://uni-tuebingen.academia.edu/DirkSeidensticker)** (University of Tübingen)
