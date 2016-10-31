@@ -7,7 +7,7 @@ con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
 labnum <- datestable$LABNR 
-labnum <- head(labnum, 10000)
+#labnum <- head(labnum, 10000)
 dasize <- length(labnum)
 
 labsep <- list()
@@ -54,15 +54,24 @@ while (TRUE) {
     
     cur2 <- unlist(labsep[p2])
     
+    # just check, if cur is not already identified as a dup
     if (res[count] == 0) {
-      if (all(cur %in% cur2)) {
-        res[count] <- 2
-      } 
+      # just check, if cur2 has more than two elements -
+      # otherwise the accordance probably would have been already 
+      # identified by duplicated()
+      if (length(cur2) > 2) {
+        # check accordance
+        if (all(cur %in% cur2)) {
+          res[count] <- 2
+        } 
+      }
     }
     
     if (res[count + p2] == 0) {
-      if (all(cur2 %in% cur)) {
-        res[count + p2] <- 2
+      if (length(cur) > 2) {
+        if (all(cur2 %in% cur)) {
+          res[count + p2] <- 2
+        }
       }
     }
   }
