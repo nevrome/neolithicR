@@ -7,26 +7,8 @@ con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
 labnum <- datestable$LABNR 
-labnum <- head(labnum, 3000)
+labnum <- head(labnum, 10000)
 dasize <- length(labnum)
-
-# slow and not precise
-#
-# grepres <- rep(FALSE, dasize)
-# 
-# pb1 <- txtProgressBar(min = 0, max = dasize, initial = 0, style = 3) 
-# 
-# for (i in 1:dasize) {
-#   grepres <- grep(labnum[i], labnum, ignore.case = TRUE)
-#   
-#   if (length(grepres) >= 2) {
-#     grepres[i] <- TRUE
-#   } 
-# 
-#   setTxtProgressBar(pb1, i)
-# }
-# 
-# close(pb1)
 
 labsep <- list()
 
@@ -45,41 +27,44 @@ for (i in 1:dasize) {
 
 close(pb1)
 
-res <- rep(FALSE, dasize)
+# find simple dublicated values
+res <- as.integer((duplicated(labnum) | duplicated(labnum, fromLast = TRUE)))
 
 count <- 0
 
 pb2 <- txtProgressBar(min = 0, max = dasize, initial = 0, style = 3)
 
+# find other possibly dublicated values
 while (TRUE) {
   
   count <- count + 1
   
-  if (res[count]) {
-    labsep[1] <- NULL
-    next
-  }
-  
   cur <- unlist(labsep[1])
+  
+  # reduce size of list gradually
   labsep[1] <- NULL
   
+  # break condition
   if (length(labsep) == 0) {
-    break;
+    break
   }
   
+  # nested loop to check every possible relation
   for (p2 in 1:length(labsep)) {
     
-    if (res[count + p2]) {
-      next
+    cur2 <- unlist(labsep[p2])
+    
+    if (res[count] == 0) {
+      if (all(cur %in% cur2)) {
+        res[count] <- 2
+      } 
     }
     
-    cur2 <- unlist(labsep[p2])
-    comp1 <- cur %in% cur2
-    comp2 <- cur2 %in% cur
-    if (all(comp1) | all(comp2)) {
-      res[count] <- TRUE
-      res[count + p2] <- TRUE
-    } 
+    if (res[count + p2] == 0) {
+      if (all(cur2 %in% cur)) {
+        res[count + p2] <- 2
+      }
+    }
   }
   
   setTxtProgressBar(pb2, count)
