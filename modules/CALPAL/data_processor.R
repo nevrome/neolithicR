@@ -11,16 +11,16 @@ myfile <- getURL(
 
 CALPAL <- read.csv(
   textConnection(myfile), 
-  header = T, 
+  header = TRUE, 
   sep = ","
 )
 
 # remove ID column and empty colums at the end
-CALPAL <- CALPAL[,2:20]
+CALPAL <- CALPAL[, 2:20]
 
 # add key attributes ORIGIN and ID
 CALPAL <- data.frame(
-  ORIGIN = rep("CALPAL", nrow(CALPAL)),
+  ORIGIN = "CALPAL",
   ID = 1:nrow(CALPAL), 
   CALPAL
 )
@@ -31,10 +31,9 @@ datestable = dbGetQuery(con, 'select * from dates')
 
 # merge database with new data
 CALPALres <- merge(
-  CALPAL, 
-  datestable, 
-  all.x = TRUE, all.y = TRUE, 
-  incomparables = NULL
+  CALPAL,
+  datestable,
+  all = TRUE
 )
 
 # write results into database

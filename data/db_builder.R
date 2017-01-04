@@ -1,3 +1,4 @@
+# For the first setup create database rc.db in data/ with
 # sqlite3 rc.db
 
 # load libraries

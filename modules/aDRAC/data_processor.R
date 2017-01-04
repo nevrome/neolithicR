@@ -11,7 +11,7 @@ myfile <- getURL(
 
 aDRAC <- read.csv(
   textConnection(myfile), 
-  header = T, 
+  header = TRUE, 
   sep = ","
 )
 
@@ -20,7 +20,7 @@ colnames(aDRAC)[c(10,11,12)] <- c("LATITUDE", "LONGITUDE", "REFERENCE")
 
 # add key attributes ORIGIN and ID
 aDRAC <- data.frame(
-  ORIGIN = rep("aDRAC", nrow(aDRAC)),
+  ORIGIN = "aDRAC",
   ID = 1:nrow(aDRAC), 
   aDRAC
 )
@@ -31,10 +31,9 @@ datestable = dbGetQuery(con, 'select * from dates')
 
 # merge database with new data
 aDRACres <- merge(
-  aDRAC, 
-  datestable, 
-  all.x = TRUE, all.y = TRUE, 
-  incomparables = NULL
+  aDRAC,
+  datestable,
+  all = TRUE
 )
 
 # write results into database

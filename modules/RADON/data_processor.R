@@ -12,7 +12,7 @@ myfile <- getURL(
 
 RADON <- read.table(
   textConnection(myfile), 
-  header = T, 
+  header = TRUE, 
   sep = "\t",
   strip.white = TRUE,
   fill = TRUE,
@@ -21,19 +21,17 @@ RADON <- read.table(
 )
 
 # remove ID column
-RADON <- RADON[,-1]
+RADON <- RADON[, -1]
 
 # add key attributes ORIGIN and ID
 RADON <- data.frame(
-  ORIGIN = rep("RADON", nrow(RADON)),
+  ORIGIN = "RADON",
   ID = 1:nrow(RADON),
   RADON
 )
 
 # rename columns
-colnames(RADON)[c(13)] <- c(
-  "FEATURE_DESC"
-)
+colnames(RADON)[c(13)] <- c("FEATURE_DESC")
 
 # add page info into reference column
 for (i in 1:nrow(RADON)) {
@@ -43,8 +41,12 @@ for (i in 1:nrow(RADON)) {
     }
   }
 }
+
 # remove pages column
-RADON = RADON[,-18]
+RADON = subset(
+  RADON, 
+  select = -PAGES
+)
 
 # connect to database and load the content of the table "dates" into a dataframe
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
@@ -54,8 +56,7 @@ datestable = dbGetQuery(con, 'select * from dates')
 RADONres <- merge(
   RADON,
   datestable,
-  all.x = TRUE, all.y = TRUE,
-  incomparables = NULL
+  all = TRUE
 )
 
 # write results into database
