@@ -1,5 +1,7 @@
-#### load data ####
+#### load libraries ####
 library(RSQLite)
+
+#### load data ####
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
@@ -246,7 +248,6 @@ wood <- c(
   "lieg.wood"
 )
 add(wood, "wood")
-
 
 #### add already correct values ####
 varlist <- unique(datestable$MATERIAL)

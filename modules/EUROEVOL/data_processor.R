@@ -33,13 +33,32 @@ myfile <- getURL(
   .encoding = "UTF-8"
 )
 
-CommonSites <- data.frame(fread(myfile))
+# replace that one ugly value that prevents reading 
+myfile <- gsub(
+  "Lienheim \\\"3,1\\\"", 
+  "Lienheim \"3 - 1\"", 
+  myfile, 
+  fixed = TRUE
+)
+
+CommonSites <- fread(
+  myfile, 
+  data.table = FALSE
+)
 
 # merging of the two tables (Right inner join)
-EUROEVOL <- merge(x = C14Samples, y = CommonSites, by = "SiteID", all = FALSE)
+EUROEVOL <- merge(
+  x = C14Samples, 
+  y = CommonSites, 
+  by = "SiteID", 
+  all = FALSE
+)
 
 # adjust attribute selection
-EUROEVOL <- subset(EUROEVOL, select=-c(SiteID, C14ID, PhaseCode))
+EUROEVOL <- subset(
+  EUROEVOL,
+  select = -c(SiteID, C14ID, PhaseCode)
+)
 
 # adjust attribute names
 colnames(EUROEVOL) <- c(
@@ -57,7 +76,7 @@ colnames(EUROEVOL) <- c(
 
 # add key attributes ORIGIN and ID
 EUROEVOL <- data.frame(
-  ORIGIN = rep("EUROEVOL", nrow(EUROEVOL)),
+  ORIGIN = "EUROEVOL",
   ID = 1:nrow(EUROEVOL), 
   EUROEVOL
 )
@@ -67,15 +86,14 @@ con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
 # merge database with new data
-res <- merge(
-  EUROEVOL, 
-  datestable, 
-  all.x = TRUE, all.y = TRUE, 
-  incomparables = NULL
+EUROEVOLres <- merge(
+  EUROEVOL,
+  datestable,
+  all = TRUE
 )
 
 # write results into database
-dbWriteTable(con, "dates", res, overwrite = TRUE)
+dbWriteTable(con, "dates", EUROEVOLres, overwrite = TRUE)
 
 # test new state
 # test <- dbGetQuery(con, 'select * from dates')

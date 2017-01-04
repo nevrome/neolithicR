@@ -1,3 +1,4 @@
+# For the first setup create database rc.db in data/ with
 # sqlite3 rc.db
 
 # load libraries
@@ -54,7 +55,7 @@ rm(list = ls())
 source("modules/RADON/data_processor.R")
 rm(list = ls())
 
-# # connect to database 
+# # test: connect to database 
 # con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 # datestable = dbGetQuery(con, 'select * from dates')
 

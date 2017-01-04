@@ -1,9 +1,11 @@
-#### load data ####
+#### load libraries ####
 library(RSQLite)
+
+#### load data ####
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
-#### create thesaurus table and add function ####
+#### create thesaurus table and add() ####
 COUNTRY_thesaurus <- data.frame()
 add <- function(vec, term) {
   COUNTRY_thesaurus <<- rbind(
