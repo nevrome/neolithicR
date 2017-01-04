@@ -122,7 +122,8 @@ add(Macedonia, "Macedonia")
 Serbia <- c(
   "Serbia",
   "Serbia and Montenegro",
-  "Montenegro"
+  "Montenegro",
+  "Republic of Serbia"
 )
 add(Serbia, "Serbia and Montenegro")
 
