@@ -155,7 +155,7 @@ shinyServer(function(input, output, session) {
       ylab("C14 Age BP") + 
       theme_bw() +
       xlim(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)) +
-      geom_smooth(data = intcal13, aes(y = X46401, x = X50000), color = "darkgreen") +
+      geom_smooth(data = intcal13, aes(y = V2, x = V1), color = "darkgreen") +
       annotate(
         "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
         label = "Spline based on IntCal13", 
