@@ -190,62 +190,6 @@ shinyServer(function(input, output, session) {
       
   })
   
-  # # render density maps
-  # output$datedens <- renderPlot({
-  # 
-  #   withProgress(message = '● Loading Plot', value = 0, {
-  #     
-  #     # select dataset by user choice
-  #     if (input$mapsel == "cd") {
-  #       dfp <- datestable
-  #     } else if (input$mapsel == "cs") {
-  #       dfp <- datasetInput()
-  #     } else if (input$mapsel == "ca") {
-  #       dfp <- filter(
-  #         datestable, 
-  #         ORIGIN == "aDRAC"
-  #       )
-  #     } else if (input$mapsel == "eu") {
-  #       dfp <- filter(
-  #         datestable, 
-  #         ORIGIN == "EUROEVOL"
-  #       )
-  #     }
-  #     
-  #     # prepare map
-  #     ggplot() +
-  #       stat_density2d(
-  #         data = dfp,
-  #         aes(x = LONGITUDE, y = LATITUDE, size = ..density.., colour = ..density..),
-  #         contour = FALSE,
-  #         n = 200,
-  #         geom = "point"
-  #       ) +
-  #       scale_colour_gradient(
-  #         low = "white", high = "blue",
-  #         guide = "colourbar"
-  #       ) +
-  #       guides(
-  #         density = FALSE,
-  #         size = FALSE
-  #       ) +
-  #       geom_polygon(
-  #         data = map_data("world"),  
-  #         aes(x = long, y = lat, group = group),
-  #         alpha = 0, 
-  #         colour = "grey"
-  #       ) +
-  #       coord_map(
-  #         projection = "vandergrinten",
-  #         xlim = c(min(dfp$LONGITUDE)-20, max(dfp$LONGITUDE)+20),
-  #         ylim = c(min(dfp$LATITUDE)-2, max(dfp$LATITUDE)+2)
-  #       ) +
-  #       theme_bw()
-  # 
-  #   })
-  #     
-  # })
-  
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
     
