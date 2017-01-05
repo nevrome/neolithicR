@@ -119,52 +119,69 @@ shinyUI(
     
     tabPanel("Interactive map",
        
-      div(class="outer",
+      div(
+        
+        class="outer",
+
+        # Include custom CSS
+        tags$head(
+          includeCSS("styles.css")
+        ),
+
+        #output of map
+        leafletOutput(
+          "radiocarbon",
+          width = "100%",
+          height = "100%"
+        ),
          
-         # Include custom CSS  
-         tags$head(
-           includeCSS("styles.css")
-         ),
-  
-         #output of map
-         leafletOutput(
-           "radiocarbon", 
-           width = "100%", 
-           height = "100%"
-         ),
-         
-         # Control Panel 1 (General)
-         absolutePanel(
-           id = "controls", 
-           class = "panel panel-default", 
-           fixed = TRUE, 
-           draggable = TRUE, 
-           top = 65, 
-           left = "auto", 
-           right = 10, 
-           bottom = "auto",
-           width = 600, 
-           height = "auto",
-           
-           h3("NeolithicRC"),
-           #textOutput('numbertext'),
-           
-           #dates density plot
-           plotOutput(
-             "datesdensity", 
-             height = "250px", 
-             width = "100%"
-           ),
+        bootstrapPage(
+        # Control Panel 1 (General)
+        absolutePanel(
+          id = "controls", 
+          class = "panel panel-default", 
+          fixed = TRUE, 
+          draggable = TRUE, 
+          top = 65, 
+          left = "auto", 
+          right = 10, 
+          bottom = "auto",
+          width = 600, 
+          height = "auto",
           
-           #period barplot output 
-           plotOutput(
-             "calplot", 
-             height = "350px", 
-             width = "100%"
-           )
+          textOutput('numbertext2'),
+
+          HTML('
+            <button 
+              data-toggle = "collapse" 
+              data-target = "#dataplots"
+              class  = "closeopen"> 
+              ▼ See date density and calibration plots ▼
+            </button>
+          '),
            
-         )
-         
+          div(
+             
+            id = 'dataplots',  
+            class = "collapse", # start collapsed
+            #class="collapse in", # start not collapsed
+           
+            #dates density plot
+            plotOutput(
+              "datesdensity", 
+              height = "250px", 
+              width = "100%"
+            ),
+            
+            #period barplot output 
+            plotOutput(
+              "calplot", 
+              height = "350px", 
+              width = "100%"
+            )
+          ) 
+        ))
+  
       )
     ),
   

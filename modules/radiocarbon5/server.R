@@ -289,11 +289,10 @@ shinyServer(function(input, output, session) {
           urlTemplate = tiles,
           attribution = att)  %>% 
         fitBounds(
-          min(seldata$LONGITUDE),
-          min(seldata$LATITUDE),
-          max(seldata$LONGITUDE)+10,
-          max(seldata$LATITUDE)
-          # -70, -35, 270, 65
+          min(seldata$LONGITUDE) - 1,
+          min(seldata$LATITUDE) - 1,
+          max(seldata$LONGITUDE) + 1,
+          max(seldata$LATITUDE) + 1
           ) %>% 
         addCircles(
           lat = seldata$LATITUDE, 
@@ -326,9 +325,16 @@ shinyServer(function(input, output, session) {
     
   })
   
-  #render textelement with number of dates
+  #render textelements
   output$numbertext = renderPrint({
     cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected.")
+  })
+  
+  output$numbertext2 = renderPrint({
+    cat(nrow(
+      datasetInput()), " selected and", 
+      sum(datasetInput()$SPATQUAL == "possibly correct"), 
+      " well mappable.")
   })
   
   output$originamounttext = renderPrint({
