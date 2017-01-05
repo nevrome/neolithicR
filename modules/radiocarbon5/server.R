@@ -253,7 +253,7 @@ shinyServer(function(input, output, session) {
 
       #define sources (static, then dynamic)
       tiles <- input$tiles
-      att <- "see Basemap settings"
+      att <- ""
       seldata <- datasetInput()
       
       seldata <- filter(
@@ -350,6 +350,10 @@ shinyServer(function(input, output, session) {
   output$spatqualtext = renderPrint({
     notcorr <- nrow(datasetInput()) - sum(datasetInput()$SPATQUAL == "possibly correct")
     cat(notcorr, " dates have no or doubtful spatial information.")
+  })
+  
+  output$link = renderPrint({
+     HTML("<a href = 'http://leaflet-extras.github.io/leaflet-providers/preview/'>tile source list</a>")
   })
   
   #render data-download

@@ -24,13 +24,12 @@ h1, h2, h3, h4 { font-weight: 400; }
 .closeopen {
   position: absolute;
   right: 15px;
-  top: 0;
+	top: 0;
   background: white;
   border: none;
   margin: 0;
   padding: 0;
 }
-
 
 #controls {
   /* Appearance */

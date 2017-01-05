@@ -146,7 +146,7 @@ shinyUI(
         ),
          
         bootstrapPage(
-        # Control Panel 1 (General)
+        # Panel 1 (Plots)
         absolutePanel(
           id = "controls", 
           class = "panel panel-default", 
@@ -160,7 +160,7 @@ shinyUI(
           height = "auto",
           
           textOutput('numbertext2'),
-
+          
           HTML('
             <button 
               data-toggle = "collapse" 
@@ -175,7 +175,7 @@ shinyUI(
             id = 'dataplots',  
             class = "collapse", # start collapsed
             #class="collapse in", # start not collapsed
-           
+            
             #dates density plot
             plotOutput(
               "datesdensity", 
@@ -190,68 +190,55 @@ shinyUI(
               width = "100%"
             )
           ) 
-        ))
-  
-      )
-    ),
-  
-    # tabPanel(
-    #   'Context maps',
-    #   
-    #   fluidRow(
-    #   
-    #     column(3, 
-    #     
-    #       selectInput("mapsel", "Select map", choices = c(
-    #          "Complete dataset" = "cd",
-    #          "Current data selection" = "cs",
-    #          "aDRAC" = "ca",
-    #          "EUROEVOL" = "eu"
-    #         )
-    #       )
-    #       
-    #     ),
-    #     
-    #     column(6, 
-    #   
-    #        helpText(
-    #          "Density estimation maps for the different datasets and the current selection. Loading the maps takes some time."
-    #        ),
-    #        
-    #        helpText(
-    #          "Map projection is Van der Grinten."
-    #        )     
-    #            
-    #     )
-    #   
-    #   ), 
-    #   
-    #   plotOutput(
-    #       "datedens",
-    #       height = "700px",
-    #       width = "100%"
-    #     )
-    #   
-    # ),
+        ),
+
+        # Panel 2 (Basemap)
+        absolutePanel(
+          id = "controls",
+          class = "panel panel-default",
+          fixed = TRUE,
+          draggable = TRUE,
+          top = 65,
+          right = "auto",
+          left = 50,
+          bottom = "auto",
+          width = 300,
+          height = "auto",
+
+          htmlOutput('link'),
     
-    tabPanel(
-      'Basemap settings',
-      
-      textInput(
-        "tiles", 
-        "Specify Basemap tile sources", 
-        value = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
-        width = 800
-      ),
-      
-      a(href= "http://leaflet-extras.github.io/leaflet-providers/preview/", 
-        "See http://leaflet-extras.github.io/leaflet-providers/preview/ for other setups."),
-      helpText(
-        "You can change the appearance of this map by replacing the tile source link above."
+          HTML('
+            <button 
+              data-toggle = "collapse" 
+              data-target = "#basemapset"
+              class  = "closeopen"> 
+              ▼ Select basemap ▼
+            </button>
+          '),
+          
+          div(
+            
+            id = 'basemapset',  
+            class = "collapse", # start collapsed
+
+            selectInput(
+              "tiles", 
+              label = "",
+              choices = list(
+                "Esri.WorldPhysical" = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}", 
+                "OpenTopoMap" = "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", 
+                "Esri.NatGeoWorldMap" = "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"), 
+              selected = 1
+            ),
+            
+            helpText(
+              "You can change the appearance of this map by replacing the tile source."
+            )
+          )
+        )
+       )
       )
-        
     )
-      
   )
     
 )
