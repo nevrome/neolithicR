@@ -137,6 +137,7 @@ shinyServer(function(input, output, session) {
           y = "",
           x = "calibrated Age BP"
         ) +
+        scale_x_reverse() +
         ggtitle("Density of date selection") +
         theme_bw()
       
@@ -154,8 +155,9 @@ shinyServer(function(input, output, session) {
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      xlim(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)) +
+      xlim(min(datasetInput()$CALAGE) - 100, max(datasetInput()$CALAGE) + 100) +
       geom_smooth(data = intcal13, aes(y = V2, x = V1), color = "darkgreen") +
+      scale_x_reverse() +
       annotate(
         "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
         label = "Spline based on IntCal13", 
@@ -242,7 +244,7 @@ shinyServer(function(input, output, session) {
           lat = seldata$LATITUDE, 
           lng = seldata$LONGITUDE, 
           color = seldata$MAINCOLOR,
-          radius = seldata$CALAGE*2,
+          radius = seldata$CALAGE/2,
           popup = site.popup
         )    
 
