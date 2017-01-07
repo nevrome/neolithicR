@@ -125,8 +125,6 @@ shinyServer(function(input, output, session) {
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
     
-    withProgress(message = '● Loading Density Plot', value = 0, {
-    
       ggplot(datasetInput(), aes(x = CALAGE)) +
         geom_rug() +
         geom_line(
@@ -141,9 +139,7 @@ shinyServer(function(input, output, session) {
         scale_x_reverse() +
         ggtitle("Density of date selection") +
         theme_bw()
-      
-    })
-      
+
   })
   
   
@@ -276,6 +272,8 @@ shinyServer(function(input, output, session) {
         )
       }
       
+      setProgress(value = 0.3)
+      
       #text popup definition
       site.popup <- paste0(
         "<strong>Data Source: </strong>", 
@@ -291,7 +289,7 @@ shinyServer(function(input, output, session) {
       )
       
       #preparation of mapping for shiny frontend
-      leaflet(seldata) %>% 
+      mapres <- leaflet(seldata) %>% 
         addTiles(
           urlTemplate = tiles,
           attribution = att)  %>% 
@@ -309,6 +307,9 @@ shinyServer(function(input, output, session) {
           popup = site.popup
         )    
 
+      setProgress(value = 1)
+      
+      return(mapres)
     })
   })
   
