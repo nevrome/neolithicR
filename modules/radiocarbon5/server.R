@@ -30,6 +30,7 @@ library(mapproj)
 library(shinysky)
 library(dplyr)
 library(raster)
+library(plyr)
 
 #### loading data ####
 
@@ -346,8 +347,23 @@ shinyServer(function(input, output, session) {
   })
   
   output$originamounttext = renderPrint({
-    unique(datasetInput()$ORIGIN)
-    cat("The selected dates are from the source databases: ", unique(datasetInput()$ORIGIN, "."))
+    linklist <- unique(datasetInput()$ORIGIN) %>%
+      mapvalues(
+        from = c("RADON", "aDRAC", "EUROEVOL", "CALPAL"),
+        to = c(
+          "<a href = 'http://radon.ufg.uni-kiel.de/'>RADON</a>",
+          "<a href = 'https://github.com/dirkseidensticker/aDRAC'>aDRAC</a>",
+          "<a href = 'http://discovery.ucl.ac.uk/1469811/'>EUROEVOL</a>",
+          "<a href = 'https://uni-koeln.academia.edu/BernhardWeninger/CalPal'>CALPAL</a>"
+        ),
+        warn_missing = FALSE
+      )
+    
+    HTML(
+      "The selected dates are from the following source databases: ", 
+      "<br>",
+      paste(linklist, collapse = ' ')
+    )
   })
   
   output$duplitext = renderPrint({
