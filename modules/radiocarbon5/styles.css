@@ -1,5 +1,9 @@
 /* source: https://github.com/rstudio/shiny-examples/blob/master/063-superzip-example/styles.css */
 
+.selectize-dropdown-content {
+  max-height: 600px; 
+}
+
 input[type="number"] {
   max-width: 80%;
 }

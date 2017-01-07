@@ -202,7 +202,7 @@ shinyUI(
           right = "auto",
           left = 50,
           bottom = "auto",
-          width = 300,
+          width = 350,
           height = "auto",
 
           htmlOutput('link'),
@@ -221,18 +221,10 @@ shinyUI(
             id = 'basemapset',  
             class = "collapse", # start collapsed
 
-            selectInput(
-              "tiles", 
-              label = "",
-              choices = list(
-                "Esri.WorldImagery" = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                "Esri.WorldPhysical" = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}", 
-                "OpenTopoMap" = "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", 
-                "OpenMapSurfer.Roads" = "http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}",
-                "Stamen.TonerBackground" = "http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.{ext}",
-                "Esri.NatGeoWorldMap" = "http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"
-              ),
-              selected = 1
+            selectizeInput(
+              'basemapselect', 
+              label = NULL, 
+              choices = NULL
             ),
             
             helpText(

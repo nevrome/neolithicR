@@ -1,0 +1,1 @@
+mogrify -resize 200 *

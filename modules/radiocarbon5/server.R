@@ -29,6 +29,7 @@ library(maps)
 library(mapproj)
 library(shinysky)
 library(dplyr)
+library(raster)
 
 #### loading data ####
 
@@ -192,13 +193,73 @@ shinyServer(function(input, output, session) {
       
   })
   
+  # prepare the pictures for the basemap select input
+  mapurl <- session$registerDataObj(
+    
+    name = 'basemapselection',
+    data = NULL,
+    
+    filter = function(data, req) {
+      
+      query <- parseQueryString(req$QUERY_STRING)
+      base <- query$base  
+      
+      # save picture to a temporary PNG file
+      image <- tempfile()
+      tryCatch({
+        png(image, width = 200, height = 100, bg = 'transparent')
+          paste0("data/images/", base) %>%  
+            brick %>%
+            plotRGB
+      }, finally = dev.off())
+      
+      # send the PNG image back in a response
+      shiny:::httpResponse(
+        200, 'image/png', readBin(image, 'raw', file.info(image)[, 'size'])
+      )
+      
+    }
+  )
+  
+  # update the render function for the basemap select input
+  updateSelectizeInput(
+    session, 'basemapselect', server = TRUE,
+    choices = c(
+      "Esri.WorldImagery",
+      "Esri.WorldPhysical",
+      "Esri.NatGeoWorldMap",
+      "OpenTopoMap",
+      "OpenMapSurfer.Roads"
+    ),
+    selected = "Esri.WorldImagery",
+    options = list(render = I(sprintf(
+      "{
+          option: function(item, escape) {
+            return '<div><img width=\"100\" height=\"50\" ' +
+                'src=\"%s&base=' + escape(item.value) + '\" />' +
+                escape(item.value) + '</div>';
+          }
+      }",
+      mapurl
+    )))
+  )
+  
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
     
     withProgress(message = '● Loading Map', value = 0, {
 
+      # tile source switch
+      tiles <- switch(
+        input$basemapselect,
+        "Esri.WorldImagery" = {"http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"},
+        "Esri.WorldPhysical" = {"https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}"},
+        "OpenTopoMap" = {"http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"},
+        "OpenMapSurfer.Roads" = {"http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}"},
+        "Esri.NatGeoWorldMap" = {"http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"}
+      )
+
       #define sources (static, then dynamic)
-      tiles <- input$tiles
       att <- ""
       seldata <- datasetInput()
       
