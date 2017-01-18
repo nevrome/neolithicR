@@ -35,11 +35,16 @@ setTxtProgressBar(pb, 10)
 
 #### pre loop calculations #### 
 
-# create longitude and latitude vectors
+# create longitude and latitude vectors (warnings turned off)
+oldw <- getOption("warn")
+options(warn = -1)
+
 lonvec <- datestable$LONGITUDE %>%
   taRifx::destring()
 latvec <- datestable$LATITUDE %>%
   taRifx::destring()
+
+options(warn = oldw)
 
 # determine dates without coordinate information
 lonvec %>% is.na %>% which -> emptylon
@@ -48,7 +53,7 @@ c(emptylon, emptylat) %>% unique -> empty
 
 # determine country from coordinates and world map
 datestable$COORDCOUNTRY[-empty] <- data.frame(lon = lonvec, lat = latvec) %>%
-  extract(-empty, ) %>% 
+  `[`(-empty, ) %>% 
   SpatialPoints(proj4string = worldproj) %>%
   over(., world) %>%
   `$`(ADMIN) %>% 
