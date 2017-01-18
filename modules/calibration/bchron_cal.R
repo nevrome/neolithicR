@@ -1,3 +1,11 @@
+# setup progress bar
+pb <- txtProgressBar(
+  max = 100,
+  style = 3
+)
+
+
+
 # load libraries
 library(Bchron)
 library(RSQLite)
@@ -18,6 +26,13 @@ c(toosmall, toobig) %>% unique -> outofrange
 # copy these dates without calibration
 datestable$CALAGE[outofrange] <- datestable$C14AGE[outofrange]
 datestable$CALSTD[outofrange] <- datestable$C14STD[outofrange]
+
+
+
+# increment progress bar 
+setTxtProgressBar(pb, 5)
+
+
 
 # calibration
 interval683 <- datestable[-outofrange, ] %>%
@@ -42,6 +57,13 @@ interval683 <- datestable[-outofrange, ] %>%
   ) %>%
   t %>%
   as.data.frame
+
+
+
+# increment progress bar 
+setTxtProgressBar(pb, 95)
+
+
  
 # preliminary: take the mean of the borders as CALAGE and the distance
 # of CALAGE to the upper and lower 68.3% interval as CALSTD 
@@ -55,3 +77,11 @@ dbWriteTable(con, "dates", datestable, overwrite = TRUE)
 
 # test new state
 # test <- dbGetQuery(con, 'select * from dates')
+
+
+
+# increment progress bar 
+setTxtProgressBar(pb, 100)
+
+# close progress bar
+close(pb)
