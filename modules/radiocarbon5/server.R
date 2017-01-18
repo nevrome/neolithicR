@@ -153,16 +153,16 @@ shinyServer(function(input, output, session) {
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      xlim(min(datasetInput()$CALAGE) - 100, max(datasetInput()$CALAGE) + 100) +
+      xlim(min(datasetInput()$CALAGE) - 200, max(datasetInput()$CALAGE) + 200) +
       geom_smooth(data = intcal13, aes(y = V2, x = V1), color = "darkgreen") +
       scale_x_reverse() +
       annotate(
-        "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -5, 
+        "text", x = Inf, y = -Inf, hjust = -0.2, vjust = -5, 
         label = "Spline based on IntCal13", 
         size = 5, color = "darkgreen"
       ) +      
       annotate(
-        "text", x = Inf, y = -Inf, hjust = 1.1, vjust = -3, 
+        "text", x = Inf, y = -Inf, hjust = -0.3, vjust = -3, 
         label = "www.radiocarbon.org", 
         size = 5, color = "darkgreen"
       )
@@ -172,15 +172,16 @@ shinyServer(function(input, output, session) {
       
       # plot with a big amount of dates
       calplotc <- calplotc +
-      geom_point() +
-      ylim(min(datasetInput()$C14AGE), max(datasetInput()$C14AGE))
+        geom_point() +
+        ylim(min(datasetInput()$C14AGE) - 200, max(datasetInput()$C14AGE) + 200)
 
       # plot with a small amount of dates  
       if (nrow(datasetInput()) < 200) {
         
         calplotc <- calplotc +
-        geom_rug() +
-        geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3)
+          geom_rug() +
+          geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3) +
+          geom_errorbar(aes(ymin = C14AGE-C14STD, ymax = C14AGE+C14STD), alpha = 0.3)
      
       }
 
