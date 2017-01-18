@@ -107,22 +107,6 @@ shinyServer(function(input, output, session) {
 
   })
   
-  # output$aDRAC <- renderUI({
-  #   tags$a(href = "https://github.com/dirkseidensticker/aDRAC", "Github")
-  # })
-  # 
-  # output$euroevol <- renderUI({
-  #   tags$a(href = "http://discovery.ucl.ac.uk/1469811/", "UCL")
-  # })
-  # 
-  # output$radon <- renderUI({
-  #   tags$a(href = "http://radon.ufg.uni-kiel.de/", "Uni Kiel")
-  # })
-  # 
-  # output$radonb <- renderUI({
-  #   tags$a(href = "http://radon-b.ufg.uni-kiel.de/", "Uni Kiel")
-  # })
-  
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
     
