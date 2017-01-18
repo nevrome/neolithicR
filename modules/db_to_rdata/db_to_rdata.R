@@ -21,7 +21,7 @@ oldw <- getOption("warn")
 options(warn = -1)
 
 datestable$LONGITUDE <- datestable$LONGITUDE %>%
-  suppressWarnings(taRifx::destring(.))
+  taRifx::destring()
 datestable$LATITUDE <- datestable$LATITUDE %>%
   taRifx::destring()
 
