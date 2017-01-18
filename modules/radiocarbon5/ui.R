@@ -20,7 +20,7 @@ shinyUI(
     "neolithicRC - Search tool for radiocarbon dates", 
     id = "nav",
 
-    tabPanel("Search and Filter",
+    tabPanel("Search and Filter ⌕",
     
     HTML('
       <a href = "https://github.com/nevrome/neolithicR">
@@ -127,7 +127,7 @@ shinyUI(
             
     ),
     
-    tabPanel("Interactive map",
+    tabPanel("Interactive map ⚄",
        
       div(
         
