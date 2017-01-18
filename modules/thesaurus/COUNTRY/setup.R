@@ -25,6 +25,11 @@ unknown <- c(
 )
 add(unknown, "unknown")
 
+Andorra <- c(
+  "Andora"
+)
+add(Andorra, "Andorra")
+
 Israel <- c(
   "Israel/Palestina"
 )
