@@ -6,6 +6,7 @@
 .Rproj.user
 .Rhistory
 .RData
+*.RData
 
 ######################
 # Shinyapps.io deploy rsconnect
@@ -58,3 +59,8 @@ modules/radiocarbon5/data/*.RData
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+#################
+# buffered data
+#################
+*.csv

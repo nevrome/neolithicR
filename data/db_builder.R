@@ -54,6 +54,8 @@ source("modules/aDRAC/data_processor.R")
 rm(list = ls())
 source("modules/RADON/data_processor.R")
 rm(list = ls())
+source("modules/CONTEXT/data_processor.R")
+rm(list = ls())
 
 # # test: connect to database 
 # con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
