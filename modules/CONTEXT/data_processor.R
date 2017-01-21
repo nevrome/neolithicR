@@ -9,11 +9,12 @@ download.file("http://context-database.uni-koeln.de/download/Boehner_and_Schyle_
 con <- unzip(temp, "Boehner_and_Schyle_Near_Eastern_radiocarbon_CONTEXT_database_2002-2006_doi10.1594GFZ.CONTEXT.Ed1.csv")
 context <- read.csv("Boehner_and_Schyle_Near_Eastern_radiocarbon_CONTEXT_database_2002-2006_doi10.1594GFZ.CONTEXT.Ed1.csv", 
                     sep = ';', 
-                    fileEncoding="latin1")
+                    fileEncoding="latin1",
+                    stringsAsFactors = FALSE)
 unlink(temp)
 
 # rename ID column to not interfere with generic ID produced later
-context <- rename(context, c("ID"="origID"))
+context <- plyr::rename(context, c("ID" = "origID"))
 
 # add key attributes ORIGIN and ID
 context <- data.frame(
@@ -26,9 +27,13 @@ context <- data.frame(
 con <- dbConnect(RSQLite::SQLite(), "data/rc.db")
 datestable = dbGetQuery(con, 'select * from dates')
 
-# drop Columns which are not present in DB
-drops <- c(setdiff(colnames(context), colnames(datestable)))
+# drop columns which are not present in DB
+drops <- dplyr::setdiff(colnames(context), colnames(datestable))
 context <- context[ , !(names(context) %in% drops)]
+
+# transform coordinate columns 
+context$LATITUDE <- as.numeric(sub(",", ".", context$LATITUDE))
+context$LONGITUDE <- as.numeric(sub(",", ".", context$LONGITUDE))
 
 # merge database with new data
 contextres <- merge(
