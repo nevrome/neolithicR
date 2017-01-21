@@ -74,6 +74,8 @@ rm(list = ls())
 # run calibration
 source("modules/calibration/bchron_cal.R")
 rm(list = ls())
+# clean garbage
+gc()
 
 # export db to .Rdata file and filter
 source("modules/db_to_rdata/db_to_rdata.R")
