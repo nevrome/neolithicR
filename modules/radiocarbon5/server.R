@@ -334,12 +334,13 @@ shinyServer(function(input, output, session) {
   output$originamounttext = renderPrint({
     linklist <- unique(datasetInput()$ORIGIN) %>%
       mapvalues(
-        from = c("RADON", "aDRAC", "EUROEVOL", "CALPAL"),
+        from = c("RADON", "aDRAC", "EUROEVOL", "CALPAL", "CONTEXT"),
         to = c(
           "<a href = 'http://radon.ufg.uni-kiel.de/'>RADON</a>",
           "<a href = 'https://github.com/dirkseidensticker/aDRAC'>aDRAC</a>",
           "<a href = 'http://discovery.ucl.ac.uk/1469811/'>EUROEVOL</a>",
-          "<a href = 'https://uni-koeln.academia.edu/BernhardWeninger/CalPal'>CALPAL</a>"
+          "<a href = 'https://uni-koeln.academia.edu/BernhardWeninger/CalPal'>CALPAL</a>",
+          "<a href = 'http://context-database.uni-koeln.de'>CONTEXT</a>"
         ),
         warn_missing = FALSE
       )
