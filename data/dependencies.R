@@ -24,8 +24,6 @@ requiredPackages = c('Bchron',
                      'rworldmap',
                      'rworldxtra',
                      'shiny',
-                     'ShinyDash',
-                     'shinysky',
                      'sp',
                      'stringr',
                      'taRifx')
@@ -36,3 +34,7 @@ for(p in requiredPackages){
   library(p,character.only = TRUE)
 }
 
+# Pakete, die nicht in CRAN enthalten sind:
+library(devtools)
+devtools::install_github("ShinyDash", "trestletech")
+devtools::install_github("AnalytixWare/ShinySky")
