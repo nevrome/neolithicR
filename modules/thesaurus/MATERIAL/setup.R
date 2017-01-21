@@ -39,7 +39,7 @@ add(brain, "brain")
 bone <- c(
   "bone", "bone ", "bones", "Bone",
   "cremated bones",
-  "human bone",
+  "human bone", "human",
   "collagen, bone", "collagen",
   "bone, rib",
   "bone/apatit",
@@ -154,7 +154,7 @@ plant <- c(
 add(plant, "plant remains")
 
 shell <- c(
-  "Shell (River/Ocean)", "Shell (Land)", "shells", "shell ", "shell",
+  "Shell (River/Ocean)", "Shell (Land)", "shells", "shell ", "shell", "seashell",
   "coquille",
   "mollusc",  "molluscs", "marine mollusks",
   "Escargotière",
@@ -199,9 +199,10 @@ add(tissue, "tissue")
 unknown <- c(
   "k. A.",
   "n/a",
-  "",
+  "", "---",
   "nd",
   " nd",
+  "n.d.",
   "miscellaneous",
   "charcoal?",
   "NULL",
@@ -219,7 +220,7 @@ unknown <- c(
   "short-lived",
   "other",
   "carbonised residue", "carbonate", "organic residue",
-  "organic matter", "organic substance", "organic", "organic ", "organic  ", "organic   ",
+  "organic matter", "organic substance", "organic", "organic ", "organic  ", "organic   ", "organic material",
   "tar", "lump of tar",
   "lens",
   "humates    ",
@@ -248,6 +249,31 @@ wood <- c(
   "lieg.wood"
 )
 add(wood, "wood")
+
+aragonite <- c(
+  "aragonite",
+  "aragonte"
+)
+add(aragonite, "aragonite")
+
+#### test if thesaurus has independent values ####
+if(
+  unique(datestable$MATERIAL) %in% 
+  MATERIAL_thesaurus$var %>%
+  all %>%
+  `!`
+) {warning(
+  "The country thesaurus has independent values! 
+    (that's ok - just FYI)"
+  )
+}
+
+# what is independent?
+# unique(datestable$COUNTRY)[
+#   unique(datestable$COUNTRY) %in% 
+#     COUNTRY_thesaurus$var %>% 
+#     `!`
+# ]
 
 #### add already correct values ####
 varlist <- unique(datestable$MATERIAL)

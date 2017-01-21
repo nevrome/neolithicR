@@ -31,9 +31,13 @@ Andorra <- c(
 add(Andorra, "Andorra")
 
 Israel <- c(
-  "Israel/Palestina"
+  "Israel/Palestina",
+  "Israel, Palestine",
+  "Israel",
+  "West Bank",
+  "Gaza"
 )
-add(Israel, "Israel")
+add(Israel, "Israel and Palestine")
 
 Egypt <- c(
   "Egypt_Sinai"
@@ -41,12 +45,14 @@ Egypt <- c(
 add(Egypt, "Egypt")
 
 Yugoslavia <- c(
-  "SFRY"
+  "SFRY",
+  "Yugoslavia"
 )
 add(Yugoslavia, "Yugoslavia")
 
 Central_African_Republic <- c(
-  "CAF"
+  "CAF",
+  "Central African Republic"
 )
 add(Central_African_Republic, "Central African Republic")
 
@@ -56,12 +62,14 @@ Gabon <- c(
 add(Gabon, "Gabon")
 
 Congo <- c(
-  "COG"
+  "COG",
+  "Republic of the Congo"
 )
 add(Congo, "Congo")
 
 Democratic_Republic_of_the_Congo <- c(
-  "COD"
+  "COD",
+  "Democratic Republic of the Congo"
 )
 add(Democratic_Republic_of_the_Congo, "Democratic Republic of the Congo")
 
@@ -71,7 +79,8 @@ Rwanda <- c(
 add(Rwanda, "Rwanda")
 
 Cameroon <- c(
-  "CMR"
+  "CMR",
+  "Cameroon"
 )
 add(Cameroon, "Cameroon")
 
@@ -86,7 +95,8 @@ Equatorial_Guinea <- c(
 add(Equatorial_Guinea, "Equatorial Guinea")
 
 Ghana <- c(
-  "GHA"
+  "GHA",
+  "Ghana"
 )
 add(Ghana, "Ghana")
 
@@ -106,15 +116,23 @@ United_Arab_Emirates <- c(
 )
 add(United_Arab_Emirates, "United Arab Emirates")
 
-Great_Britain <- c(
+United_Kingdom <- c(
   "Great Britain",
-  "United Kingdom"
+  "United Kingdom",
+  "England/Wales",
+  "Scotland",
+  "Isle of Man",
+  "Channel Isles",
+  "Guernsey",
+  "Jersey",
+  "Wales"
 )
-add(Great_Britain, "Great Britain")
+add(United_Kingdom, "United Kingdom")
 
 Cyprus <- c(
   "Cyprus",
-  "Akrotiri Sovereign Base Area"
+  "Akrotiri Sovereign Base Area",
+  "Northern Cyprus"
 )
 add(Cyprus, "Cyprus")
 
@@ -131,6 +149,44 @@ Serbia <- c(
   "Republic of Serbia"
 )
 add(Serbia, "Serbia and Montenegro")
+
+Finland <- c(
+  "Finland",
+  "Aland",
+  "Åland Islands"
+)
+add(Finland, "Finland")
+
+Italy <- c(
+  "Italy",
+  "Sardinia"
+)
+add(Italy, "Italy")
+
+Bosnia <- c(
+  "Bosnia and Herzegovina",
+  "Bosnia-Herzegovine"
+)
+add(Bosnia, "Bosnia and Herzegovina")
+
+#### test if thesaurus has independent values ####
+if(
+  unique(datestable$COUNTRY) %in% 
+  COUNTRY_thesaurus$var %>%
+  all %>%
+  `!`
+) {warning(
+    "The country thesaurus has independent values! 
+    (that's ok - just FYI)"
+  )
+}
+
+# what is independent?
+# unique(datestable$COUNTRY)[
+#   unique(datestable$COUNTRY) %in%
+#     COUNTRY_thesaurus$var %>%
+#     `!`
+# ] %>% sort
 
 #### add already correct values ####
 varlist <- unique(datestable$COUNTRY)
