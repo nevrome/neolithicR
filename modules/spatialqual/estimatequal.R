@@ -117,11 +117,12 @@ for (i in 1:ldb) {
   # test, if the initial country value is a form of "nothing"
   # yes: stop and store country name determined from coords + "possibly correct"
   # no: go on
-  if (dbcountry %in% c("", "n/a", "nd", "NoCountry") | is.na(dbcountry)) {
+  if (corc == "unknown" | is.na(dbcountry)) {
     datestable$COUNTRY[i] <- coordcountry
     datestable$SPATQUAL[i] <- "possibly correct"
     next()
-  # test, if the initial country value is equal to the country name determined from coords
+  # test, if the initial country value is equal to the country name determined 
+  # from coords
   # yes: ok, go on
   # no: stop and store country name determined from coords + "doubtful correct"
   } else if (!(coordcountry %in% dbcountrysyn)) {
@@ -137,6 +138,13 @@ for (i in 1:ldb) {
   # increment progress bar 
   setTxtProgressBar(pb, 50 + 48 * (i/ldb))
 }
+
+# test <- filter(
+#   datestable,
+#   SPATQUAL != "possibly correct" & SPATQUAL != "no coords"
+# ) %>%
+#   `[`(, c("LABNR", "SITE", "LATITUDE", "LONGITUDE", "COUNTRY",
+#           "COORDCOUNTRY", "SPATQUAL"))
 
 
 

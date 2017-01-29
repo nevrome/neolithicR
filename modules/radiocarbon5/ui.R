@@ -127,7 +127,7 @@ shinyUI(
             
     ),
     
-    tabPanel("Interactive map ⚄",
+    tabPanel("Interactive map ⚆",
        
       div(
         
