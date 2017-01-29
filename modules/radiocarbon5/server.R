@@ -7,14 +7,19 @@
 # deployApp('modules/radiocarbon5/')
 
 #Reminder: installing packages
-# install.packages(c("magrittr", "dplyr", "shiny", "ggplot2", "gtools", "DT", "Bchron", "maps", "mapproj", "devtools"))
+# install.packages(c(
+#   "magrittr", "dplyr", "shiny", "ggplot2", "gtools", "DT", "Bchron",
+#   "leaflet", "maps", "mapproj", "devtools", "raster", "plyr"
+# ), repos = "http://cran.uni-muenster.de/")
+# library(devtools)
 # devtools::install_github("AnalytixWare/ShinySky")
 # devtools::install_github("trestletech/ShinyDash")
 
 #Reminder: push to vm
 # scp -r -P PORTNUMBER /home/clemens/Rstats/neolithicR/modules/radiocarbon5/* USERNAME@134.2.2.137:/home/USERNAME/ShinyApps/neolithicRC/
 
-
+#Reminder: restart shiny server
+# sudo systemctl restart shiny-server 
 
 #### loading libraries ####
 
@@ -54,7 +59,7 @@ shinyServer(function(input, output, session) {
     session$sendCustomMessage(
         type = 'startmessage',
         message = 
-        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases aDRAC, CalPal-DB, EUROEVOL and RADON. For reference see https://github.com/nevrome/neolithicR. - Last data update: 11.10.2016"
+        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases aDRAC, CalPal, EUROEVOL, RADON and CONTEXT. For reference see https://github.com/nevrome/neolithicR. - Last data update: 29.01.2017"
       )
   })
 
