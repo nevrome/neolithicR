@@ -359,8 +359,10 @@ shinyServer(function(input, output, session) {
   })
   
   output$duplitext = renderPrint({
+    
     adates <- datasetInput() %>% nrow
     ainddates <- datasetInput()$LABNR %>% unique %>% length
+    
     if (adates != ainddates) {
       
       doubles <- datasetInput()[
@@ -371,7 +373,6 @@ shinyServer(function(input, output, session) {
       if (nrow(doubles) > 1000) {
         cat(">1000 dates (by LABNR) appear more than once.")
       } else {
-      
         doubles %>%
           `[[`("LABNR") %>% 
           mapply(function(x){
@@ -387,15 +388,13 @@ shinyServer(function(input, output, session) {
         if (dupli == 0) {  
           cat("No dates (by LABNR) appear in more than one source database.") 
         } else {
-          cat(dupli, " dates appear in more than one source database.") 
+          cat(dupli, " dates (by LABNR) appear in more than one source database.") 
         }
         
       }
-      
     } else {
       cat("No dates (by LABNR) appear more than once.")
     } 
-    
   })
   
   output$spatqualtext = renderPrint({
