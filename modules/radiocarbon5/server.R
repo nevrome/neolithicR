@@ -402,6 +402,12 @@ shinyServer(function(input, output, session) {
     cat(notcorr, " dates have no or doubtful spatial information.")
   })
   
+  output$mappingwarning = renderPrint({
+    if (nrow(datasetInput()) > 1500) {
+      cat("⚠ You've selected more than 1500 individual dates - depending on your browser and your internet connection that could be too many for mapping.")
+    }
+  })
+  
   output$link = renderPrint({
      HTML("<a href = 'http://leaflet-extras.github.io/leaflet-providers/preview/'>tile source list</a>")
   })

@@ -100,7 +100,8 @@ shinyUI(
           htmlOutput('originamounttext'),
           textOutput('duplitext'),
           textOutput('spatqualtext'),
-          checkboxInput("doubtfulcheck", label = "Map dates with doubtful coordinates anyway", value = FALSE)
+          checkboxInput("doubtfulcheck", label = "Map dates with doubtful coordinates anyway", value = FALSE),
+          textOutput('mappingwarning')
                
         )
         
