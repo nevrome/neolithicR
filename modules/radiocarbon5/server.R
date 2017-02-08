@@ -59,7 +59,7 @@ shinyServer(function(input, output, session) {
     session$sendCustomMessage(
         type = 'startmessage',
         message = 
-        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases aDRAC, CalPal, EUROEVOL, RADON and CONTEXT. For reference see https://github.com/nevrome/neolithicR. - Last data update: 29.01.2017"
+        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases aDRAC, CalPal, EUROEVOL, RADON and CONTEXT. For reference see https://github.com/nevrome/neolithicR. - Last data update: 08.02.2017"
       )
   })
 
@@ -317,6 +317,7 @@ shinyServer(function(input, output, session) {
       "MATERIAL", 
       "CALAGE", 
       "CALSTD",
+      "REFERENCE",
       "SPATQUAL"
     )]
       
