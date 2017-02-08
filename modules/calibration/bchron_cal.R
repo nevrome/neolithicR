@@ -31,22 +31,23 @@ datestable$CALSTD[outofrange] <- datestable$C14STD[outofrange]
 setTxtProgressBar(pb, 5)
 
 
-# precalculated values
+# 2sigma range probability threshold
 threshold <- (1-0.9545)/2
 
 # calibration
-interval95 <- datestable[-outofrange, ] %$% 
-  # calculate density vector
+interval95 <- datestable[-outofrange, ] %$%
+  # date calibration with comprehensive output 
   BchronCalibrate(
     ages      = C14AGE,
     ageSds    = C14STD,
     calCurves = rep("intcal13", nrow(.)),
     eps       = 1e-06
-  ) %>% 
+  ) %>%
+  # extract border ages of the 2sigma range
   plyr::ldply(., function(x) {
-      x$densities            %>% cumsum -> a
-      which(a <= threshold)  %>% max -> my_min
-      which(a > 1-threshold) %>% min -> my_max
+      x$densities            %>% cumsum -> a      # cumulated density
+      which(a <= threshold)  %>% max    -> my_min # lower border
+      which(a > 1-threshold) %>% min    -> my_max # upper border 
       x$ageGrid[c(my_min, my_max)]
     }
   ) 
@@ -58,7 +59,7 @@ setTxtProgressBar(pb, 95)
 
 
  
-# preliminary: take the mean of the borders as CALAGE and the distance
+# take the mean of the borders as CALAGE and the distance
 # of CALAGE to the upper and lower 95.45% interval as CALSTD 
 top <- round(interval95[, 3])
 amean <- apply(interval95[, 2:3], 1, function(x){round(mean(x))})
