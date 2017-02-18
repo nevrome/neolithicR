@@ -1,4 +1,4 @@
-[![Website](https://img.shields.io/badge/last%20webapp%20update-29.1.2017-orange.svg)](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/) [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR) [![GitHub contributors](https://img.shields.io/github/contributors/nevrome/neolithicR.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR/graphs/contributors) [![license](https://img.shields.io/badge/license-GPL%202-B50B82.svg)](https://github.com/nevrome/neolithicR/blob/master/LICENSE)
+[![Website](https://img.shields.io/badge/last%20webapp%20update-08.02.2017-orange.svg)](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/) [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR) [![GitHub contributors](https://img.shields.io/github/contributors/nevrome/neolithicR.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR/graphs/contributors) [![license](https://img.shields.io/badge/license-GPL%202-B50B82.svg)](https://github.com/nevrome/neolithicR/blob/master/LICENSE)
 
 # WebGIS-App and Search Engine
 
@@ -20,8 +20,11 @@
 * [CONTEXT](http://context-database.uni-koeln.de/): Collection of radiocarbon dates from sites in the Near East and neighboring regions (20.000 - 5.000 calBC) by **Utz Böhner** and **Daniel Schyle**.
 
 ### Project structure
+
+[Presentation (11.02.2017) -> neolithicRCpres.](https://github.com/nevrome/neolithicRCpres)
+
 <p align="center">
-<img src="https://raw.githubusercontent.com/nevrome/neolithicR/master/presentation/project_setup.png", alt="project structure diagram">
+<img src="https://raw.githubusercontent.com/nevrome/neolithicRCpres/master/images/smartart1.png", alt="project structure diagram">
 </p>
 
 ### Acknowledgements
