@@ -4,6 +4,8 @@
 
 **[neolithicRC.de](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/)**  
 
+The development of neolithicrc is currently paused. We're working on a new backend: [c14bazAAR](https://github.com/ISAAKiel/c14bazAAR)
+
 ***
 
 ### Coauthers
