@@ -43,10 +43,6 @@ load(file = "data/c14data.RData")
 dates <- datestable
 data(intcal13)
 
-files <- list.files(path = "thesauri/", pattern='*.RData', recursive=T)
-files = lapply(files, function(x) paste0('thesauri/', x))
-lapply(files, load, .GlobalEnv)
-
 #### server output ####  
 
 shinyServer(function(input, output, session) {
@@ -59,55 +55,51 @@ shinyServer(function(input, output, session) {
     session$sendCustomMessage(
         type = 'startmessage',
         message = 
-        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases aDRAC, CalPal, EUROEVOL, RADON and CONTEXT. For reference see https://github.com/nevrome/neolithicR. - Last data update: 08.02.2017"
+        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases. For reference see https://github.com/nevrome/neolithicR. - Last data update: 08.02.2017"
       )
   })
 
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
     
-    country = input$countryselect
-    if(length(country) != 0 && "ALL" %in% country){
-      country = unique(dates$COUNTRY)
-    } else if (length(country) != 0) {
-      country = c(COUNTRY_thesaurus$var[COUNTRY_thesaurus$cor %in% country], country)
+    sel_country <- input$countryselect
+    if(length(sel_country) != 0 && "ALL" %in% sel_country){
+      sel_country <- unique(dates$country_thes)
     }
     
-    material = input$materialselect
-    if(length(material) != 0 && "ALL" %in% material){
-      material = unique(dates$MATERIAL)
-    } else if (length(country) != 0) {
-      material = c(MATERIAL_thesaurus$var[MATERIAL_thesaurus$cor %in% material], material)
-    }
+    sel_material <- input$materialselect
+    if(length(sel_material) != 0 && "ALL" %in% sel_material){
+      sel_material <- unique(dates$material_thes)
+    } 
     
     labterm = input$labselect
     if (labterm != "") {
-      lnv <- grep(paste("(", labterm, ")+", sep = ""), dates$LABNR, ignore.case = TRUE)
-      dates <- dates[lnv,]
+      lnv <- grep(paste("(", labterm, ")+", sep = ""), dates$labnr, ignore.case = TRUE)
+      dates <- dates[lnv, ]
     }
     
     siteterm = input$siteselect
     if (siteterm != "") {
-      sv <- grep(paste("(", siteterm, ")+", sep = ""), dates$SITE, ignore.case = TRUE)
-      dates <- dates[sv,]
+      sv <- grep(paste("(", siteterm, ")+", sep = ""), dates$site, ignore.case = TRUE)
+      dates <- dates[sv, ]
     }
 
     culterm = input$culselect
     if (culterm != "") {
-      pev <- grep(paste("(", culterm, ")+", sep = ""), dates$PERIOD, ignore.case = TRUE)
-      cuv <- grep(paste("(", culterm, ")+", sep = ""), dates$CULTURE, ignore.case = TRUE)
+      pev <- grep(paste("(", culterm, ")+", sep = ""), dates$period, ignore.case = TRUE)
+      cuv <- grep(paste("(", culterm, ")+", sep = ""), dates$culture, ignore.case = TRUE)
       pecuv <- unique(c(pev, cuv))
-      dates <- dates[pecuv,]
+      dates <- dates[pecuv, ]
     }
 
     #selection of data (ui.R)
-    dates <- filter(
+    dates <- dplyr::filter(
       dates,
-      CALAGE >= input$range[1] &
-      CALAGE <= input$range[2] &
-      ORIGIN %in% input$originselect &
-      COUNTRY %in% country & 
-      MATERIAL %in% material
+      calage >= input$range[1] &
+      calage <= input$range[2] &
+      sourcedb %in% input$originselect &
+      country_thes %in% sel_country & 
+      material_thes %in% sel_material
     )
 
   })
@@ -115,13 +107,13 @@ shinyServer(function(input, output, session) {
   #rendering density plot of date selection
   output$datesdensity <- renderPlot({
     
-      ggplot(datasetInput(), aes(x = CALAGE)) +
+      ggplot(datasetInput(), aes(x = calage)) +
         geom_rug() +
         geom_line(
           stat = "density",
           color = "red"
         ) + 
-        xlim(min(datasetInput()$CALAGE), max(datasetInput()$CALAGE)) + 
+        xlim(min(datasetInput()$calage), max(datasetInput()$calage)) + 
         labs(
           y = "",
           x = "calibrated Age BP"
@@ -137,12 +129,12 @@ shinyServer(function(input, output, session) {
   output$calplot <- renderPlot({
     
     # plot without data
-    calplotc <- ggplot(datasetInput(), aes(x = CALAGE, y = C14AGE)) +
+    calplotc <- ggplot(datasetInput(), aes(x = calage, y = c14age)) +
       ggtitle("Calibration Overview") +
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      xlim(min(datasetInput()$CALAGE) - 200, max(datasetInput()$CALAGE) + 200) +
+      xlim(min(datasetInput()$calage) - 200, max(datasetInput()$calage) + 200) +
       geom_smooth(data = intcal13, aes(y = V2, x = V1), color = "darkgreen") +
       scale_x_reverse() +
       annotate(
@@ -162,15 +154,15 @@ shinyServer(function(input, output, session) {
       # plot with a big amount of dates
       calplotc <- calplotc +
         geom_point() +
-        ylim(min(datasetInput()$C14AGE) - 200, max(datasetInput()$C14AGE) + 200)
+        ylim(min(datasetInput()$c14age) - 200, max(datasetInput()$c14age) + 200)
 
       # plot with a small amount of dates  
       if (nrow(datasetInput()) < 200) {
         
         calplotc <- calplotc +
           geom_rug() +
-          geom_errorbarh(aes(xmin = CALAGE-CALSTD, xmax = CALAGE+CALSTD), alpha = 0.3) +
-          geom_errorbar(aes(ymin = C14AGE-C14STD, ymax = C14AGE+C14STD), alpha = 0.3)
+          geom_errorbarh(aes(xmin = calage-calstd, xmax = calage+calstd), alpha = 0.3) +
+          geom_errorbar(aes(ymin = c14age-c14std, ymax = c14age+c14std), alpha = 0.3)
      
       }
 
@@ -252,14 +244,14 @@ shinyServer(function(input, output, session) {
       
       seldata <- filter(
         seldata,
-        SPATQUAL != "no coords",
-        SPATQUAL != "wrong coords"
+        spatial_quality != "no coords",
+        spatial_quality != "wrong coords"
       )  
       
       if (!input$doubtfulcheck){
         seldata <- filter(
           seldata,
-          SPATQUAL != "doubtful coords"  
+          spatial_quality != "doubtful coords"  
         )
       }
       
@@ -268,15 +260,15 @@ shinyServer(function(input, output, session) {
       #text popup definition
       site.popup <- paste0(
         "<strong>Data Source: </strong>", 
-        seldata$ORIGIN, 
+        seldata$sourcedb, 
         "<br><strong>Site: </strong>", 
-        seldata$SITE, 
+        seldata$site, 
         "<br><strong>Lab number: </strong>",
-        seldata$LABNR, 
+        seldata$labnr, 
         "<br><strong>Age: </strong>",
-        seldata$CALAGE, "calBP",
+        seldata$calage, "calBP",
         "<br><strong>Reference: </strong>",
-        seldata$REFERENCE 
+        seldata$shortref 
       )
       
       #preparation of mapping for shiny frontend
@@ -285,16 +277,16 @@ shinyServer(function(input, output, session) {
           urlTemplate = tiles,
           attribution = att)  %>% 
         fitBounds(
-          min(seldata$LONGITUDE) - 1,
-          min(seldata$LATITUDE) - 1,
-          max(seldata$LONGITUDE) + 1,
-          max(seldata$LATITUDE) + 1
+          min(seldata$lon) - 1,
+          min(seldata$lat) - 1,
+          max(seldata$lon) + 1,
+          max(seldata$lat) + 1
           ) %>% 
         addCircles(
-          lat = seldata$LATITUDE, 
-          lng = seldata$LONGITUDE, 
-          color = seldata$MAINCOLOR,
-          radius = seldata$CALAGE/2,
+          lat = seldata$lat, 
+          lng = seldata$lon, 
+          color = seldata$maincolor,
+          radius = seldata$calage/2,
           popup = site.popup
         )    
 
@@ -308,17 +300,17 @@ shinyServer(function(input, output, session) {
   output$radiodat = renderDataTable({
     
     tab <- datasetInput()[,c(
-      "ORIGIN", 
-      "LABNR", 
-      "COUNTRY", 
-      "SITE",
-      "PERIOD",
-      "CULTURE",
-      "MATERIAL", 
-      "CALAGE", 
-      "CALSTD",
-      "REFERENCE",
-      "SPATQUAL"
+      "sourcedb", 
+      "labnr", 
+      "country_thes", 
+      "site",
+      "period",
+      "culture",
+      "material", 
+      "calage", 
+      "calstd",
+      "shortref",
+      "spatial_quality"
     )]
       
     DT::datatable(tab)
@@ -333,12 +325,12 @@ shinyServer(function(input, output, session) {
   output$numbertext2 = renderPrint({
     cat(nrow(
       datasetInput()), " selected and", 
-      sum(datasetInput()$SPATQUAL == "possibly correct"), 
+      sum(datasetInput()$spatial_quality == "possibly correct"), 
       " well mappable.")
   })
   
   output$originamounttext = renderPrint({
-    linklist <- unique(datasetInput()$ORIGIN) %>%
+    linklist <- unique(datasetInput()$sourcedb) %>%
       mapvalues(
         from = c("RADON", "aDRAC", "EUROEVOL", "CALPAL", "CONTEXT"),
         to = c(
@@ -358,47 +350,47 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  output$duplitext = renderPrint({
-    
-    adates <- datasetInput() %>% nrow
-    ainddates <- datasetInput()$LABNR %>% unique %>% length
-    
-    if (adates != ainddates) {
-      
-      doubles <- datasetInput()[
-        duplicated(datasetInput()$LABNR) |
-        duplicated(datasetInput()$LABNR, fromLast = TRUE),
-      ] 
-
-      if (nrow(doubles) > 1000) {
-        cat(">1000 dates (by LABNR) appear more than once.")
-      } else {
-        doubles %>%
-          `[[`("LABNR") %>% 
-          mapply(function(x){
-            doubles[which(doubles$LABNR == x),] %>%
-              `[[`("ORIGIN") %>% 
-              unique %>%
-              length %>%
-              `>`(1)
-          }, .) %>%
-          which %>% 
-          length -> dupli
-        
-        if (dupli == 0) {  
-          cat("No dates (by LABNR) appear in more than one source database.") 
-        } else {
-          cat(dupli, " dates (by LABNR) appear in more than one source database.") 
-        }
-        
-      }
-    } else {
-      cat("No dates (by LABNR) appear more than once.")
-    } 
-  })
+  # output$duplitext = renderPrint({
+  #   
+  #   adates <- datasetInput() %>% nrow
+  #   ainddates <- datasetInput()$LABNR %>% unique %>% length
+  #   
+  #   if (adates != ainddates) {
+  #     
+  #     doubles <- datasetInput()[
+  #       duplicated(datasetInput()$LABNR) |
+  #       duplicated(datasetInput()$LABNR, fromLast = TRUE),
+  #     ] 
+  # 
+  #     if (nrow(doubles) > 1000) {
+  #       cat(">1000 dates (by LABNR) appear more than once.")
+  #     } else {
+  #       doubles %>%
+  #         `[[`("LABNR") %>% 
+  #         mapply(function(x){
+  #           doubles[which(doubles$LABNR == x),] %>%
+  #             `[[`("ORIGIN") %>% 
+  #             unique %>%
+  #             length %>%
+  #             `>`(1)
+  #         }, .) %>%
+  #         which %>% 
+  #         length -> dupli
+  #       
+  #       if (dupli == 0) {  
+  #         cat("No dates (by LABNR) appear in more than one source database.") 
+  #       } else {
+  #         cat(dupli, " dates (by LABNR) appear in more than one source database.") 
+  #       }
+  #       
+  #     }
+  #   } else {
+  #     cat("No dates (by LABNR) appear more than once.")
+  #   } 
+  # })
   
   output$spatqualtext = renderPrint({
-    notcorr <- nrow(datasetInput()) - sum(datasetInput()$SPATQUAL == "possibly correct")
+    notcorr <- nrow(datasetInput()) - sum(datasetInput()$spatial_quality == "possibly correct")
     cat(notcorr, " dates have no or doubtful spatial information.")
   })
   
@@ -425,7 +417,8 @@ shinyServer(function(input, output, session) {
     content = function(file) {
       
       #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
-      tab <- subset(datasetInput(), select=-c(COORDCOUNTRY, MAINCOLOR))
+      #tab <- subset(datasetInput(), select=-c(COORDCOUNTRY, MAINCOLOR))
+      tab <- datasetInput()
       
       write.table(
         tab, 

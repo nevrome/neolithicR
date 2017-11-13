@@ -8,10 +8,7 @@ library(DT)
 #### loading data ####
 
 load(file = "data/c14data.RData")
-
-files <- list.files(path = "thesauri/", pattern='*.RData', recursive=T)
-files = lapply(files, function(x) paste0('thesauri/', x))
-lapply(files, load, .GlobalEnv)
+dates <- datestable
 
 #### definition of frontend output/input ####
 shinyUI(
@@ -42,8 +39,8 @@ shinyUI(
           select2Input(
             "originselect",
             "Data source selection",
-            choices = unique(datestable$ORIGIN),
-            selected = unique(datestable$ORIGIN),
+            choices = unique(dates$sourcedb),
+            selected = unique(dates$sourcedb),
             type = c("input"),
             width = "100%"
           )
@@ -55,7 +52,7 @@ shinyUI(
          select2Input(
            "countryselect",
            "Country selection",
-           choices = c("ALL", sort(unique(COUNTRY_thesaurus$cor))),
+           choices = c("ALL", sort(unique(dates$country_thes))),
            select = c("Morocco"),
            type = c("input"),
            width = "100%"
@@ -64,7 +61,7 @@ shinyUI(
          select2Input(
            "materialselect",
            "Material selection",
-           choices = c("ALL", sort(unique(MATERIAL_thesaurus$cor))),
+           choices = c("ALL", sort(unique(dates$material_thes))),
            select = c("ALL"),
            type = c("input")
          ) 
@@ -98,7 +95,7 @@ shinyUI(
                
           textOutput('numbertext'),
           htmlOutput('originamounttext'),
-          textOutput('duplitext'),
+          #textOutput('duplitext'),
           textOutput('spatqualtext'),
           checkboxInput("doubtfulcheck", label = "Map dates with doubtful coordinates anyway", value = FALSE),
           textOutput('mappingwarning')
@@ -111,14 +108,14 @@ shinyUI(
         "range", 
         "calibrated age BP:", 
         width = "100%", 
-        min = min(datestable$CALAGE),
-        max = max(datestable$CALAGE),
+        min = min(dates$calage),
+        max = max(dates$calage),
         step= 100,
-        value = c(min(datestable$CALAGE), max(datestable$CALAGE))
+        value = c(min(dates$calage), max(dates$calage))
       ),
       
       #datatable output
-      dataTableOutput("radiodat"),
+      DT::dataTableOutput("radiodat"),
 
       #selection buttons and download
       downloadButton(
