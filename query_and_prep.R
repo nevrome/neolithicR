@@ -13,4 +13,4 @@ datestable <- c14bazAAR::get_all_dates() %>%
     maincolor = rainbow(nrow(.), alpha = NULL, start = 0, end = 2/6)
   )
 
-save(datestable, file = "neolithicRC/data/c14data.RData")
+save(datestable, file = "data/c14data.RData")

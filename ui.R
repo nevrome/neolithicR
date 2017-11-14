@@ -108,8 +108,8 @@ shinyUI(
         "range", 
         "calibrated age BP:", 
         width = "100%", 
-        min = min(dates$calage),
-        max = max(dates$calage),
+        min = min(dates$calage, na.rm = TRUE),
+        max = max(dates$calage, na.rm = TRUE),
         step= 100,
         value = c(min(dates$calage), max(dates$calage))
       ),
