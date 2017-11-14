@@ -47,18 +47,15 @@ data(intcal13)
 
 shinyServer(function(input, output, session) {
 
+  # allow data update by user
+  observeEvent(input$updatedb, {
+    session$sendCustomMessage(type = 'startmessage',
+                              message = 'Thank you for clicking')
+  })
+  
   # change to map view directly after start to preload map
   #updateTabsetPanel(session, "nav", selected = "Interactive map")
   
-  # send start message
-  observe({
-    session$sendCustomMessage(
-        type = 'startmessage',
-        message = 
-        "This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases. For reference see https://github.com/nevrome/neolithicR. - Last data update: 08.02.2017"
-      )
-  })
-
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
     
@@ -318,6 +315,10 @@ shinyServer(function(input, output, session) {
   })
   
   #render textelements
+  output$startmessage = renderPrint({
+    cat("This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases. For reference see https://github.com/nevrome/neolithicR. - Last data update: 08.02.2017")
+  })
+  
   output$numbertext = renderPrint({
     cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected.")
   })
