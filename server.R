@@ -9,7 +9,7 @@
 #Reminder: installing packages
 # install.packages(c(
 #   "magrittr", "dplyr", "shiny", "ggplot2", "gtools", "DT", "Bchron",
-#   "leaflet", "maps", "mapproj", "devtools", "raster", "plyr"
+#   "leaflet", "maps", "mapproj", "devtools", "raster", "plyr", "shinyjs"
 # ), repos = "http://cran.uni-muenster.de/")
 # library(devtools)
 # devtools::install_github("AnalytixWare/ShinySky")
@@ -39,18 +39,67 @@ library(plyr)
 
 #### loading data ####
 
-load(file = "data/c14data.RData")
-dates <- datestable
 data(intcal13)
 
 #### server output ####  
 
 shinyServer(function(input, output, session) {
 
+  # loading data
+  load(file = "data/c14data2.RData")
+  dates <- datestable
+  load(file = "data/last_updated.RData")
+  
+  # render start message
+  output$startmessage = renderPrint({
+    HTML(
+      "This tool allows to search, filter and visualize radiocarbon dates. ", 
+      "The credit for the collection of the dates goes to the editors of the databases. ",
+      "For reference see https://github.com/nevrome/neolithicR.",
+      "<br>",
+      "Last data update: ", paste(last_updated)
+    )
+  })
+  
   # allow data update by user
   observeEvent(input$updatedb, {
-    session$sendCustomMessage(type = 'startmessage',
-                              message = 'Thank you for clicking')
+    withCallingHandlers({
+      shinyjs::html("Routput", "")
+      
+      message("<b>Update. This may take up to 30 minutes.</b>")
+      
+      datestable <- c14bazAAR::get_all_dates() %>%
+        c14bazAAR::calibrate() %>%
+        c14bazAAR::estimate_spatial_quality() %>%
+        c14bazAAR::rm_doubles(mark = TRUE) %>%
+        c14bazAAR::thesaurify() %>%
+        dplyr::arrange(dplyr::desc(calage)) %>%
+        dplyr::mutate(
+          maincolor = rainbow(nrow(.), alpha = NULL, start = 0, end = 2/6)
+        )
+      
+      save(datestable, file = "data/c14data2.RData")
+      last_updated <- Sys.time()
+      save(last_updated, file = "data/last_updated.RData") 
+      
+      message(
+        "<font color = 'green'>
+        <b>Done. Restart neolithicRC to work with the new data</b>
+        </font>"
+      )
+    },
+    message = function(m) {
+      shinyjs::html(
+        id = "c14bazAArout", 
+        html = paste0(m$message, "<br>"), 
+        add = TRUE)
+    },
+    warning = function(m) {
+      shinyjs::html(
+        id = "c14bazAArout", 
+        html = paste0("<font color = 'red'>", m$message, "</font><br>"), 
+        add = TRUE)
+    }) 
   })
   
   # change to map view directly after start to preload map
@@ -315,10 +364,6 @@ shinyServer(function(input, output, session) {
   })
   
   #render textelements
-  output$startmessage = renderPrint({
-    cat("This tool allows to search, filter and visualize radiocarbon dates. The credit for the collection of the dates goes to the editors of the databases. For reference see https://github.com/nevrome/neolithicR. - Last data update: 08.02.2017")
-  })
-  
   output$numbertext = renderPrint({
     cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected.")
   })

@@ -28,10 +28,13 @@ shinyUI(
         </a>  
       '),
       
-      textOutput('startmessage'),
+      htmlOutput('startmessage'),
+      br(),
       
-      actionButton("updatedb", "Update neolithiRC local database")
-                      
+      shinyjs::useShinyjs(),
+      actionButton("updatedb", "Update neolithicRC local database"),
+      br(), br(),
+      textOutput("c14bazAArout")
     ),
     
     tabPanel("Search and Filter ⌕",
