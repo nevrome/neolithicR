@@ -5,11 +5,6 @@ library(ShinyDash)
 library(shinysky)
 library(DT)
 
-#### loading data ####
-
-load(file = "data/c14data.RData")
-dates <- datestable
-
 #### definition of frontend output/input ####
 shinyUI(
   
@@ -56,36 +51,15 @@ shinyUI(
         
         column(2,
              
-          select2Input(
-            "originselect",
-            "Data source selection",
-            choices = unique(dates$sourcedb),
-            selected = unique(dates$sourcedb),
-            type = c("input"),
-            width = "100%"
-          )
+          uiOutput("sourcedb_selection")
           
         ),
         
         column(2,
           
-         select2Input(
-           "countryselect",
-           "Country selection",
-           choices = c("ALL", sort(unique(dates$country_thes))),
-           select = c("Morocco"),
-           type = c("input"),
-           width = "100%"
-         ),
-                
-         select2Input(
-           "materialselect",
-           "Material selection",
-           choices = c("ALL", sort(unique(dates$material_thes))),
-           select = c("ALL"),
-           type = c("input")
-         ) 
-      
+          uiOutput("country_selection"),
+          uiOutput("material_selection")      
+
         ),
         
         column(2,
@@ -124,15 +98,7 @@ shinyUI(
         
       ),
       
-      sliderInput(
-        "range", 
-        "calibrated age BP:", 
-        width = "100%", 
-        min = min(dates$calage, na.rm = TRUE),
-        max = max(dates$calage, na.rm = TRUE),
-        step= 100,
-        value = c(min(dates$calage), max(dates$calage))
-      ),
+      uiOutput("age_slider"),
       
       #datatable output
       DT::dataTableOutput("radiodat"),

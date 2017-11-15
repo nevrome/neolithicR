@@ -36,19 +36,40 @@ library(shinysky)
 library(dplyr)
 library(raster)
 library(plyr)
+library(ShinyDash)
 
 #### loading data ####
 
 data(intcal13)
+
+#### helper functions ####
+
+prep_dataset <- function() {
+  c14bazAAR::get_all_dates() %>%
+    # dplyr::sample_n(500) %>%
+    # c14bazAAR::as.c14_date_list() %>%
+    c14bazAAR::calibrate() %>%
+    c14bazAAR::estimate_spatial_quality() %>%
+    c14bazAAR::rm_doubles(mark = TRUE) %>%
+    c14bazAAR::thesaurify() %>%
+    dplyr::arrange(dplyr::desc(calage)) %>%
+    dplyr::mutate(
+      maincolor = rainbow(nrow(.), alpha = NULL, start = 0, end = 2/6)
+    ) %>%
+    return()
+}
 
 #### server output ####  
 
 shinyServer(function(input, output, session) {
 
   # loading data
-  load(file = "data/c14data2.RData")
-  dates <- datestable
-  load(file = "data/last_updated.RData")
+  last_updated <- "<font color = 'red'><b>not available - please update</b></font>"
+  if (file.exists("data/c14data2.RData") & file.exists("data/last_updated.RData")) {
+    load(file = "data/c14data2.RData")
+    dates <- datestable
+    load(file = "data/last_updated.RData")
+  }
   
   # render start message
   output$startmessage = renderPrint({
@@ -62,29 +83,28 @@ shinyServer(function(input, output, session) {
   })
   
   # allow data update by user
-  observeEvent(input$updatedb, {
+  observeEvent({input$updatedb}, {
+  #observeEvent({input$updatedb}, {
     withCallingHandlers({
       shinyjs::html("Routput", "")
       
+      message("<b>Installing latest version of c14bazAAR from <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>.</b>")
+      
+      devtools::install_github("ISAAKiel/c14bazAAR")
+      
       message("<b>Update. This may take up to 30 minutes.</b>")
       
-      datestable <- c14bazAAR::get_all_dates() %>%
-        c14bazAAR::calibrate() %>%
-        c14bazAAR::estimate_spatial_quality() %>%
-        c14bazAAR::rm_doubles(mark = TRUE) %>%
-        c14bazAAR::thesaurify() %>%
-        dplyr::arrange(dplyr::desc(calage)) %>%
-        dplyr::mutate(
-          maincolor = rainbow(nrow(.), alpha = NULL, start = 0, end = 2/6)
-        )
+      datestable <- prep_dataset()
       
       save(datestable, file = "data/c14data2.RData")
       last_updated <- Sys.time()
       save(last_updated, file = "data/last_updated.RData") 
       
+      dates <- datestable
+      
       message(
         "<font color = 'green'>
-        <b>Done. Restart neolithicRC to work with the new data</b>
+        <b>Done. <a href=\"javascript:history.go(0)\"> Restart neolithicRC to work with the new data ↻</a></b>
         </font>"
       )
     },
@@ -100,6 +120,52 @@ shinyServer(function(input, output, session) {
         html = paste0("<font color = 'red'>", m$message, "</font><br>"), 
         add = TRUE)
     }) 
+  })
+  
+  #### render controls ####
+  
+  output$sourcedb_selection <- renderUI({
+    select2Input(
+      "originselect",
+      "Data source selection",
+      choices = unique(dates$sourcedb),
+      selected = unique(dates$sourcedb),
+      type = c("input"),
+      width = "100%"
+    )
+  })
+  
+  output$country_selection <- renderUI({
+    select2Input(
+      "countryselect",
+      "Country selection",
+      choices = c("ALL", sort(unique(dates$country_thes))),
+      select = c("Morocco"),
+      type = c("input"),
+      width = "100%"
+    )
+  })
+  
+  output$material_selection <- renderUI({
+    select2Input(
+      "materialselect",
+      "Material selection",
+      choices = c("ALL", sort(unique(dates$material_thes))),
+      select = c("ALL"),
+      type = c("input")
+    ) 
+  })
+  
+  output$age_slider <- renderUI({
+    sliderInput(
+      "range", 
+      "calibrated age BP:", 
+      width = "100%", 
+      min = min(dates$calage, na.rm = TRUE),
+      max = max(dates$calage, na.rm = TRUE),
+      step= 100,
+      value = c(min(dates$calage), max(dates$calage))
+    )
   })
   
   # change to map view directly after start to preload map
