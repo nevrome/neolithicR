@@ -1,3 +1,5 @@
+#### Reminders ####
+
 #Reminder: starting app 
 # library(shiny)
 # runApp("modules/radiocarbon5/", launch.browser=TRUE)
@@ -21,6 +23,13 @@
 #Reminder: restart shiny server
 # sudo systemctl restart shiny-server 
 
+#Reminder: update automagic package file 
+#automagic::make_deps_file()
+
+#Reminder: build and run docker container
+# docker build -t neol .
+# docker run --name neo -d -p 3838:3838 neol
+
 #### loading libraries ####
 
 library(shiny)
@@ -34,6 +43,7 @@ library(maps)
 library(mapproj)
 library(shinysky)
 library(dplyr)
+library(rgdal)
 library(raster)
 library(plyr)
 library(ShinyDash)
@@ -90,7 +100,13 @@ shinyServer(function(input, output, session) {
       
       message("<b>Installing latest version of c14bazAAR from <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>.</b>")
       
-      devtools::install_github("ISAAKiel/c14bazAAR")
+      devtools::install_github(
+        "ISAAKiel/c14bazAAR", 
+        dependencies = TRUE, 
+        upgrade_dependencies = TRUE,
+        force = TRUE,
+        force_deps = TRUE
+      )
       
       message("<b>Update. This may take up to 30 minutes.</b>")
       
