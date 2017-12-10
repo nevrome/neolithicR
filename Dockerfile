@@ -46,7 +46,7 @@ RUN R -e "install.packages('automagic')"
 RUN R -e "setwd('/srv/shiny-server/app'); automagic::automagic()"
 
 # give user shiny ability to install new packages and to manipulate data in the app
-RUN chown :shiny /usr/local/lib/R/site-library
+RUN usermod -a -G staff shiny
 RUN chown -R :shiny /srv/shiny-server/app/data
 RUN chmod -R 775 /srv/shiny-server/app/data
 
