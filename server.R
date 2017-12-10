@@ -136,12 +136,6 @@ shinyServer(function(input, output, session) {
           </font>"
         )
       },
-      ouput = function(m) {
-        shinyjs::html(
-          id = "c14bazAArout", 
-          html = paste0(m$ouput, "<br>"), 
-          add = TRUE)
-      },
       message = function(m) {
         shinyjs::html(
           id = "c14bazAArout", 
