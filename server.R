@@ -94,48 +94,67 @@ shinyServer(function(input, output, session) {
   
   # allow data update by user
   observeEvent({input$updatedb}, {
-  #observeEvent({input$updatedb}, {
-    withCallingHandlers({
-      shinyjs::html("Routput", "")
-      
-      message("<b>Installing latest version of c14bazAAR from <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>.</b>")
-      
-      devtools::install_github(
-        "ISAAKiel/c14bazAAR", 
-        dependencies = TRUE, 
-        upgrade_dependencies = TRUE,
-        force = TRUE,
-        force_deps = TRUE
-      )
-      
-      message("<b>Update. This may take up to 30 minutes.</b>")
-      
-      datestable <- prep_dataset()
-      
-      save(datestable, file = "data/c14data2.RData")
-      last_updated <- Sys.time()
-      save(last_updated, file = "data/last_updated.RData") 
-      
-      dates <- datestable
-      
-      message(
-        "<font color = 'green'>
-        <b>Done. <a href=\"javascript:history.go(0)\"> Restart neolithicRC to work with the new data ↻</a></b>
-        </font>"
-      )
-    },
-    message = function(m) {
-      shinyjs::html(
-        id = "c14bazAArout", 
-        html = paste0(m$message, "<br>"), 
-        add = TRUE)
-    },
-    warning = function(m) {
-      shinyjs::html(
-        id = "c14bazAArout", 
-        html = paste0("<font color = 'red'>", m$message, "</font><br>"), 
-        add = TRUE)
-    }) 
+    shiny::withProgress(message = 'Updating database...', value = 0, {
+      withCallingHandlers({
+        
+        shinyjs::html("Routput", "")
+        
+        message("
+          <b>Install latest version of c14bazAAR (from 
+          <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>)
+          and all its dependencies.</b>")
+        
+        devtools::install_github(
+          "ISAAKiel/c14bazAAR", 
+          dependencies = TRUE, 
+          upgrade_dependencies = TRUE,
+          force = TRUE,
+          force_deps = TRUE,
+          quick = TRUE,
+          quiet = TRUE
+        )
+        
+        shiny::incProgress(0.2)
+        
+        message("<b>Update internal database. This may take up to 30 minutes.</b>")
+        
+        datestable <- prep_dataset()
+        
+        shiny::incProgress(0.9)
+        
+        save(datestable, file = "data/c14data2.RData")
+        last_updated <- Sys.time()
+        save(last_updated, file = "data/last_updated.RData") 
+        
+        dates <- datestable
+        
+        shiny::incProgress(1)
+        
+        message(
+          "<font color = 'green'>
+          <b>Done. <a href=\"javascript:history.go(0)\"> Restart neolithicRC to work with the new data ↻</a></b>
+          </font>"
+        )
+      },
+      ouput = function(m) {
+        shinyjs::html(
+          id = "c14bazAArout", 
+          html = paste0(m$ouput, "<br>"), 
+          add = TRUE)
+      },
+      message = function(m) {
+        shinyjs::html(
+          id = "c14bazAArout", 
+          html = paste0(m$message, "<br>"), 
+          add = TRUE)
+      },
+      warning = function(m) {
+        shinyjs::html(
+          id = "c14bazAArout", 
+          html = paste0("<font color = 'red'>", m$message, "</font><br>"), 
+          add = TRUE)
+      }) 
+    })
   })
   
   #### render controls ####
