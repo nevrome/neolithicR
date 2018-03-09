@@ -386,7 +386,7 @@ shinyServer(function(input, output, session) {
       
       seldata <- filter(
         seldata,
-        !is.na(lat) | !is.na(lon)
+        !is.na(lat) & !is.na(lon)
       )  
       
       setProgress(value = 0.3)
