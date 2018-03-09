@@ -386,16 +386,8 @@ shinyServer(function(input, output, session) {
       
       seldata <- filter(
         seldata,
-        spatial_quality != "no coords",
-        spatial_quality != "wrong coords"
+        !is.na(lat) | !is.na(lon)
       )  
-      
-      if (!input$doubtfulcheck){
-        seldata <- filter(
-          seldata,
-          spatial_quality != "doubtful coords"  
-        )
-      }
       
       setProgress(value = 0.3)
       
@@ -408,7 +400,7 @@ shinyServer(function(input, output, session) {
         "<br><strong>Lab number: </strong>",
         seldata$labnr, 
         "<br><strong>Age: </strong>",
-        seldata$calage, "calBP",
+        seldata$c14age, "calBP",
         "<br><strong>Reference: </strong>",
         seldata$shortref 
       )
@@ -428,7 +420,7 @@ shinyServer(function(input, output, session) {
           lat = seldata$lat, 
           lng = seldata$lon, 
           color = seldata$maincolor,
-          radius = seldata$calage/2,
+          radius = seldata$c14age/2,
           popup = site.popup
         )    
 
@@ -446,6 +438,8 @@ shinyServer(function(input, output, session) {
       "labnr",
       "c14age",
       "c14std",
+      "lat",
+      "lon",
       "country_final", 
       "site",
       "period",
@@ -464,10 +458,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$numbertext2 = renderPrint({
-    cat(nrow(
-      datasetInput()), " selected and", 
-      sum(datasetInput()$spatial_quality == "possibly correct"), 
-      " well mappable.")
+    cat(nrow(datasetInput()), " selected")
   })
   
   output$originamounttext = renderPrint({
@@ -529,11 +520,6 @@ shinyServer(function(input, output, session) {
   #     cat("No dates (by LABNR) appear more than once.")
   #   } 
   # })
-  
-  output$spatqualtext = renderPrint({
-    notcorr <- nrow(datasetInput()) - sum(datasetInput()$spatial_quality == "possibly correct")
-    cat(notcorr, " dates have no or doubtful spatial information.")
-  })
   
   output$mappingwarning = renderPrint({
     if (nrow(datasetInput()) > 1500) {

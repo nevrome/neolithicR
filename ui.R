@@ -90,8 +90,6 @@ shinyUI(
           textOutput('numbertext'),
           htmlOutput('originamounttext'),
           #textOutput('duplitext'),
-          textOutput('spatqualtext'),
-          checkboxInput("doubtfulcheck", label = "Map dates with doubtful coordinates anyway", value = FALSE),
           textOutput('mappingwarning')
                
         )
@@ -142,8 +140,6 @@ shinyUI(
           bottom = "auto",
           width = 600, 
           height = "auto",
-          
-          textOutput('numbertext2'),
           
           HTML('
             <button 
