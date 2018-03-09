@@ -270,13 +270,18 @@ shinyServer(function(input, output, session) {
   #rendering calibration plot for output
   output$calplot <- renderPlot({
     
+    date_segments <- datasetInput() %>%
+      dplyr::select(c14age, calrange) %>%
+      dplyr::filter(purrr::map_lgl(calrange, function(x){nrow(x) > 0})) %>%
+      tidyr::unnest()
+    
     # plot without data
-    calplotc <- ggplot(datasetInput(), aes(x = calage, y = c14age)) +
+    calplotc <- ggplot() +
       ggtitle("Calibration Overview") +
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      xlim(min(datasetInput()$calage) - 200, max(datasetInput()$calage) + 200) +
+      xlim(min(date_segments$from) - 200, max(date_segments$to) + 200) +
       geom_smooth(data = intcal13, aes(y = V2, x = V1), color = "darkgreen") +
       scale_x_reverse() +
       annotate(
@@ -291,23 +296,21 @@ shinyServer(function(input, output, session) {
       )
     
     # plot with data
-    if (nrow(datasetInput()) > 0) {  
+    if (nrow(dates) > 0) {  
       
-      # plot with a big amount of dates
       calplotc <- calplotc +
-        geom_point() +
-        ylim(min(datasetInput()$c14age) - 200, max(datasetInput()$c14age) + 200)
-
-      # plot with a small amount of dates  
-      if (nrow(datasetInput()) < 200) {
-        
-        calplotc <- calplotc +
-          geom_rug() +
-          geom_errorbarh(aes(xmin = calage-calstd, xmax = calage+calstd), alpha = 0.3) +
-          geom_errorbar(aes(ymin = c14age-c14std, ymax = c14age+c14std), alpha = 0.3)
-     
-      }
-
+        geom_segment(
+          aes(
+            x = from,
+            y = c14age,
+            xend = to,
+            yend = c14age
+          ),
+          data = date_segments
+        ) +
+        ylim(min(date_segments$c14age) - 200, max(date_segments$c14age) + 200) +
+        geom_rug(aes(y = c14age), data = date_segments)
+      
     } 
     
     calplotc
