@@ -56,13 +56,14 @@ data(intcal13)
 
 prep_dataset <- function() {
   c14bazAAR::get_all_dates() %>%
-    # dplyr::sample_n(500) %>%
-    # c14bazAAR::as.c14_date_list() %>%
-    c14bazAAR::calibrate() %>%
-    c14bazAAR::estimate_spatial_quality() %>%
-    c14bazAAR::rm_doubles(mark = TRUE) %>%
-    c14bazAAR::thesaurify() %>%
-    dplyr::arrange(dplyr::desc(calage)) %>%
+    dplyr::sample_n(500) %>%
+    c14bazAAR::as.c14_date_list() %>%
+    c14bazAAR::mark_duplicates() %>%
+    c14bazAAR::classify_material() %>%
+    c14bazAAR::coordinate_precision() %>%
+    c14bazAAR::finalize_country_name() %>% 
+    c14bazAAR::calibrate(choices = c("probdist", "sigmarange")) %>%
+    dplyr::arrange(dplyr::desc(c14age)) %>%
     dplyr::mutate(
       maincolor = rainbow(nrow(.), alpha = NULL, start = 0, end = 2/6)
     ) %>%
@@ -104,15 +105,15 @@ shinyServer(function(input, output, session) {
           <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>)
           and all its dependencies.</b>")
         
-        devtools::install_github(
-          "ISAAKiel/c14bazAAR", 
-          dependencies = TRUE, 
-          upgrade_dependencies = TRUE,
-          force = TRUE,
-          force_deps = TRUE,
-          quick = TRUE,
-          quiet = TRUE
-        )
+        # devtools::install_github(
+        #   "ISAAKiel/c14bazAAR", 
+        #   dependencies = TRUE, 
+        #   upgrade_dependencies = TRUE,
+        #   force = TRUE,
+        #   force_deps = TRUE,
+        #   quick = TRUE,
+        #   quiet = TRUE
+        # )
         
         shiny::incProgress(0.2)
         
