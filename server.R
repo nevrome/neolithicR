@@ -140,7 +140,7 @@ shinyServer(function(input, output, session) {
       message = function(m) {
         shinyjs::html(
           id = "c14bazAArout", 
-          html = paste0(m$message, "<br>"), 
+          html = paste0(crayon::strip_style(m$message), "<br>"), 
           add = TRUE)
       },
       warning = function(m) {
