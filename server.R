@@ -169,7 +169,7 @@ shinyServer(function(input, output, session) {
     select2Input(
       "countryselect",
       "Country selection",
-      choices = c("ALL", sort(unique(dates$country_thes))),
+      choices = c("ALL", sort(unique(dates$country_final))),
       select = c("Morocco"),
       type = c("input"),
       width = "100%"
@@ -189,12 +189,12 @@ shinyServer(function(input, output, session) {
   output$age_slider <- renderUI({
     sliderInput(
       "range", 
-      "calibrated age BP:", 
+      "uncalibrated age BP:", 
       width = "100%", 
-      min = min(dates$calage, na.rm = TRUE),
-      max = max(dates$calage, na.rm = TRUE),
+      min = min(dates$c14age, na.rm = TRUE),
+      max = max(dates$c14age, na.rm = TRUE),
       step= 100,
-      value = c(min(dates$calage), max(dates$calage))
+      value = c(min(dates$c14age), max(dates$c14age))
     )
   })
   
@@ -206,7 +206,7 @@ shinyServer(function(input, output, session) {
     
     sel_country <- input$countryselect
     if(length(sel_country) != 0 && "ALL" %in% sel_country){
-      sel_country <- unique(dates$country_thes)
+      sel_country <- unique(dates$country_final)
     }
     
     sel_material <- input$materialselect
@@ -237,10 +237,10 @@ shinyServer(function(input, output, session) {
     #selection of data (ui.R)
     dates <- dplyr::filter(
       dates,
-      calage >= input$range[1] &
-      calage <= input$range[2] &
+      c14age >= input$range[1] &
+      c14age <= input$range[2] &
       sourcedb %in% input$originselect &
-      country_thes %in% sel_country & 
+      country_final %in% sel_country & 
       material_thes %in% sel_material
     )
 
@@ -443,16 +443,15 @@ shinyServer(function(input, output, session) {
     
     tab <- datasetInput()[,c(
       "sourcedb", 
-      "labnr", 
-      "country_thes", 
+      "labnr",
+      "c14age",
+      "c14std",
+      "country_final", 
       "site",
       "period",
       "culture",
-      "material", 
-      "calage", 
-      "calstd",
-      "shortref",
-      "spatial_quality"
+      "material_thes", 
+      "shortref"
     )]
       
     DT::datatable(tab)
@@ -461,7 +460,7 @@ shinyServer(function(input, output, session) {
   
   #render textelements
   output$numbertext = renderPrint({
-    cat(nrow(datasetInput()), " of ", nrow(datestable), " dates are selected.")
+    cat(nrow(datasetInput()), " of ", nrow(dates), " dates are selected.")
   })
   
   output$numbertext2 = renderPrint({
