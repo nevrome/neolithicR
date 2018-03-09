@@ -416,12 +416,12 @@ shinyServer(function(input, output, session) {
           max(seldata$lon) + 1,
           max(seldata$lat) + 1
           ) %>% 
-        addCircles(
+        addMarkers(
           lat = seldata$lat, 
           lng = seldata$lon, 
-          color = seldata$maincolor,
-          radius = seldata$c14age/2,
-          popup = site.popup
+          #color = seldata$maincolor,
+          popup = site.popup,
+          clusterOptions = markerClusterOptions()
         )    
 
       setProgress(value = 1)
