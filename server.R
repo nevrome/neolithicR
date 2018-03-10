@@ -409,12 +409,6 @@ shinyServer(function(input, output, session) {
         addTiles(
           urlTemplate = tiles,
           attribution = att)  %>% 
-        fitBounds(
-          min(seldata$lon) - 1,
-          min(seldata$lat) - 1,
-          max(seldata$lon) + 1,
-          max(seldata$lat) + 1
-          ) %>% 
         addMarkers(
           lat = seldata$lat, 
           lng = seldata$lon, 
