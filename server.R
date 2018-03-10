@@ -503,48 +503,16 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  # output$duplitext = renderPrint({
-  #   
-  #   adates <- datasetInput() %>% nrow
-  #   ainddates <- datasetInput()$LABNR %>% unique %>% length
-  #   
-  #   if (adates != ainddates) {
-  #     
-  #     doubles <- datasetInput()[
-  #       duplicated(datasetInput()$LABNR) |
-  #       duplicated(datasetInput()$LABNR, fromLast = TRUE),
-  #     ] 
-  # 
-  #     if (nrow(doubles) > 1000) {
-  #       cat(">1000 dates (by LABNR) appear more than once.")
-  #     } else {
-  #       doubles %>%
-  #         `[[`("LABNR") %>% 
-  #         mapply(function(x){
-  #           doubles[which(doubles$LABNR == x),] %>%
-  #             `[[`("ORIGIN") %>% 
-  #             unique %>%
-  #             length %>%
-  #             `>`(1)
-  #         }, .) %>%
-  #         which %>% 
-  #         length -> dupli
-  #       
-  #       if (dupli == 0) {  
-  #         cat("No dates (by LABNR) appear in more than one source database.") 
-  #       } else {
-  #         cat(dupli, " dates (by LABNR) appear in more than one source database.") 
-  #       }
-  #       
-  #     }
-  #   } else {
-  #     cat("No dates (by LABNR) appear more than once.")
-  #   } 
-  # })
+  output$duplitext = renderPrint({
+    HTML(
+      sum(!is.na(datasetInput()$duplicate_group)),
+      " of these dates are duplicates. Their labnr appears more than once."
+    )
+  })
   
   output$mappingwarning = renderPrint({
-    if (nrow(datasetInput()) > 1500) {
-      cat("⚠ You've selected more than 1500 individual dates - depending on your browser and your internet connection that could be too many for mapping.")
+    if (nrow(datasetInput()) > 10000) {
+      cat("⚠ You've selected more than 10000 individual dates - depending on your browser and your internet connection that could cause neolithicRC to react pretty slowly.")
     }
   })
   

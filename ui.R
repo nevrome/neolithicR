@@ -89,7 +89,7 @@ shinyUI(
                
           textOutput('numbertext'),
           htmlOutput('originamounttext'),
-          #textOutput('duplitext'),
+          textOutput('duplitext'),
           textOutput('mappingwarning')
                
         )
