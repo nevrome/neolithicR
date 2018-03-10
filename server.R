@@ -200,6 +200,14 @@ shinyServer(function(input, output, session) {
   #reactive dataset selection based on user choice 
   datasetInput <- reactive({
     
+    # wait for input to load
+    req(
+      input$countryselect,
+      input$materialselect,
+      input$originselect,
+      input$range
+    )
+    
     sel_country <- input$countryselect
     if(length(sel_country) != 0 && "ALL" %in% sel_country){
       sel_country <- unique(dates$country_final)
