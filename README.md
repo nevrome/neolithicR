@@ -12,10 +12,11 @@ Thanks to
 - [Matthias Lang](http://www.escience.uni-tuebingen.de/mitarbeiter/dr-matthias-lang.html) and [Steve Kaminski](http://www.escience.uni-tuebingen.de/mitarbeiter/dr-steve-kaminski.html) of the [eScience-Center](https://www.uni-tuebingen.de/en/facilities/informations-kommunikations-und-medienzentrum-ikm/escience-center.html) (University of Tübingen) for providing and supporting the virtual server space to host the app.
 - [Christoph Rinne](https://www.ufg.uni-kiel.de/en/staff-directory/scientific-collaborators/christoph-rinne), [Raiko Krauß](https://www.uni-tuebingen.de/en/faculties/faculty-of-humanities/fachbereiche/altertums-und-kunstwissenschaften/ur-und-fruehgeschichte-und-archaeologie-des-mittelalters/early-history/staff/nach-funktion/krauss-raiko-pd-dr.html) and [Jörg Linstädter ](https://www.dainst.org/mitarbeiter-detailansicht/-/person-display/1241013) and especially [Bernhard Weninger](http://ufg.phil-fak.uni-koeln.de/10115.html?&L=0) for discussion and valuable input.
 - [Martin Hinz](https://github.com/MartinHinz) for discussion and code review.  
+- All those researches who share their radiocarbon data in public archives. Open Science for the win!
 
 ### Project presentations
 
-- [Presentation (11.02.2017) -> neolithicRCpres.](https://github.com/nevrome/neolithicRCpres)
+- (outdated) [Presentation (11.02.2017) -> neolithicRCpres.](https://github.com/nevrome/neolithicRCpres)
 
 ### License
 
