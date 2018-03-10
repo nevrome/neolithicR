@@ -8,7 +8,7 @@ Shiny app to search and filter radiocarbon dates from various source databases. 
 - the meaning of the variables in the output table
 - the methods to compile the data
 
-You can run this app on your own system by forking and cloning this repository, installing all the necessary packages and running the Shiny app (`R -e "shiny::runApp('.')"`). Alternatively you can use the prebuilt docker image (`docker run --name your_neolithicrc -d -p 3838:3838 nevrome/neolithicr`)
+You can run this app on your own system by forking and cloning this repository, installing all the necessary packages and running the Shiny app (`R -e "shiny::runApp('.')"`). Alternatively you can use the prebuilt docker image (`docker run --name your_neolithicrc -d -p 3838:3838 nevrome/neolithicr`) or build it yourself (`docker build -t neolithicrc .` and  `docker run --name your_neolithicrc -d -p 3838:3838 neolithicrc`).
 
 ### Acknowledgements
 
