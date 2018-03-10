@@ -64,9 +64,6 @@ prep_dataset <- function() {
     c14bazAAR::finalize_country_name() %>% 
     c14bazAAR::calibrate(choices = c("probdist", "sigmarange")) %>%
     dplyr::arrange(dplyr::desc(c14age)) %>%
-    dplyr::mutate(
-      maincolor = rainbow(nrow(.), alpha = NULL, start = 0, end = 2/6)
-    ) %>%
     return()
 }
 
@@ -427,7 +424,6 @@ shinyServer(function(input, output, session) {
         addMarkers(
           lat = seldata$lat, 
           lng = seldata$lon, 
-          #color = seldata$maincolor,
           popup = site.popup,
           clusterOptions = markerClusterOptions()
         )    
