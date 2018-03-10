@@ -5,14 +5,6 @@ library(ShinyDash)
 library(shinysky)
 library(DT)
 
-#### loading data ####
-
-load(file = "data/c14data.RData")
-
-files <- list.files(path = "thesauri/", pattern='*.RData', recursive=T)
-files = lapply(files, function(x) paste0('thesauri/', x))
-lapply(files, load, .GlobalEnv)
-
 #### definition of frontend output/input ####
 shinyUI(
   
@@ -20,16 +12,40 @@ shinyUI(
     "neolithicRC - Search tool for radiocarbon dates", 
     id = "nav",
 
+    tabPanel("Update Local Database ⛁",
+      
+      HTML('
+        <a href = "https://github.com/nevrome/neolithicR">
+          <img style="position: absolute; top: 0; right: 0; border: 0; z-index:1000" 
+               src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" 
+               alt="Fork me on GitHub" 
+               data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
+        </a>  
+      '),
+      
+      shiny::includeMarkdown("README.md"),
+      
+      hr(),
+      
+      htmlOutput('startmessage'),
+      br(),
+      
+      shinyjs::useShinyjs(),
+      actionButton("updatedb", "Update neolithicRC local database"),
+      br(), br(),
+      textOutput("c14bazAArout")
+    ),
+    
     tabPanel("Search and Filter ⌕",
     
-    HTML('
-      <a href = "https://github.com/nevrome/neolithicR">
-        <img style="position: absolute; top: 0; right: 0; border: 0; z-index:1000" 
-             src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" 
-             alt="Fork me on GitHub" 
-             data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
-      </a>  
-    '), 
+      HTML('
+        <a href = "https://github.com/nevrome/neolithicR">
+          <img style="position: absolute; top: 0; right: 0; border: 0; z-index:1000" 
+               src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" 
+               alt="Fork me on GitHub" 
+               data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
+        </a>  
+      '),        
              
       fluidRow( 
         
@@ -39,36 +55,15 @@ shinyUI(
         
         column(2,
              
-          select2Input(
-            "originselect",
-            "Data source selection",
-            choices = unique(datestable$ORIGIN),
-            selected = unique(datestable$ORIGIN),
-            type = c("input"),
-            width = "100%"
-          )
+          uiOutput("sourcedb_selection")
           
         ),
         
         column(2,
           
-         select2Input(
-           "countryselect",
-           "Country selection",
-           choices = c("ALL", sort(unique(COUNTRY_thesaurus$cor))),
-           select = c("Morocco"),
-           type = c("input"),
-           width = "100%"
-         ),
-                
-         select2Input(
-           "materialselect",
-           "Material selection",
-           choices = c("ALL", sort(unique(MATERIAL_thesaurus$cor))),
-           select = c("ALL"),
-           type = c("input")
-         ) 
-      
+          uiOutput("country_selection"),
+          uiOutput("material_selection")      
+
         ),
         
         column(2,
@@ -99,26 +94,16 @@ shinyUI(
           textOutput('numbertext'),
           htmlOutput('originamounttext'),
           textOutput('duplitext'),
-          textOutput('spatqualtext'),
-          checkboxInput("doubtfulcheck", label = "Map dates with doubtful coordinates anyway", value = FALSE),
           textOutput('mappingwarning')
                
         )
         
       ),
       
-      sliderInput(
-        "range", 
-        "calibrated age BP:", 
-        width = "100%", 
-        min = min(datestable$CALAGE),
-        max = max(datestable$CALAGE),
-        step= 100,
-        value = c(min(datestable$CALAGE), max(datestable$CALAGE))
-      ),
+      uiOutput("age_slider"),
       
       #datatable output
-      dataTableOutput("radiodat"),
+      DT::dataTableOutput("radiodat"),
 
       #selection buttons and download
       downloadButton(
@@ -160,8 +145,6 @@ shinyUI(
           width = 600, 
           height = "auto",
           
-          textOutput('numbertext2'),
-          
           HTML('
             <button 
               data-toggle = "collapse" 
@@ -177,17 +160,10 @@ shinyUI(
             class = "collapse", # start collapsed
             #class="collapse in", # start not collapsed
             
-            #dates density plot
-            plotOutput(
-              "datesdensity", 
-              height = "250px", 
-              width = "100%"
-            ),
-            
             #period barplot output 
             plotOutput(
               "calplot", 
-              height = "350px", 
+              height = "600px", 
               width = "100%"
             )
           ) 

@@ -47,7 +47,7 @@ modules/radiocarbon5/rsconnect
 *.log
 *.sqlite
 *.db
-modules/radiocarbon5/data/*.RData
+neolithicRC/data/*.RData
 
 ######################
 # OS generated files 
