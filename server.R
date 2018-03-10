@@ -453,10 +453,23 @@ shinyServer(function(input, output, session) {
       "period",
       "culture",
       "material_thes", 
-      "shortref"
+      "shortref",
+      "duplicate_group"
     )]
       
-    DT::datatable(tab)
+    DT::datatable(tab) # %>%
+      # DT::formatStyle(
+      #   'duplicate_group',
+      #   'duplicate_group',
+      #   backgroundColor = DT::styleEqual(
+      #     unique(tab$duplicate_group), 
+      #     ifelse(
+      #       is.na(unique(tab$duplicate_group)),
+      #       "white",
+      #       "red"
+      #     )
+      #   )
+      # )
     
   })
   
