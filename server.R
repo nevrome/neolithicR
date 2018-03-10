@@ -246,44 +246,43 @@ shinyServer(function(input, output, session) {
 
   })
   
-  #rendering density plot of date selection
-  output$datesdensity <- renderPlot({
-    
-      ggplot(datasetInput(), aes(x = calage)) +
-        geom_rug() +
-        geom_line(
-          stat = "density",
-          color = "red"
-        ) + 
-        xlim(min(datasetInput()$calage), max(datasetInput()$calage)) + 
-        labs(
-          y = "",
-          x = "calibrated Age BP"
-        ) +
-        scale_x_reverse() +
-        ggtitle("Density of date selection") +
-        theme_bw()
-
-  })
-  
-  
   #rendering calibration plot for output
   output$calplot <- renderPlot({
     
+    # data prep
     date_segments <- datasetInput() %>%
       dplyr::select(c14age, calrange) %>%
       dplyr::filter(purrr::map_lgl(calrange, function(x){nrow(x) > 0})) %>%
       tidyr::unnest()
+
+    date_dens <- datasetInput() %>%
+      dplyr::select(calprobdistr) %>%
+      dplyr::filter(purrr::map_lgl(calprobdistr, function(x){nrow(x) > 0})) %>%
+      tidyr::unnest() %>%
+      dplyr::group_by(calage) %>%
+      dplyr::summarise(dens = sum(density))    
     
-    # plot without data
-    calplotc <- ggplot() +
+    # density sum plot
+    dens_sum_plot <- ggplot(date_dens, aes(x = calage, y = dens)) +
+      geom_line(
+        color = "red"
+      ) + 
+      labs(
+        y = "",
+        x = "calibrated Age BP"
+      ) +
+      scale_x_reverse(limits = c(max(date_dens$calage), min(date_dens$calage))) +
+      ggtitle("Density sum of date selection") +
+      theme_bw()
+    
+    # calibration plot
+    cal_plot <- ggplot() +
       ggtitle("Calibration Overview") +
       xlab("calibrated Age BP") + 
       ylab("C14 Age BP") + 
       theme_bw() +
-      xlim(min(date_segments$from) - 200, max(date_segments$to) + 200) +
       geom_smooth(data = intcal13, aes(y = V2, x = V1), color = "darkgreen") +
-      scale_x_reverse() +
+      scale_x_reverse(limits = c(max(date_dens$calage), min(date_dens$calage))) +
       annotate(
         "text", x = Inf, y = -Inf, hjust = -0.2, vjust = -5, 
         label = "Spline based on IntCal13", 
@@ -295,10 +294,10 @@ shinyServer(function(input, output, session) {
         size = 5, color = "darkgreen"
       )
     
-    # plot with data
+    # add data
     if (nrow(dates) > 0) {  
       
-      calplotc <- calplotc +
+      cal_plot <- cal_plot +
         geom_segment(
           aes(
             x = from,
@@ -308,12 +307,13 @@ shinyServer(function(input, output, session) {
           ),
           data = date_segments
         ) +
-        ylim(min(date_segments$c14age) - 200, max(date_segments$c14age) + 200) +
+        #ylim(min(date_segments$c14age) - 200, max(date_segments$c14age) + 200) +
         geom_rug(aes(y = c14age), data = date_segments)
       
     } 
     
-    calplotc
+    grid::grid.newpage()
+    grid::grid.draw(rbind(ggplotGrob(dens_sum_plot), ggplotGrob(cal_plot), size = "last"))
       
   })
   

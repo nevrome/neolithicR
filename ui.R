@@ -156,17 +156,10 @@ shinyUI(
             class = "collapse", # start collapsed
             #class="collapse in", # start not collapsed
             
-            #dates density plot
-            plotOutput(
-              "datesdensity", 
-              height = "250px", 
-              width = "100%"
-            ),
-            
             #period barplot output 
             plotOutput(
               "calplot", 
-              height = "350px", 
+              height = "600px", 
               width = "100%"
             )
           ) 
