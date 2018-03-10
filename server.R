@@ -101,15 +101,15 @@ shinyServer(function(input, output, session) {
           <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>)
           and all its dependencies.</b>")
         
-        # devtools::install_github(
-        #   "ISAAKiel/c14bazAAR",
-        #   dependencies = TRUE,
-        #   upgrade_dependencies = TRUE,
-        #   force = TRUE,
-        #   force_deps = TRUE,
-        #   quick = TRUE,
-        #   quiet = TRUE
-        # )
+        devtools::install_github(
+          "ISAAKiel/c14bazAAR",
+          dependencies = TRUE,
+          upgrade_dependencies = TRUE,
+          force = TRUE,
+          force_deps = TRUE,
+          quick = TRUE,
+          quiet = TRUE
+        )
         
         shiny::incProgress(0.2)
         
