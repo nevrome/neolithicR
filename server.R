@@ -532,10 +532,11 @@ shinyServer(function(input, output, session) {
       },
     content = function(file) {
       
-      #reduce data.frame to necessary information (LABNR, SITE, CALAGE, REFERENCE)
-      #tab <- subset(datasetInput(), select=-c(COORDCOUNTRY, MAINCOLOR))
-      tab <- datasetInput()
-      
+      # remove list columns
+      tab <- datasetInput() %>% dplyr::select(
+        -calprobdistr, -calrange, -sigma
+      )
+
       write.table(
         tab, 
         file,
