@@ -2,7 +2,13 @@
 
 # WebGIS-App and Search Engine **[neolithicRC.de](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/)**  
 
-Shiny app to search and filter radiocarbon dates from various source databases. neolithicRC is based on the R package [c14bazAAR](https://github.com/ISAAKiel/c14bazAAR). You'll find more information there.
+Shiny app to search and filter radiocarbon dates from various source databases. neolithicRC is based on the R package [c14bazAAR](https://github.com/ISAAKiel/c14bazAAR). You'll find more information there about
+
+- the included databases
+- the meaning of the variables in the output table
+- the methods to compile the data
+
+You can run this app on your own system by forking and cloning this repository, installing all the necessary packages and running the Shiny app (`R -e "shiny::runApp('.')"`). Alternatively you can use the prebuilt docker image (`docker run --name your_neolithicrc -d -p 3838:3838 nevrome/neolithicr`)
 
 ### Acknowledgements
 
