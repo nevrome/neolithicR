@@ -481,9 +481,13 @@ shinyServer(function(input, output, session) {
   output$originamounttext = renderPrint({
     linklist <- unique(datasetInput()$sourcedb) %>%
       mapvalues(
-        from = c("RADON", "aDRAC", "EUROEVOL", "CALPAL", "CONTEXT"),
+        from = c("AustArch", "14SEA", "RADON", "RADON-B", "aDRAC", "EUROEVOL", "CALPAL", "CONTEXT", "KITEeastafrica"),
         to = c(
+          "<a href = 'https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NJLNRJ'>KITEeastafrica</a>",
+          "<a href = 'http://archaeologydataservice.ac.uk/archives/view/austarch_na_2014/'>AustArch</a>",
+          "<a href = 'http://www.14sea.org/'>14SEA</a>",
           "<a href = 'http://radon.ufg.uni-kiel.de/'>RADON</a>",
+          "<a href = 'http://radon-b.ufg.uni-kiel.de/'>RADON-B</a>",
           "<a href = 'https://github.com/dirkseidensticker/aDRAC'>aDRAC</a>",
           "<a href = 'http://discovery.ucl.ac.uk/1469811/'>EUROEVOL</a>",
           "<a href = 'https://uni-koeln.academia.edu/BernhardWeninger/CalPal'>CALPAL</a>",
