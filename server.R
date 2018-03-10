@@ -56,8 +56,8 @@ data(intcal13)
 
 prep_dataset <- function() {
   c14bazAAR::get_all_dates() %>%
-    dplyr::sample_n(500) %>%
-    c14bazAAR::as.c14_date_list() %>%
+    # dplyr::sample_n(500) %>%
+    # c14bazAAR::as.c14_date_list() %>%
     c14bazAAR::mark_duplicates() %>%
     c14bazAAR::classify_material() %>%
     c14bazAAR::coordinate_precision() %>%
@@ -74,13 +74,18 @@ prep_dataset <- function() {
 
 shinyServer(function(input, output, session) {
 
+  
   # loading data
-  last_updated <- "<font color = 'red'><b>not available - please update</b></font>"
-  if (file.exists("data/c14data2.RData") & file.exists("data/last_updated.RData")) {
-    load(file = "data/c14data2.RData")
-    dates <- datestable
-    load(file = "data/last_updated.RData")
-  }
+  shiny::withProgress(message = 'Loading Data...', value = 0, {
+    shiny::incProgress(0.1)
+    last_updated <- "<font color = 'red'><b>not available - please update</b></font>"
+    if (file.exists("data/c14data2.RData") & file.exists("data/last_updated.RData")) {
+      load(file = "data/c14data2.RData")
+      dates <- datestable
+      load(file = "data/last_updated.RData")
+    }
+    shiny::incProgress(1)
+  })
   
   # render start message
   output$startmessage = renderPrint({
@@ -105,15 +110,15 @@ shinyServer(function(input, output, session) {
           <a href = 'https://github.com/ISAAKiel/c14bazAAR/'>github.com/ISAAKiel/c14bazAAR</a>)
           and all its dependencies.</b>")
         
-        devtools::install_github(
-          "ISAAKiel/c14bazAAR",
-          dependencies = TRUE,
-          upgrade_dependencies = TRUE,
-          force = TRUE,
-          force_deps = TRUE,
-          quick = TRUE,
-          quiet = TRUE
-        )
+        # devtools::install_github(
+        #   "ISAAKiel/c14bazAAR",
+        #   dependencies = TRUE,
+        #   upgrade_dependencies = TRUE,
+        #   force = TRUE,
+        #   force_deps = TRUE,
+        #   quick = TRUE,
+        #   quiet = TRUE
+        # )
         
         shiny::incProgress(0.2)
         
