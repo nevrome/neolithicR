@@ -86,13 +86,7 @@ shinyServer(function(input, output, session) {
   
   # render start message
   output$startmessage = renderPrint({
-    HTML(
-      "This tool allows to search, filter and visualize radiocarbon dates. ", 
-      "The credit for the collection of the dates goes to the editors of the databases. ",
-      "For reference see https://github.com/nevrome/neolithicR.",
-      "<br>",
-      "Last data update: ", paste(last_updated)
-    )
+    HTML("<font color = 'red'><b>Last data update: </b></font>", paste(last_updated))
   })
   
   # allow data update by user

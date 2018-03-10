@@ -25,6 +25,8 @@ shinyUI(
       
       shiny::includeMarkdown("README.md"),
       
+      hr(),
+      
       htmlOutput('startmessage'),
       br(),
       
