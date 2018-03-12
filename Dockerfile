@@ -41,6 +41,9 @@ RUN apt-get update -qq \
     libgeos-dev \
     libgdal-dev \
     libudunits2-dev \
+    libsodium-dev \
+    htop \
+    nano \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
