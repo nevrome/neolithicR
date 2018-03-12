@@ -60,6 +60,8 @@ shinyUI(
               position: fixed;
               top: calc(50% - 50px);;
               left: calc(50% - 200px);;
+              font-size: 18px;
+              text-align: center;
               }"
               )
             )

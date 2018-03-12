@@ -71,7 +71,7 @@ shinyServer(function(input, output, session) {
 
   
   # loading data
-  shiny::withProgress(message = 'Loading Data...', value = 0, {
+  shiny::withProgress(message = 'Loading data...', value = 0, {
     shiny::incProgress(0.1)
     last_updated <- "<font color = 'red'><b>not available - please update</b></font>"
     if (file.exists("data/c14data2.RData") & file.exists("data/last_updated.RData")) {
@@ -390,7 +390,7 @@ shinyServer(function(input, output, session) {
   #rendering the map file for output
   output$radiocarbon = renderLeaflet({
     
-    withProgress(message = '● Loading Map', value = 0, {
+    withProgress(message = 'Loading map...', value = 0, {
 
       # tile source switch
       tiles <- switch(
