@@ -31,7 +31,8 @@ shinyUI(
       br(),
       
       shinyjs::useShinyjs(),
-      actionButton("updatedb", "Update neolithicRC local database"),
+      uiOutput("updateriddle"),
+      uiOutput("updatebutton"),
       br(), br(),
       textOutput("c14bazAArout")
     ),

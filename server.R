@@ -44,6 +44,7 @@ library(rgdal)
 library(raster)
 library(plyr)
 library(ShinyDash)
+library(sodium)
 
 #### loading data ####
 
@@ -84,6 +85,26 @@ shinyServer(function(input, output, session) {
   # render start message
   output$startmessage = renderPrint({
     HTML("<font color = 'red'><b>Last data update: </b></font>", paste(last_updated))
+  })
+  
+  # update riddle to hide update button
+  output$updateriddle <- renderUI({
+    list(
+      HTML("You can rebuild the database if you know the secret passphrase:"),
+      passwordInput("updateriddleanswer", NULL)
+    )
+  })
+  
+  # secret passphrase encrypted by sodium::password_store()
+  passphrase <- "$7$C6..../....KJmqQLQZdPEkNIEf7L65NGM6JZx5awzmpsrk3sFk7E2$Dv893Y6Eu8HVUoIrtV1PQ2v4.oRbv7kzG9z4c9tKjlC"
+  
+  # hide user update button on condition
+  output$updatebutton <- renderUI({
+    if (!is.null(input$updateriddleanswer)) {
+      if(sodium::password_verify(passphrase, input$updateriddleanswer)) {
+        return(actionButton("updatedb", "Update neolithicRC local database"))
+      }
+    }
   })
   
   # allow data update by user
