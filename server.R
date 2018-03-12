@@ -222,6 +222,7 @@ shinyServer(function(input, output, session) {
       input$range
     )
     
+    # prepare input
     sel_country <- input$countryselect
     if(length(sel_country) == 0){
       sel_country <- unique(dates$country_final)
@@ -252,7 +253,7 @@ shinyServer(function(input, output, session) {
       dates <- dates[pecuv, ]
     }
 
-    #selection of data (ui.R)
+    # selection of data
     dates <- dplyr::filter(
       dates,
       c14age >= input$range[1] &
