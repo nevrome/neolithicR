@@ -253,11 +253,19 @@ shinyServer(function(input, output, session) {
       dates <- dates[pecuv, ]
     }
 
+    # preselection for dates with no age: 
+    # only include them if the user didn't make any concious age selection
+    # or: only apply normal filter if the user makes any decision
+    if (min(dates$c14age, na.rm = TRUE) != input$range[1] | 
+        max(dates$c14age, na.rm = TRUE) != input$range[2]) {
+      dates <- dates %>% dplyr::filter(
+        c14age >= input$range[1] & c14age <= input$range[2]
+      )
+    }
+    
     # selection of data
     dates <- dplyr::filter(
       dates,
-      c14age >= input$range[1] &
-      c14age <= input$range[2] &
       sourcedb %in% input$originselect &
       country_final %in% sel_country & 
       material_thes %in% sel_material
