@@ -7,9 +7,13 @@ COPY . /srv/shiny-server/app
 
 # create config 
 RUN echo "run_as shiny; \
-		     server { \
+		      
+          disable_protocols websocket xhr-streaming xhr-polling iframe-xhr-polling; \
+          disable_websockets true; \
+		      
+		      server { \
   		       listen 3838; \
-  		       location / { \
+  		       location /cSchmid/neolithicRC { \
     		         app_dir /srv/shiny-server/app; \
     		         directory_index off; \
     		         log_dir /var/log/shiny-server; \
