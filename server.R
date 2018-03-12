@@ -25,7 +25,10 @@
 # build docker container: docker build -t neol .
 # run docker container: docker run --name neo -d -p 3838:3838 neol
 # install docker on CentOS: https://docs.docker.com/install/linux/docker-ce/centos/#upgrade-docker-ce
-# install and run docker container from dockerhub: docker run --restart=always --name neolithicrc -d -p 3838:3838 nevrome/neolithicr
+# pull latest version of image:
+# docker pull nevrome/neolithicr
+# install and run docker container from dockerhub: 
+# docker run --restart=always --name neolithicrc -d -p 3838:3838 nevrome/neolithicr
 
 #### loading libraries ####
 
