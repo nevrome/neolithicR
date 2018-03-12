@@ -205,7 +205,7 @@ shinyServer(function(input, output, session) {
       width = "100%", 
       min = min(dates$c14age, na.rm = TRUE),
       max = max(dates$c14age, na.rm = TRUE),
-      step= 100,
+      step= 10,
       value = c(min(dates$c14age), max(dates$c14age))
     )
   })
