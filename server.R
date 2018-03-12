@@ -1,34 +1,31 @@
 #### Reminders ####
 
-#Reminder: starting app 
-# library(shiny)
+## General hints: 
+
+# start app: 
+# library(shiny) 
 # runApp("modules/radiocarbon5/", launch.browser=TRUE)
 
-#Reminder: push to shinyapps.io
+# push to shinyapps.io:
 # library(rsconnect)
-# deployApp('modules/radiocarbon5/')
+# deployApp()
 
-#Reminder: installing packages
-# install.packages(c(
-#   "magrittr", "dplyr", "shiny", "ggplot2", "gtools", "DT", "Bchron",
-#   "leaflet", "maps", "mapproj", "devtools", "raster", "plyr", "shinyjs"
-# ), repos = "http://cran.uni-muenster.de/")
-# library(devtools)
-# devtools::install_github("AnalytixWare/ShinySky")
-# devtools::install_github("trestletech/ShinyDash")
+# install all necessary packages:
+# automagic::make_deps_file()
+# automagic::automagic()
 
-#Reminder: push to vm
-# scp -r -P PORTNUMBER /home/clemens/Rstats/neolithicR/modules/radiocarbon5/* USERNAME@134.2.2.137:/home/USERNAME/ShinyApps/neolithicRC/
+## Setup on server 134.2.24.118 
 
-#Reminder: restart shiny server
-# sudo systemctl restart shiny-server 
+# traditional setup: 
+# push data: scp -r -P PORTNUMBER /home/clemens/Rstats/neolithicR/* USERNAME@134.2.2.137:/home/USERNAME/ShinyApps/neolithicRC/
+# restart server: sudo systemctl restart shiny-server 
+# config file: /etc/shiny-server/shiny-server.conf
 
-#Reminder: update automagic package file 
-#automagic::make_deps_file()
-
-#Reminder: build and run docker container
-# docker build -t neol .
-# docker run --name neo -d -p 3838:3838 neol
+# docker setup:
+# build docker container: docker build -t neol .
+# run docker container: docker run --name neo -d -p 3838:3838 neol
+# install docker on CentOS: https://docs.docker.com/install/linux/docker-ce/centos/#upgrade-docker-ce
+# install and run docker container from dockerhub: docker run --restart=always --name neolithicrc -d -p 3838:3838 nevrome/neolithicr
 
 #### loading libraries ####
 
