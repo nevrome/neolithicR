@@ -1,20 +1,17 @@
-- Package: magrittr
-  Repository: CRAN
-  Version: '1.5'
 - Package: c14bazAAR
   GithubUsername: ISAAKiel
   GithubRepo: c14bazAAR
   GithubRef: 8e448d8f339be9f90cd10ac3cac01250be814300
   GithubSHA1: 8e448d8f339be9f90cd10ac3cac01250be814300
-- Package: dplyr
-  Repository: CRAN
-  Version: 0.7.4
 - Package: shiny
   Repository: CRAN
   Version: 1.0.5
 - Package: leaflet
   Repository: CRAN
   Version: 1.1.0
+- Package: magrittr
+  Repository: CRAN
+  Version: '1.5'
 - Package: ggplot2
   GithubUsername: tidyverse
   GithubRepo: ggplot2
@@ -25,10 +22,10 @@
   Version: 3.5.0
 - Package: DT
   Repository: CRAN
-  Version: '0.2'
+  Version: '0.4'
 - Package: Bchron
   Repository: CRAN
-  Version: 4.2.6
+  Version: 4.2.7
 - Package: maps
   Repository: CRAN
   Version: 3.2.0
@@ -40,9 +37,12 @@
   GithubRepo: ShinySky
   GithubRef: 242ab164de689c3098967e4af6cf81574ddec5d0
   GithubSHA1: 242ab164de689c3098967e4af6cf81574ddec5d0
+- Package: dplyr
+  Repository: CRAN
+  Version: 0.7.4
 - Package: rgdal
   Repository: CRAN
-  Version: 1.2-15
+  Version: 1.2-16
 - Package: raster
   Repository: CRAN
   Version: 2.6-7
@@ -54,9 +54,22 @@
   GithubRepo: ShinyDash
   GithubRef: daffe35efdb89faede163832378aca5c88ad1a6c
   GithubSHA1: daffe35efdb89faede163832378aca5c88ad1a6c
+- Package: sodium
+  Repository: CRAN
+  Version: '1.1'
 - Package: shinyjs
   Repository: CRAN
-  Version: 0.9.1
+  Version: '1.0'
 - Package: devtools
   Repository: CRAN
-  Version: 1.13.4
+  Version: 1.13.5
+- Package: crayon
+  Repository: CRAN
+  Version: 1.3.4
+- Package: purrr
+  Repository: CRAN
+  Version: 0.2.4
+- Package: tidyr
+  Repository: CRAN
+  Version: 0.8.0
+- ~
