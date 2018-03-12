@@ -51,7 +51,19 @@ shinyUI(
       fluidRow( 
         
         singleton(
-          tags$head(tags$script(src = "message-handler.js"))
+          tags$head(
+            tags$script(src = "message-handler.js"),
+            tags$style(
+              HTML(".shiny-notification {
+              height: 50px;
+              width: 400px;
+              position: fixed;
+              top: calc(50% - 50px);;
+              left: calc(50% - 200px);;
+              }"
+              )
+            )
+          )
         ),
         
         column(2,
