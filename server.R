@@ -60,7 +60,7 @@ prep_dataset <- function() {
     c14bazAAR::classify_material() %>%
     c14bazAAR::coordinate_precision() %>%
     c14bazAAR::finalize_country_name() %>% 
-    c14bazAAR::calibrate(choices = c("probdist", "sigmarange")) %>%
+    c14bazAAR::calibrate(choices = c("calprobdistr", "calrange")) %>%
     dplyr::arrange(dplyr::desc(c14age)) %>%
     return()
 }
