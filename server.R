@@ -183,8 +183,7 @@ shinyServer(function(input, output, session) {
     select2Input(
       "countryselect",
       "Country selection",
-      choices = c("ALL", sort(unique(dates$country_final))),
-      select = c("Morocco"),
+      choices = sort(unique(dates$country_final)),
       type = c("input"),
       width = "100%"
     )
@@ -194,8 +193,7 @@ shinyServer(function(input, output, session) {
     select2Input(
       "materialselect",
       "Material selection",
-      choices = c("ALL", sort(unique(dates$material_thes))),
-      select = c("ALL"),
+      choices = sort(unique(dates$material_thes)),
       type = c("input")
     ) 
   })
@@ -220,19 +218,17 @@ shinyServer(function(input, output, session) {
     
     # wait for input to load
     req(
-      input$countryselect,
-      input$materialselect,
       input$originselect,
       input$range
     )
     
     sel_country <- input$countryselect
-    if(length(sel_country) != 0 && "ALL" %in% sel_country){
+    if(length(sel_country) == 0){
       sel_country <- unique(dates$country_final)
     }
     
     sel_material <- input$materialselect
-    if(length(sel_material) != 0 && "ALL" %in% sel_material){
+    if(length(sel_material) == 0){
       sel_material <- unique(dates$material_thes)
     } 
     
