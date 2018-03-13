@@ -1,4 +1,6 @@
-[![Website](https://img.shields.io/badge/last%20webapp%20update-08.02.2017-orange.svg)](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/) [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR) [![GitHub contributors](https://img.shields.io/github/contributors/nevrome/neolithicR.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR/graphs/contributors) [![license](https://img.shields.io/badge/license-GPL%202-B50B82.svg)](https://github.com/nevrome/neolithicR/blob/master/LICENSE)
+[![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=neolithicRC.de)](http://www.neolithicrc.de)
+[![Docker Build Status](https://img.shields.io/docker/build/nevrome/neolithicr.svg)](https://hub.docker.com/r/nevrome/neolithicr/)
+[![GitHub contributors](https://img.shields.io/github/contributors/nevrome/neolithicR.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR/graphs/contributors) [![license](https://img.shields.io/badge/license-GPL%202-B50B82.svg)](https://github.com/nevrome/neolithicR/blob/master/LICENSE)
 
 # WebGIS-App and Search Engine **[neolithicRC.de](https://www.forschungsdatenarchiv.escience.uni-tuebingen.de/cSchmid/neolithicRC/)**  
 
