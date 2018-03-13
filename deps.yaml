@@ -6,6 +6,9 @@
 - Package: shiny
   Repository: CRAN
   Version: 1.0.5
+- Package: shinycssloaders
+  Repository: CRAN
+  Version: 0.2.0
 - Package: leaflet
   Repository: CRAN
   Version: 1.1.0

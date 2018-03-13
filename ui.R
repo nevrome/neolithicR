@@ -4,6 +4,7 @@ library(leaflet)
 library(ShinyDash)
 library(shinysky)
 library(DT)
+library(shinycssloaders)
 
 #### definition of frontend output/input ####
 shinyUI(
@@ -118,7 +119,7 @@ shinyUI(
       uiOutput("age_slider"),
       
       #datatable output
-      DT::dataTableOutput("radiodat"),
+      withSpinner(DT::dataTableOutput("radiodat")),
 
       #selection buttons and download
       downloadButton(
@@ -175,12 +176,14 @@ shinyUI(
             class = "collapse", # start collapsed
             #class="collapse in", # start not collapsed
             
+            br(),
+            
             #period barplot output 
-            plotOutput(
+            withSpinner(plotOutput(
               "calplot", 
               height = "600px", 
               width = "100%"
-            )
+            ))
           ) 
         ),
 
