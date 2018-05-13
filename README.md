@@ -6,7 +6,7 @@
 
 Shiny app to search and filter radiocarbon dates from various source databases. neolithicRC is based on the R package [c14bazAAR](https://github.com/ISAAKiel/c14bazAAR). You'll find more information there about
 
-- the included databases
+- the included databases and how to cite (!) them
 - the meaning of the variables in the output table
 - the methods to compile the data
 
