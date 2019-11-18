@@ -1,5 +1,4 @@
-:heavy_exclamation_mark: The development of this project is paused.
-
+[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
 [![Docker Build Status](https://img.shields.io/docker/build/nevrome/neolithicr.svg)](https://hub.docker.com/r/nevrome/neolithicr/)
 [![GitHub contributors](https://img.shields.io/github/contributors/nevrome/neolithicR.svg?maxAge=2592000)](https://github.com/nevrome/neolithicR/graphs/contributors) [![license](https://img.shields.io/badge/license-GPL%202-B50B82.svg)](https://github.com/nevrome/neolithicR/blob/master/LICENSE)
 
